@@ -62,7 +62,7 @@ public class Vector {
 	 * @return the magnitude of the vector
 	 */
 	public double magnitude() {
-		return Math.sqrt((x*x) + (y*y) + (z));
+		return Math.sqrt(magnitudeSquared());
 	}
 	
 	public double magnitudeSquared() {
