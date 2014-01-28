@@ -132,13 +132,13 @@ public class Main implements input.EventHandler {
 	/** 
 	 * Updates the fps
 	 */
-	public void updateFPS()	{
+	public void updateFPS() {
 		long time = ((Sys.getTime()* 1000) / Sys.getTimerResolution()); //set lastFPS to current Time
 		if (time - lastfps > 1000) 
 		{
 			window.setTitle("Bear Traffic Controller - FPS: " + fps);
 			fps = 0; //reset the FPS counter
-			lastfps += 1000; //add one second
+			lastfps += time - lastfps; // on the time difference
 		}
 		fps++;
 	}
