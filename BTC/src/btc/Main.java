@@ -132,8 +132,7 @@ public class Main implements input.EventHandler {
 	/** 
 	 * Updates the fps
 	 */
-	public void updateFPS()
-	{
+	public void updateFPS()	{
 		long time = ((Sys.getTime()* 1000) / Sys.getTimerResolution()); //set lastFPS to current Time
 		if (time - lastfps > 1000) 
 		{
