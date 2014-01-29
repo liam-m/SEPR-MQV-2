@@ -1,2 +1,2 @@
 language: java
-script: ant SEPR-MQV-2
+script: ant travis_targets
