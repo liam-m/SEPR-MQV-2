@@ -78,4 +78,6 @@
             <report format="frames" todir="${junit.output.dir}"/>
         </junitreport>
     </target>
+    <target name="travis_targets" depends="Main (1), SEPR-MQV-2">
+    </target>
 </project>
