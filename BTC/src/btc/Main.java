@@ -137,8 +137,8 @@ public class Main implements input.EventHandler {
 		if (time - lastfps > 1000) 
 		{
 			window.setTitle("Bear Traffic Controller - FPS: " + fps);
-			fps = 0; //reset the FPS counter
-			lastfps += time - lastfps; // on the time difference
+			fps = 0; // reset the FPS counter
+			lastfps += time - lastfps; // add on the time difference
 		}
 		fps++;
 	}
