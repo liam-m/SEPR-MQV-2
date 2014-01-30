@@ -34,18 +34,18 @@ public class OrdersBox extends lib.TextBox {
 
 	/**
 	 * Updates the timer of the OrdersBox.
-	 * @param dt time since the last update call.
+	 * @param time_difference time since the last update call.
 	 */
-	public void update(double dt) {
+	public void update(double time_difference) {
 		if (!isTyping) {
-			removalTimer += dt;
+			removalTimer += time_difference;
 			if (removalTimer >= REMOVAL_WAIT) {
 				removalTimer -= REMOVAL_WAIT;
 				ripple();
 			}
 			return;
 		}
-		super.update(dt);
+		super.update(time_difference);
 	}
 	
 }
