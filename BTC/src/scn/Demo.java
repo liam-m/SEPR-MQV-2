@@ -253,13 +253,13 @@ public class Demo extends Scene {
 			if (plane.isFinished()){
 				switch (RandomNumber.randInclusiveInt(0, 2)){
 				case 0:
-					ordersBox.addOrder("<<< Thank you");
+					ordersBox.addOrder("<<< Thank you Comrade");
 					break;
 				case 1:
-					ordersBox.addOrder("<<< Well done");
+					ordersBox.addOrder("<<< Well done Comrade");
 					break;
 				case 2:
-					ordersBox.addOrder("<<< Many thanks");
+					ordersBox.addOrder("<<< Many thanks Comrade");
 					break;
 				}
 			}
