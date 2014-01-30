@@ -38,7 +38,7 @@ public class Aircraft {
 	/**
 	 * How much the plane can turn per second, in radians.
 	 */
-	private double turnSpeed = Math.PI / 4;
+	private double turnSpeed;
 	/**
 	 * The position of the plane.
 	 */
@@ -147,12 +147,12 @@ public class Aircraft {
 		// Find route
 		route = findGreedyRoute(originPoint, destinationPoint, sceneWaypoints);
 		destination = destinationPoint.position();
-		//place on spawn waypoint
+		// place on spawn waypoint
 		position = originPoint.position(); 
-		//offset spawn position. Helps avoid aircraft crashes very soon after spawn
+		// offset spawn position. Helps avoid aircraft crashes very soon after spawn
 		
-		//Offsets the spawn location of the aircraft around the origin waypoint, for variety
-		//This also prevents collisions between just-spawned aircraft and existing aircraft flying to the waypoint.
+		// Offsets the spawn location of the aircraft around the origin waypoint, for variety
+		// This also prevents collisions between just-spawned aircraft and existing aircraft flying to the waypoint.
 		int offset;
 		if (RandomNumber.randInclusiveInt(0, 1) == 0) {
 			offset = RandomNumber.randInclusiveInt(-separationRule, -10);
@@ -181,11 +181,12 @@ public class Aircraft {
 		
 		// Speed up plane for higher difficulties
 		switch (difficulty) {
-			//adjust the aircraft's attributes according to the difficulty of the parent scene.
-			// 0 has the easiest attributes (slower aircraft, more forgiving separation rules.
-			// 2 has the hardest attributes (faster aircraft, least forgiving separation rules.
+			// adjust the aircraft's attributes according to the difficulty of the parent scene.
+			// 0 has the easiest attributes (slower aircraft, more forgiving separation rules)
+			// 2 has the hardest attributes (faster aircraft, least forgiving separation rules)
 			case Demo.DIFFICULTY_EASY:
 				separationRule = 64;
+				turnSpeed = Math.PI / 4;
 				altitudeChangeSpeed = 400;
 			break;
 			
@@ -199,8 +200,8 @@ public class Aircraft {
 			case Demo.DIFFICULTY_HARD:
 				separationRule = 128;
 				velocity = velocity.scaleBy(3);
-				//At high velocities, the aircraft is allowed to turn faster
-				//this helps keep the aircraft on track.
+				// At high velocities, the aircraft is allowed to turn faster
+				// this helps keep the aircraft on track.
 				turnSpeed = Math.PI / 2;
 				altitudeChangeSpeed = 100;
 			break;
@@ -367,6 +368,7 @@ public class Aircraft {
 		double dy = position.y() - my;
 		return dx*dx + dy*dy < MOUSE_LENIANCY*MOUSE_LENIANCY;
 	}
+	
 	/**
 	 * Calls {@link isMouseOver()} using {@link input.mouseX()} and {@link input.mouseY()} as the arguments.
 	 * @return true, if the mouse is close enough to this plane. False, otherwise.
@@ -400,10 +402,10 @@ public class Aircraft {
 		if (isAt(currentTarget) && currentTarget.equals(destination)) {
 			hasFinished = true;
 		} else if (isAt(currentTarget) && (currentRouteStage == route.length-1)) {
-			currentRouteStage ++;
+			currentRouteStage++;
 			currentTarget = destination;
 		} else if (isAt(currentTarget)) {
-			currentRouteStage ++;
+			currentRouteStage++;
 			currentTarget = route[currentRouteStage].position();
 		}
 
@@ -560,8 +562,8 @@ public class Aircraft {
 			graphics.line(mouseX, mouseY, destination.x(), destination.y());
 		} else {
 			int index = modified + 1;
-			if (index == route.length) { //modifying final waypoint in route
-				//line drawn to final waypoint
+			if (index == route.length) { // modifying final waypoint in route
+				// line drawn to final waypoint
 				graphics.line(mouseX, mouseY, destination.x(), destination.y());
 			} else {
 				graphics.line(mouseX, mouseY, route[index].position().x(), route[index].position().y());
@@ -589,7 +591,7 @@ public class Aircraft {
 		// to track the closest next waypoint
 		double cost = Double.MAX_VALUE;
 		Waypoint cheapest = null;
-		//to track if the route is complete
+		// to track if the route is complete
 		boolean atDestination = false;
 		
 		while (! atDestination) {
@@ -608,8 +610,8 @@ public class Aircraft {
 				// do not consider the waypoint we are currently at or the origin
 				// do not consider offscreen waypoints which are not the destination
 				// also skip if flagged as a previously selected waypoint
-				if (skip == true | point.position().equals(currentPos.position()) | point.position().equals(origin.position())
-						| (point.isEntryOrExit() == true && (point.position().equals(destination.position()) == false))) {
+				if (skip | point.position().equals(currentPos.position()) | point.position().equals(origin.position())
+						| (point.isEntryOrExit() && (!point.position().equals(destination.position())))) {
 					skip = false; //reset flag
 					continue;
 	
@@ -625,25 +627,25 @@ public class Aircraft {
 				}
 				
 			} //end for - evaluated all waypoints
-			//The cheapest waypoint must have been found
+			// The cheapest waypoint must have been found
 			assert cheapest != null : "The cheapest waypoint was not found";
 
 			if (cheapest.position().equals(destination.position())) {
 				/* route has reached destination 
-				 * break out of while loop*/
+				 * break out of while loop */
 				atDestination = true;
 			}
 			// update the selected route
 			// consider further points in route from the position of the selected point
 			selectedWaypoints.add(cheapest);
 			currentPos = cheapest;
-			//resaturate cost for next loop
+			// resaturate cost for next loop
 			cost = Double.MAX_VALUE;
 
-		} //end while
-		//create a Waypoint[] to hold the new route
+		} // end while
+		// create a Waypoint[] to hold the new route
 		Waypoint[] route = new Waypoint[selectedWaypoints.size()];
-		//fill route with the selected waypoints
+		// fill route with the selected waypoints
 		for (int i = 0; i < selectedWaypoints.size(); i++) {
 			route[i] = selectedWaypoints.get(i);
 		}
