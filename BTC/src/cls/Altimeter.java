@@ -64,7 +64,10 @@ public class Altimeter implements EventHandler {
 	public boolean isMouseOver(int mx, int my) {
 		return (mx >= positionX && mx <= positionX + width && my >= positionY && my <= positionY + height);
 	}
-	public boolean isMouseOver() { return isMouseOver(input.mouseX(), input.mouseY()); }
+	
+	public boolean isMouseOver() { 
+		return isMouseOver(input.mouseX(), input.mouseY()); 
+	}
 
 	@Override
 	/**
@@ -182,7 +185,10 @@ public class Altimeter implements EventHandler {
 		if (my < positionY || my > positionY + height) return false;
 		return (my <= positionY + 16);
 	}
-	private boolean mouseOverTopButton() { return mouseOverTopButton(input.mouseX(), input.mouseY()); }
+	
+	private boolean mouseOverTopButton() { 
+		return mouseOverTopButton(input.mouseX(), input.mouseY()); 
+	}
 
 	private boolean mouseOverBottomButton(int mx, int my) {
 		if (!isVisible) return false;
@@ -190,6 +196,9 @@ public class Altimeter implements EventHandler {
 		if (my < positionY || my > positionY + height) return false;
 		return (my >= positionY + height - 16);
 	}
-	private boolean mouseOverBottomButton() { return mouseOverBottomButton(input.mouseX(), input.mouseY()); }
+	
+	private boolean mouseOverBottomButton() { 
+		return mouseOverBottomButton(input.mouseX(), input.mouseY()); 
+	}
 	
 }
