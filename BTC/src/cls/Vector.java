@@ -119,7 +119,7 @@ public class Vector {
 	 * Sets the z value of the vector
 	 * @param z the z value to be set
 	 */
-	public void setZ(double z){
+	public void setZ(double z) {
 		this.z = z;
 	}
 

@@ -31,7 +31,7 @@ public class Main implements input.EventHandler {
 	};
 
 	private double lastFrameTime;
-	private double dt;
+	private double time_difference;
 	private java.util.Stack<scn.Scene> sceneStack;
 	private scn.Scene currentScene;
 	private int fps;
@@ -46,8 +46,8 @@ public class Main implements input.EventHandler {
 	public Main() {
 		start();
 		while(!window.isClosed()) {
-			dt = getDeltaTime();
-			update(dt);
+			time_difference = getDeltaTime();
+			update(time_difference);
 			draw();
 		}
 		quit();
@@ -70,14 +70,14 @@ public class Main implements input.EventHandler {
 	
 	/**
 	 * Updates input handling, the window and the current scene.
-	 * @param dt the time elapsed since the last frame.
+	 * @param time_difference the time elapsed since the last frame.
 	 */
-	private void update(double dt) {
+	private void update(double time_difference) {
 		audio.update();
 		input.update(this);
 		updateFPS();
 		window.update();
-		currentScene.update(dt);
+		currentScene.update(time_difference);
 	}
 	
 	/**
@@ -132,14 +132,13 @@ public class Main implements input.EventHandler {
 	/** 
 	 * Updates the fps
 	 */
-	public void updateFPS()
-	{
+	public void updateFPS() {
 		long time = ((Sys.getTime()* 1000) / Sys.getTimerResolution()); //set lastFPS to current Time
 		if (time - lastfps > 1000) 
 		{
 			window.setTitle("Bear Traffic Controller - FPS: " + fps);
-			fps = 0; //reset the FPS counter
-			lastfps += 1000; //add one second
+			fps = 0; // reset the FPS counter
+			lastfps += time - lastfps; // add on the time difference
 		}
 		fps++;
 	}
