@@ -118,20 +118,20 @@ public class TextBox {
 	
 	/**
 	 * Updates the timer of the TextBox.
-	 * @param dt time since the last update call.
+	 * @param time_difference time since the last update call.
 	 */
-	public void update(double dt) {
+	public void update(double time_difference) {
 		// Update delay
 		if (isDelaying) {
 			if (delayTimer <= 0) {
 				isDelaying = false;
 			} else {
-				delayTimer = Math.max(0, delayTimer - dt);
+				delayTimer = Math.max(0, delayTimer - time_difference);
 				return;
 			}
 		}
 		// Update timer
-		timer += dt;
+		timer += time_difference;
 		if (timer >= typeWait) {
 			timer -= typeWait;
 			// Finished

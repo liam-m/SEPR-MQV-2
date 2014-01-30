@@ -31,7 +31,7 @@ public class Waypoint {
 	 * @param y the y coord of the waypoint
 	 * @param inputEntryOrExit whether the waypoint is a point where planes may enter and leave the airspace
 	 */
-	public Waypoint(double x, double y, boolean inputEntryOrExit){
+	public Waypoint(double x, double y, boolean inputEntryOrExit) {
 		position = new Vector(x, y, 0);
 		entryOrExit = inputEntryOrExit;
 	}
@@ -59,7 +59,7 @@ public class Waypoint {
 	/**
 	 * @return Whether or not the waypoint is an entry or exit point for the airspace.
 	 */
-	public boolean isEntryOrExit(){
+	public boolean isEntryOrExit() {
 		return this.entryOrExit;
 	}
 	
@@ -69,7 +69,7 @@ public class Waypoint {
 	 * @param fromPoint The point to consider cost from, to this waypoint
 	 * @return the distance (cost) between the two waypoints
 	 */
-	public double getCost(Waypoint fromPoint){
+	public double getCost(Waypoint fromPoint) {
 		return position.sub(fromPoint.position()).magnitude();
 	}
 	
@@ -79,7 +79,7 @@ public class Waypoint {
 	 * @param target the target waypoint
 	 * @return the cost between source and target
 	 */
-	public static double getCostBetween(Waypoint source, Waypoint target){
+	public static double getCostBetween(Waypoint source, Waypoint target) {
 		return target.getCost(source);
 	}
 	

@@ -5,6 +5,8 @@ package cls;
  * @author Huw Taylor
  */
 public class Vector {
+	private double x, y, z;
+	
 	/**
 	 * Constructor for a vector
 	 * @param x X coordinate
@@ -16,8 +18,6 @@ public class Vector {
 		this.y = y;
 		this.z = z;
 	}
-	
-	private double x, y, z;
 	
 	/**
 	 * Getter for X

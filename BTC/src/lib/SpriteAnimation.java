@@ -7,7 +7,7 @@ import lib.jog.graphics.Quad;
 public class SpriteAnimation {
 
 	private Image image;		 // the animation sequence
-	private Quad[] quads;	         // the rectangle to be drawn from the animation bitmap
+	private Quad[] quads;	     // the rectangle to be drawn from the animation bitmap
 	private int frameCount;		 // number of frames in animation
 	private int currentFrame;	 // the current frame
 	private double framePeriod;	 // milliseconds between each frame (1000/fps)
@@ -36,7 +36,7 @@ public class SpriteAnimation {
 	 * @param framesHigh how many frames high the image is
 	 * @param looping whether to loop the animation
 	 */
-	public SpriteAnimation(Image image, int x, int y, int fps, int frameCount, int framesWide, int framesHigh, boolean looping){
+	public SpriteAnimation(Image image, int x, int y, int fps, int frameCount, int framesWide, int framesHigh, boolean looping) {
 		this.image = image;
 		imageWidth = image.width();
 		System.out.println("-----");
@@ -75,7 +75,7 @@ public class SpriteAnimation {
 	 * @param framesHigh how many frames high the image is
 	 * @param looping whether to loop the animation
 	 */
-	public SpriteAnimation(String imageFilepath, int x, int y, int fps, int frameCount, int framesWide, int framesHigh, boolean looping){
+	public SpriteAnimation(String imageFilepath, int x, int y, int fps, int frameCount, int framesWide, int framesHigh, boolean looping) {
 		new SpriteAnimation(graphics.newImage(imageFilepath), x, y, fps, frameCount, framesWide, framesHigh, looping);
 	}
 	

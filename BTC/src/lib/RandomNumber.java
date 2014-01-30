@@ -11,7 +11,7 @@ public abstract class RandomNumber {
 	 * @param max the upper boundary (included) for the random integer
 	 * @return a random integer
 	 */
-	public static int randInclusiveInt(int min, int max){
+	public static int randInclusiveInt(int min, int max) {
 		Random rand = new Random();
 		return rand.nextInt((max - min) + 1) + min;
 	}

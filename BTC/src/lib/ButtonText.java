@@ -48,7 +48,10 @@ public class ButtonText {
 	public boolean isMouseOver(int mx, int my) {
 		return (mx >= x && mx <= x + width && my >= y && my <= y + height);
 	}
-	public boolean isMouseOver() { return isMouseOver(input.mouseX(), input.mouseY()); }
+	
+	public boolean isMouseOver() { 
+		return isMouseOver(input.mouseX(), input.mouseY()); 
+	}
 	
 	public void setText(String newText) {
 		text = newText;
