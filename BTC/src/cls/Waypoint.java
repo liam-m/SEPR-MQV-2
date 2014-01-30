@@ -97,5 +97,5 @@ public class Waypoint {
 	public void draw() {
 		draw(position.x(), position.y());
 	}
-//commit test
+	
 }
