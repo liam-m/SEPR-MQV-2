@@ -19,7 +19,7 @@ public class Airport extends Waypoint {
 	
 	@Override
 	public void draw() { 
-		graphics.Image airport = graphics.newImage("gfx" + File.separator + "plane.png");
+		graphics.Image airport = graphics.newImage("gfx" + File.separator + "Airport.png");
 		graphics.draw(airport, x_location, y_location);
 	}
 }
