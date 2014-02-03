@@ -10,6 +10,9 @@ public class Airport extends Waypoint {
 	private static double x_location = window.width()/2;
 	private static double y_location = window.height()/2;		
 
+	public static boolean land_pressed = false;
+	public static boolean plane_can_land = false;
+	
 	public Airport() { 
 		super(x_location, y_location, false);
 	}

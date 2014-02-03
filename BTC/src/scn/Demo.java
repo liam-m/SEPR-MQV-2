@@ -114,7 +114,7 @@ public class Demo extends Scene {
 	/**
 	 * Demo's instance of the airport class
 	 */
-	private Airport airport;
+	public static Airport airport = new Airport();
 	
 	/**
 	 * A list of location names for waypoint flavour
@@ -124,6 +124,7 @@ public class Demo extends Scene {
 		"100 Acre Woods",
 		"City of Rightson",
 		"South Sea",
+		"Mosbear Airport"
 	};
 	
 	/**
@@ -135,6 +136,7 @@ public class Demo extends Scene {
 		new Waypoint(8, window.height() - ORDERSBOX_H - 40, true), //bottom left
 		new Waypoint(window.width() - 40, 8, true), // top right
 		new Waypoint(window.width() - 40, window.height() - ORDERSBOX_H - 40, true), //bottom right
+		airport
 	};
 
 	/**
@@ -159,6 +161,7 @@ public class Demo extends Scene {
 		locationWaypoints[1],           // 11
 		locationWaypoints[2],           // 12
 		locationWaypoints[3],           // 13
+		locationWaypoints[4]
 	};
 	/**
 	 * Constructor
@@ -182,7 +185,6 @@ public class Demo extends Scene {
 		ordersBox = new cls.OrdersBox(ORDERSBOX_X, ORDERSBOX_Y, ORDERSBOX_W, ORDERSBOX_H, 6);
 		aircraftInAirspace = new java.util.ArrayList<Aircraft>();
 		aircraftImage = graphics.newImage("gfx" + File.separator + "plane.png");
-		airport = new Airport();
 		lib.ButtonText.Action manual = new lib.ButtonText.Action() {
 			@Override
 			public void action() {
@@ -500,11 +502,18 @@ public class Demo extends Scene {
 	 */
 	private void drawMap() {
 		for (Waypoint waypoint : airspaceWaypoints) {
-			waypoint.draw();
+			if (waypoint.equals(airport)) {
+				//skip the airport
+			} else {
+				waypoint.draw();
+			}	
 		}
 		graphics.setColour(255, 255, 255);
 		for (Aircraft aircraft : aircraftInAirspace) {
 			aircraft.draw(controlAltitude);
+			if (aircraft.isMouseOver()) {
+				aircraft.drawFlightPath();
+			}
 		}
 		
 		if (selectedAircraft != null) {

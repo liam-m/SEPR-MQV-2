@@ -26,7 +26,7 @@ public class Aircraft {
 	/**
 	 * How far away (in pixels) the mouse can be from the plane but still select it.
 	 */
-	public final static int MOUSE_LENIANCY = 16; 
+	public final static int MOUSE_LENIANCY = 32; 
 	/**
 	 * How large to draw the bearing circle.
 	 */
@@ -400,7 +400,11 @@ public class Aircraft {
 		
 		// Update target
 		if (isAt(currentTarget) && currentTarget.equals(destination)) {
-			hasFinished = true;
+			if (destination.equals(Demo.airport) ) { //&& !land_button_pressed) {
+				hasFinished = true;
+			} else {
+				hasFinished = true;
+			}
 		} else if (isAt(currentTarget) && (currentRouteStage == route.length-1)) {
 			currentRouteStage++;
 			currentTarget = destination;
