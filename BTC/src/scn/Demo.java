@@ -8,6 +8,7 @@ import lib.jog.graphics;
 import lib.jog.input;
 import lib.jog.window;
 import cls.Aircraft;
+import cls.Airport;
 import cls.Waypoint;
 import btc.Main;
 
@@ -111,6 +112,11 @@ public class Demo extends Scene {
 	private graphics.Image background;
 	
 	/**
+	 * Demo's instance of the airport class
+	 */
+	private Airport airport;
+	
+	/**
 	 * A list of location names for waypoint flavour
 	 */
 	private final String[] LOCATION_NAMES = new String[] {
@@ -176,6 +182,7 @@ public class Demo extends Scene {
 		ordersBox = new cls.OrdersBox(ORDERSBOX_X, ORDERSBOX_Y, ORDERSBOX_W, ORDERSBOX_H, 6);
 		aircraftInAirspace = new java.util.ArrayList<Aircraft>();
 		aircraftImage = graphics.newImage("gfx" + File.separator + "plane.png");
+		airport = new Airport();
 		lib.ButtonText.Action manual = new lib.ButtonText.Action() {
 			@Override
 			public void action() {
@@ -478,7 +485,7 @@ public class Demo extends Scene {
 		if (selectedAircraft != null && selectedAircraft.isManuallyControlled()) {
 			selectedAircraft.drawCompass();
 		}
-		
+		airport.draw();
 		ordersBox.draw();
 		altimeter.draw();
 		drawPlaneInfo();
