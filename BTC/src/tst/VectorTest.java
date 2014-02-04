@@ -6,8 +6,7 @@ import org.junit.Test;
 
 import cls.Vector;
 
-public class VectorTest {		
-	
+public class VectorTest {	
 	// Test get functions
 	// Test getX function
 	@Test 

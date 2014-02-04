@@ -9,7 +9,6 @@ import cls.Waypoint;
 import cls.Vector;
 
 public class WaypointTest {
-
 	// Test Get Functions
 	// Test get position function
 	@Test
@@ -25,6 +24,7 @@ public class WaypointTest {
 		Waypoint testWaypoint = new Waypoint(10,10, false);
 		assertTrue("Entry/Exit = false", false == testWaypoint.isEntryOrExit());
 	}
+	
 	@Test
 	public void testIsEntryOrExit2() {
 		Waypoint testWaypoint = new Waypoint(0, 0, true);
@@ -37,6 +37,7 @@ public class WaypointTest {
 		Waypoint testWaypoint = new Waypoint(5,5, true);
 		assertTrue("Mouse over = true", true == testWaypoint.isMouseOver(10,10));
 	}
+	
 	@Test
 	public void testIsMouseOver2(){
 		Waypoint testWaypoint = new Waypoint(25,25, true);
@@ -50,7 +51,9 @@ public class WaypointTest {
 		Waypoint testWaypoint2 = new Waypoint(2, 2, true);
 		double result = testWaypoint.getCost(testWaypoint2);
 		assertTrue("Cost = 2", 2 == result);
-	}@Test
+	}
+	
+	@Test
 	public void testGetCost2(){
 		Waypoint testWaypoint = new Waypoint(6, 15, false);
 		Waypoint testWaypoint2 = new Waypoint(15, 15, true);
@@ -65,13 +68,13 @@ public class WaypointTest {
 		Waypoint testWaypoint2 = new Waypoint(2, 2, true);
 		double result = Waypoint.getCostBetween(testWaypoint, testWaypoint2);
 		assertTrue("Cost = 2", 2 == result);
-	}@Test
+	}
+	
+	@Test
 	public void testGetCostBetween2(){
 		Waypoint testWaypoint = new Waypoint(6, 15, false);
 		Waypoint testWaypoint2 = new Waypoint(15, 15, true);
 		double result = Waypoint.getCostBetween(testWaypoint, testWaypoint2);
 		assertTrue("Cost = 9", 9 == result);
-	}
-	
-	
+	}	
 }
