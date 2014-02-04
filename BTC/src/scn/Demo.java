@@ -8,6 +8,7 @@ import lib.jog.graphics;
 import lib.jog.input;
 import lib.jog.window;
 import cls.Aircraft;
+import cls.Airport;
 import cls.Waypoint;
 import btc.Main;
 
@@ -111,6 +112,11 @@ public class Demo extends Scene {
 	private graphics.Image background;
 	
 	/**
+	 * Demo's instance of the airport class
+	 */
+	public static Airport airport = new Airport();
+	
+	/**
 	 * A list of location names for waypoint flavour
 	 */
 	private final String[] LOCATION_NAMES = new String[] {
@@ -118,6 +124,7 @@ public class Demo extends Scene {
 		"100 Acre Woods",
 		"City of Rightson",
 		"South Sea",
+		"Mosbear Airport"
 	};
 	
 	/**
@@ -129,6 +136,7 @@ public class Demo extends Scene {
 		new Waypoint(8, window.height() - ORDERSBOX_H - 40, true), //bottom left
 		new Waypoint(window.width() - 40, 8, true), // top right
 		new Waypoint(window.width() - 40, window.height() - ORDERSBOX_H - 40, true), //bottom right
+		airport
 	};
 
 	/**
@@ -153,6 +161,7 @@ public class Demo extends Scene {
 		locationWaypoints[1],           // 11
 		locationWaypoints[2],           // 12
 		locationWaypoints[3],           // 13
+		locationWaypoints[4]
 	};
 	/**
 	 * Constructor
@@ -478,7 +487,7 @@ public class Demo extends Scene {
 		if (selectedAircraft != null && selectedAircraft.isManuallyControlled()) {
 			selectedAircraft.drawCompass();
 		}
-		
+		airport.draw();
 		ordersBox.draw();
 		altimeter.draw();
 		drawPlaneInfo();
@@ -493,11 +502,16 @@ public class Demo extends Scene {
 	 */
 	private void drawMap() {
 		for (Waypoint waypoint : airspaceWaypoints) {
-			waypoint.draw();
+			if (!waypoint.equals(airport)) { // Skip the airport
+				waypoint.draw();
+			}	
 		}
 		graphics.setColour(255, 255, 255);
 		for (Aircraft aircraft : aircraftInAirspace) {
 			aircraft.draw(controlAltitude);
+			if (aircraft.isMouseOver()) {
+				aircraft.drawFlightPath();
+			}
 		}
 		
 		if (selectedAircraft != null) {
