@@ -502,11 +502,9 @@ public class Demo extends Scene {
 	 */
 	private void drawMap() {
 		for (Waypoint waypoint : airspaceWaypoints) {
-			if (waypoint.equals(airport)) {
-				//skip the airport
-			} else {
+			if (!waypoint.equals(airport)) { // Skip the airport
 				waypoint.draw();
-			}	
+			}
 		}
 		graphics.setColour(255, 255, 255);
 		for (Aircraft aircraft : aircraftInAirspace) {

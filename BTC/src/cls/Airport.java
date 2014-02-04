@@ -14,7 +14,7 @@ public class Airport extends Waypoint {
 	public static boolean plane_can_land = false;
 	
 	public Airport() { 
-		super(x_location, y_location, false);
+		super(x_location, y_location, true);
 	}
 	
 	@Override
