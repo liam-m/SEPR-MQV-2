@@ -498,7 +498,7 @@ public class Aircraft {
 			if (!(destination.equals(Demo.airport.position()) && is_waiting_to_land)) {
 				hasFinished = true;
 				if (!is_waiting_to_land) { // must have landed so make airport available 
-					Demo.airport.airport_active = false;
+					Demo.airport.is_active = false;
 				}
 			}
 		} else if (isAt(currentTarget) && (currentRouteStage == route.length-1)) {

@@ -15,7 +15,7 @@ public class Airport extends Waypoint {
 	private static final int landing_radius = 128; 
 	
 	private boolean should_draw_landing_radius = false;
-	public boolean airport_active = false; // True if there is an aircraft Landing/Taking off
+	public boolean is_active = false; // True if there is an aircraft Landing/Taking off
 	
 	public Airport() { 
 		super(x_location, y_location, true);
