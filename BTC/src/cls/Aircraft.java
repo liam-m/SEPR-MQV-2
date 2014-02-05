@@ -21,11 +21,11 @@ public class Aircraft {
 	/**
 	 * The physical size of the plane in pixels. This determines crashes.
 	 */
-	public final static int RADIUS = 32;
+	public final static int RADIUS = 16;
 	/**
 	 * How far away (in pixels) the mouse can be from the plane but still select it.
 	 */
-	public final static int MOUSE_LENIANCY = 16; 
+	public final static int MOUSE_LENIANCY = 32; 
 	/**
 	 * How large to draw the bearing circle.
 	 */
@@ -113,10 +113,29 @@ public class Aircraft {
 	 * the speed to climb or fall by. Default 300 for easy mode
 	 */
 	private int altitudeChangeSpeed = 300;
+	
+	/**
+	 * This variable is used to calculate how long an aircraft spent in the airspace
+	 */
+	private double timeOfCreation;
+	/**
+	 * Used to get (system) time when an aircraft was created.
+	 * @return Time when aircraft was created.
+	 */
+	public double getTimeOfCreation() {
+		return timeOfCreation;
+	}
 	/**
 	 * Optimal time a plane needs to reach its exit point 
 	 */
 	private double optimalTime;
+	/**
+	 * Getter for optimal time.
+	 * @return Optimal time for an aircraft to complete its path.
+	 */
+	public double getOptimalTime() {
+		return optimalTime;
+	}
 	
 	/**
 	 * Static ints for use where altitude state is to be changed.
@@ -124,6 +143,22 @@ public class Aircraft {
 	public static final int ALTITUDE_CLIMB = 1;
 	public static final int ALTITUDE_FALL = -1;
 	public static final int ALTITUDE_LEVEL = 0;
+	
+	/**
+	 * This method returns multiplier bonus to reward players for fast and efficient management of planes
+	 * @param optimalTime - Ideal time, not really possible to achieve.  
+	 * @param timeTaken - Total time a plane spent in the airspace. 
+	 * @return 2 for very efficient, alternatively 1.5 
+	 */
+	public static double efficiencyBonus(double optimalTime, double timeTaken) {
+		if ((optimalTime/ timeTaken) > 0.9)
+			return 2;
+		if ((optimalTime/ timeTaken) > 0.75)
+			return 1.5;
+		if ((optimalTime/ timeTaken) > 0.6)
+			return 1.25;
+		return 1;
+	}
 	
 	/**
 	 * Flags whether the collision warning sound has been played before.
@@ -190,6 +225,7 @@ public class Aircraft {
 		destinationName = nameDestination;
 		originName = nameOrigin;
 		image = img;
+		timeOfCreation = System.currentTimeMillis()/1000; // System time when aircraft was created in seconds.
 		
 		// Find route
 		route = findGreedyRoute(originPoint, destinationPoint, sceneWaypoints);

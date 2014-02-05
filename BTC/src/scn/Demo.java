@@ -369,13 +369,16 @@ public class Demo extends Scene {
 		ordersBox.update(dt);
 		for (Aircraft plane : aircraftInAirspace) {
 			plane.update(dt);	
-			if (plane.isFinished()){
+			if (plane.isFinished()) {
 				multiplierVariable += plane.getPlaneBonusToMultiplier();
 				updateMultiplier();
-				increaseTotalScore(multiplier * plane.getBaseScore());
-				System.out.println("Total score: " + totalScore + "; Multiplier: " + multiplier + "; multiplierVariable: " + multiplierVariable); // For debugging
+				double effiencyBonus =  Aircraft.efficiencyBonus(plane.getOptimalTime(), System.currentTimeMillis()/1000 - plane.getTimeOfCreation()); // Bonus multiplier to score of a particular plane based on its performance
+				increaseTotalScore ((int)(multiplier * plane.getBaseScore() * effiencyBonus));
+				System.out.println("Optimal time :" + plane.getOptimalTime() + "; Actual time spent: " + (System.currentTimeMillis()/1000 - plane.getTimeOfCreation())); // For debugging
+				System.out.println("Total score: " + totalScore + "; Multiplier: " + multiplier + "; multiplierVariable: " + multiplierVariable + "\n "); // For debugging
 				if (plane.getPlaneBonusToMultiplier() < 0)
 					ordersBox.addOrder("<<< The plane has breached separation rules on its path, your multiplier may be reduced ");
+				int totalEfficiencyBonus = (int) ((multiplier * plane.getBaseScore() * effiencyBonus) - multiplier * plane.getBaseScore()); // Used to show how many points were scored just for being efficient
 				
 				switch (RandomNumber.randInclusiveInt(0, 2)){
 				case 0:
@@ -389,6 +392,8 @@ public class Demo extends Scene {
 					break;
 				}
 				ordersBox.addOrder("Plane successfully left airspace, bonus points: " + plane.getBaseScore());
+				if (effiencyBonus > 1)
+					ordersBox.addOrder("<<< Congrats, you scored extra " + totalEfficiencyBonus + " points for efficiency!");
 			}
 		}
 		checkCollisions(dt);
@@ -628,6 +633,9 @@ public class Demo extends Scene {
 		graphics.setColour(255, 255, 255);
 		for (Aircraft aircraft : aircraftInAirspace) {
 			aircraft.draw(controlAltitude);
+			if (aircraft.isMouseOver()) {
+				aircraft.drawFlightPath();
+			}
 		}
 		
 		if (selectedAircraft != null) {
