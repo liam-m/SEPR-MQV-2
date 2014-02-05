@@ -365,11 +365,11 @@ public class Demo extends Scene {
 	 * Generate a new flight if flight generation interval has been exceeded.
 	 */
 	@Override
-	public void update(double dt) {
-		timeElapsed += dt;
-		ordersBox.update(dt);
+	public void update(double time_difference) {
+		timeElapsed += time_difference;
+		ordersBox.update(time_difference);
 		for (Aircraft plane : aircraftInAirspace) {
-			plane.update(dt);	
+			plane.update(time_difference);	
 			if (plane.isFinished()) {
 				multiplierVariable += plane.getPlaneBonusToMultiplier();
 				updateMultiplier();
@@ -397,7 +397,7 @@ public class Demo extends Scene {
 					ordersBox.addOrder("<<< Congrats, you scored extra " + totalEfficiencyBonus  + " points for efficiency!");
 			}
 		}
-		checkCollisions(dt);
+		checkCollisions(time_difference);
 		for (int i = aircraftInAirspace.size()-1; i >=0; i --) {
 			if (aircraftInAirspace.get(i).isFinished()) {
 				if (aircraftInAirspace.get(i) == selectedAircraft) {
@@ -406,13 +406,13 @@ public class Demo extends Scene {
 				aircraftInAirspace.remove(i);
 			}
 		}
-		altimeter.update(dt);
+		altimeter.update(time_difference);
 		airport.update(this);
 		if (selectedAircraft != null && selectedAircraft.isManuallyControlled()) {
 			if (input.isKeyDown(input.KEY_LEFT)) {
-				selectedAircraft.turnLeft(dt);
+				selectedAircraft.turnLeft(time_difference);
 			} else if (input.isKeyDown(input.KEY_RIGHT)) {
-				selectedAircraft.turnRight(dt);
+				selectedAircraft.turnRight(time_difference);
 			}
 			if (selectedAircraft.outOfBounds()) {
 				ordersBox.addOrder(">>> " + selectedAircraft.name() + " out of bounds, returning to route");
@@ -420,7 +420,7 @@ public class Demo extends Scene {
 			}
 		}
 		
-		flightGenerationTimeElapsed += dt;
+		flightGenerationTimeElapsed += time_difference;
 		if(flightGenerationTimeElapsed >= flightGenerationInterval){
 			flightGenerationTimeElapsed -= flightGenerationInterval;
 			if (aircraftInAirspace.size() < maxAircraft){

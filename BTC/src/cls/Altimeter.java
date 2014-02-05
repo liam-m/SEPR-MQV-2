@@ -98,7 +98,7 @@ public class Altimeter implements EventHandler {
 	@Override
 	public void keyReleased(int key) {}
 	
-	public void update(double dt) {}
+	public void update(double time_difference) {}
 	
 	/**
 	 * Draws the altimeter to the screen

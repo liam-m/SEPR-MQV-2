@@ -107,11 +107,11 @@ public class Title extends Scene {
 	/**
 	 * Updates all objects in the title scene
 	 * Called by Main class
-	 * @param dt the delta time since the last update
+	 * @param time_difference the delta time since the last update
 	 */
 	@Override
-	public void update(double dt) {
-		angle += dt; //increase the angle of the radar sweep
+	public void update(double time_difference) {
+		angle += time_difference; //increase the angle of the radar sweep
 		
 		//Check the angle of the radar sweep;
 		//If approaching the BTC title string, play the beep

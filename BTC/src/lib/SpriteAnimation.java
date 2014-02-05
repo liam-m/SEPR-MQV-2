@@ -81,12 +81,12 @@ public class SpriteAnimation {
 	
 	/**
 	 * updates the timer and changes the frame if necessary
-	 * @param dt time in seconds since last update
+	 * @param time_difference time in seconds since last update
 	 */
-	public void update(double dt) {
+	public void update(double time_difference) {
 		if (hasFinished) return;
 		
-		gameTime += dt;
+		gameTime += time_difference;
 		if (gameTime > framePeriod) { // frame period exceeded
 			gameTime = 0; //reset timer
 			System.out.print(currentFrame + ", ");
