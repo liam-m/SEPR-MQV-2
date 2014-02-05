@@ -8,40 +8,169 @@ import lib.jog.graphics;
 import lib.jog.input;
 import lib.jog.window;
 import cls.Aircraft;
-import cls.Airport;
 import cls.Waypoint;
 import btc.Main;
 
 public class Demo extends Scene {
-	
+
 	// Position of things drawn to window   
 	private final int PLANE_INFO_X = 16;
 	private final int PLANE_INFO_Y = window.height() - 120;
 	private final int PLANE_INFO_W = window.width()/4 - 16;
 	private final int PLANE_INFO_H = 112;
-	
+
 	private final int ALTIMETER_X = PLANE_INFO_X + PLANE_INFO_W + 8;
 	private final int ALTIMETER_Y = window.height() - 120;
 	private final int ALTIMETER_W = 244;
 	private final int ALTIMETER_H = 112;
-	
+
 	private final int ORDERSBOX_X = ALTIMETER_X + ALTIMETER_W + 8;
 	private final static int ORDERSBOX_Y = window.height() - 120;
 	private final int ORDERSBOX_W = window.width() - (ORDERSBOX_X + 16);
 	private final static int ORDERSBOX_H = 112;
-	
+
 	// Static Final Ints for difficulty settings
 	// Difficulty of demo scene determined by difficulty selection scene
 	public final static int DIFFICULTY_EASY = 0;
 	public final static int DIFFICULTY_MEDIUM = 1;
 	public final static int DIFFICULTY_HARD = 2;
 	public static int difficulty = DIFFICULTY_EASY;
-	
+
+	// Necessary for testing
+
+	/**
+	 * This method should only be used for unit testing (avoiding instantiation of main class). Its purpose is to initialize array where
+	 * aircraft are stored. 
+	 */
+
+	@Deprecated
+	public void initializeAircraftArray() {
+		aircraftInAirspace = new java.util.ArrayList<Aircraft>();
+	}
+
+	// Additional constructor for testing purposes
+
+	/**
+	 * This constructor should only be used for unit testing. Its purpose is to allow an instance
+	 * of demo class to be created without an instance of Main class (effectively launching the game)
+	 * @param difficulty
+	 */
+
+	@Deprecated
+	public Demo(int difficulty) {
+		Demo.difficulty = difficulty;
+	}
+
+	// Scoring bit
+
+	/**
+	 * Records the total score the user has achieved at a given time.
+	 */
+
+	private int totalScore = 0;
+
+	/**
+	 * Getter for total score in case it is needed outside the Demo class.
+	 * @return totalScore
+	 */
+
+	public int getTotalScore() {
+		return totalScore;
+	}
+
+	/**
+	 * Allows for increasing total score outside of Demo class.
+	 * @param scoreDifference
+	 */
+
+	public void increaseTotalScore(int amount) {
+		if (amount > 0)
+			totalScore += amount;
+	}
+
+	/**
+	 * Initially set to 1. This is the main multiplier for score. As more planes leave airspace 
+	 * it may be incremented based on the value of multiplierVariable (the interval it is currently in).
+	 */
+
+	public int multiplier = 1; 
+
+	/**
+	 * Allows to reset multiplier to 1.
+	 */
+
+	public void resetMultiplier() {
+		this.multiplier = 1;
+	} 
+
+	/**
+	 * This variable is used to increase main multiplier for score. Score multiplier varies based on 
+	 * the immediate range this variable is in. I.e. When it is < 10 -> multiplier = 1, when 
+	 *  10 <= multiplierVariable < 40 -> multiplier = 2, etc. 
+	 */
+
+	private int multiplierVariable = 0;
+
+	/**
+	 * Used to get multiplierVariable outside of Demo class.
+	 * @return multiplierVariable
+	 */
+
+	public int getMultiplierVariable() {
+		return multiplierVariable;
+	}
+
+	// Necessary for testing
+
+	/**
+	 * This method should only be used for unit testing. Its purpose is to update multiplierVariable
+	 * outside of Demo class. 
+	 * @param difference
+	 */
+		@Deprecated
+	public void updateMultiplierVariable(int difference) {
+		multiplierVariable += difference;
+		}
+
+		/**
+		 * Updates multiplier based on the value of multiplierVariable and the interval it is 
+		 * currently in.
+		 */
+
+	public void updateMultiplier() {	
+		if (multiplierVariable < 0) {
+			multiplierVariable = 0;
+			multiplier = 1;
+			return;
+		}
+		
+		if (multiplierVariable < 10) {
+			multiplier = 1;
+			return;
+		}
+
+		if (multiplierVariable < 40) { 
+			multiplier = 2;
+			return;
+		}
+
+		if (multiplierVariable < 80) {
+			multiplier = 3;
+			return; 
+		}
+
+		if (multiplierVariable < 130) { 
+			multiplier = 4;
+			return;
+		}
+			multiplier = 5;
+	}
+
 	/**
 	 * Orders box to print orders from ACTO to aircraft to
 	 */
 	private cls.OrdersBox ordersBox;
-	
+
 	/**
 	 * Time since the scene began
 	 * Could be used for score
@@ -63,13 +192,13 @@ public class Demo extends Scene {
 	 * A list of aircraft present in the airspace
 	 */
 	private java.util.ArrayList<Aircraft> aircraftInAirspace;
-	
+
 	/**
 	 * An image to be used for aircraft
 	 * Expand to list of images for multiple aircraft appearances
 	 */
 	private graphics.Image aircraftImage;
-	
+
 	/**
 	 * A button to start and end manual control of an aircraft
 	 */
@@ -101,7 +230,7 @@ public class Demo extends Scene {
 	 * only aircraft on or close to this altitude can be controlled
 	 */
 	private int controlAltitude = 30000;
-	
+
 	/**
 	 * Music to play during the game scene
 	 */
@@ -110,12 +239,7 @@ public class Demo extends Scene {
 	 * The background to draw in the airspace.
 	 */
 	private graphics.Image background;
-	
-	/**
-	 * Demo's instance of the airport class
-	 */
-	public static Airport airport = new Airport();
-	
+
 	/**
 	 * A list of location names for waypoint flavour
 	 */
@@ -124,9 +248,8 @@ public class Demo extends Scene {
 		"100 Acre Woods",
 		"City of Rightson",
 		"South Sea",
-		"Mosbear Airport"
 	};
-	
+
 	/**
 	 * The set of waypoints in the airspace which are origins / destinations
 	 */
@@ -136,7 +259,6 @@ public class Demo extends Scene {
 		new Waypoint(8, window.height() - ORDERSBOX_H - 40, true), //bottom left
 		new Waypoint(window.width() - 40, 8, true), // top right
 		new Waypoint(window.width() - 40, window.height() - ORDERSBOX_H - 40, true), //bottom right
-		airport
 	};
 
 	/**
@@ -144,8 +266,8 @@ public class Demo extends Scene {
 	 */
 	public static Waypoint[] airspaceWaypoints = new Waypoint[] {		
 		/* All waypoints in the airspace, including location Way Points*/
-	
-		//airspace waypoints
+
+		// Airspace waypoints
 		new Waypoint(125, 70, false),   // 0
 		new Waypoint(700, 100, false),  // 1
 		new Waypoint(1040, 80, false),  // 2
@@ -156,12 +278,11 @@ public class Demo extends Scene {
 		new Waypoint(500, 655, false),  // 7
 		new Waypoint(800, 750, false),  // 8
 		new Waypoint(1000, 750, false), // 9
-		//destination/origin waypoints - present in this list for pathfinding.
+		// Destination/origin waypoints - present in this list for pathfinding.
 		locationWaypoints[0],           // 10
 		locationWaypoints[1],           // 11
 		locationWaypoints[2],           // 12
 		locationWaypoints[3],           // 13
-		locationWaypoints[4]
 	};
 	/**
 	 * Constructor
@@ -198,11 +319,11 @@ public class Demo extends Scene {
 		selectedAircraft = null;
 		selectedWaypoint = null;
 		selectedPathpoint = -1;
-		
+
 		manualOverrideButton = new lib.ButtonText(" Take Control", manual, (window.width() - 128) / 2, 32, 128, 32, 8, 4);
 		altimeter = new cls.Altimeter(ALTIMETER_X, ALTIMETER_Y, ALTIMETER_W, ALTIMETER_H);
 		deselectAircraft();
-		
+
 		switch (difficulty){
 		// Set attributes according to the selected difficulty
 		// Flights spawn more often on harder difficulties.
@@ -216,7 +337,7 @@ public class Demo extends Scene {
 			break;
 		}
 	}
-	
+
 	/**
 	 * Getter for aircraft list
 	 * @return the arrayList of aircraft in the airspace
@@ -224,7 +345,7 @@ public class Demo extends Scene {
 	public java.util.ArrayList<Aircraft> aircraftList() {
 		return aircraftInAirspace;
 	}
-	
+
 	/**
 	 * Causes a selected aircraft to call methods to toggle manual control
 	 */
@@ -233,7 +354,7 @@ public class Demo extends Scene {
 		selectedAircraft.toggleManualControl();
 		manualOverrideButton.setText( (selectedAircraft.isManuallyControlled() ? "Remove" : " Take") + " Control");
 	}
-	
+
 	/**
 	 * Causes an aircraft to call methods to handle deselection
 	 */
@@ -247,7 +368,7 @@ public class Demo extends Scene {
 		selectedPathpoint = -1;
 		altimeter.hide();
 	}
-	
+
 	/**
 	 * Update all objects within the scene, ie aircraft, orders box altimeter.
 	 * Cause collision detection to occur
@@ -258,17 +379,33 @@ public class Demo extends Scene {
 		timeElapsed += dt;
 		ordersBox.update(dt);
 		for (Aircraft plane : aircraftInAirspace) {
-			plane.update(dt);
+			plane.update(dt);	
 			if (plane.isFinished()){
+				multiplierVariable += plane.getPlaneBonusToMultiplier();
+				updateMultiplier();
+				double effiencyBonus =  Aircraft.efficiencyBonus(plane.getOptimalTime(), System.currentTimeMillis()/1000 - plane.GetTimeOfCreation()); // Bonus multiplier to score of a particular plane based on its performance
+				increaseTotalScore ((int)(multiplier * plane.getBaseScore() * effiencyBonus));
+				System.out.println("Optimal time :" + plane.getOptimalTime() + "; Actual time spent: " + (System.currentTimeMillis()/1000 - plane.GetTimeOfCreation())); // For debugging
+				System.out.println("Total score: " + totalScore + "; Multiplier: " + multiplier + "; multiplierVariable: " + multiplierVariable + "\n "); // For debugging
+				if (plane.getPlaneBonusToMultiplier() < 0)
+					ordersBox.addOrder("<<< The plane has breached separation rules on its path, your multiplier may be reduced ");
+				int totalEfficiencyBonus = (int) ((multiplier * plane.getBaseScore() * effiencyBonus) - multiplier * plane.getBaseScore()); // Used to show how many points were scored just for being efficient
+				
 				switch (RandomNumber.randInclusiveInt(0, 2)){
 				case 0:
-					ordersBox.addOrder("<<< Thank you Comrade");
+					ordersBox.addOrder("<<< Thank you Comrade \n Plane successfully left airspace, bonus points: " + plane.getBaseScore());
+					if (effiencyBonus > 1)
+						ordersBox.addOrder("<<< Congrats, you scored extra " + totalEfficiencyBonus + " points for efficiency!");
 					break;
 				case 1:
-					ordersBox.addOrder("<<< Well done Comrade");
+					ordersBox.addOrder("<<< Well done Comrade \n Plane successfully left airspace, bonus points: " + plane.getBaseScore());
+					if (effiencyBonus > 1)
+						ordersBox.addOrder("<<< Congrats, you scored extra " + totalEfficiencyBonus + " points for efficiency!");
 					break;
 				case 2:
-					ordersBox.addOrder("<<< Many thanks Comrade");
+					ordersBox.addOrder("<<< Many thanks Comrade \n Plane successfully left airspace, bonus points: " + plane.getBaseScore());
+					if (effiencyBonus > 1)
+						ordersBox.addOrder("<<< Congrats, you scored extra " + totalEfficiencyBonus + " points for efficiency!");
 					break;
 				}
 			}
@@ -283,7 +420,7 @@ public class Demo extends Scene {
 			}
 		}
 		altimeter.update(dt);
-		
+
 		if (selectedAircraft != null && selectedAircraft.isManuallyControlled()) {
 			if (input.isKeyDown(input.KEY_LEFT)) {
 				selectedAircraft.turnLeft(dt);
@@ -295,7 +432,7 @@ public class Demo extends Scene {
 				deselectAircraft();
 			}
 		}
-		
+
 		flightGenerationTimeElapsed += dt;
 		if(flightGenerationTimeElapsed >= flightGenerationInterval){
 			flightGenerationTimeElapsed -= flightGenerationInterval;
@@ -304,7 +441,7 @@ public class Demo extends Scene {
 			}
 		}
 	}
-	
+
 	/**
 	 * Cause all planes in airspace to update collisions
 	 * Catch and handle a resultant game over state
@@ -319,13 +456,13 @@ public class Demo extends Scene {
 			}
 		}
 	}
-	
+
 	@Override
 	public void playSound(audio.Sound sound){
 		sound.stop();
 		sound.play();
 	}
-	
+
 	/**
 	 * Handle a game over caused by two planes colliding
 	 * Create a gameOver scene and make it the current scene
@@ -337,7 +474,7 @@ public class Demo extends Scene {
 		main.closeScene();
 		main.setScene(new GameOver(main, plane1, plane2));
 	}
-	
+
 	/**
 	 * Causes the scene to pause execution for the specified number of seconds
 	 * @param seconds the number of seconds to wait.
@@ -347,11 +484,11 @@ public class Demo extends Scene {
 		long startTime, endTime;
 		startTime = System.currentTimeMillis();
 		endTime = startTime + (seconds * 1000);
-		
+
 		while (startTime < endTime){
 			startTime = System.currentTimeMillis();
 		}
-		
+
 		return;
 	}
 
@@ -416,7 +553,7 @@ public class Demo extends Scene {
 		}
 		if (key == input.MOUSE_WHEEL_UP && controlAltitude < 30000)	controlAltitude += 2000;
 		if (key == input.MOUSE_WHEEL_DOWN && controlAltitude > 28000) controlAltitude -= 2000;
-		
+
 		int altitudeState = 0;
 		if (selectedAircraft != null) {
 			altitudeState = selectedAircraft.altitudeState();
@@ -448,28 +585,28 @@ public class Demo extends Scene {
 	 */
 	public void keyReleased(int key) {
 		switch (key) {
-		
+
 			case input.KEY_SPACE :
 				toggleManualControl();
 			break;
-			
+
 			case input.KEY_LCRTL :
 				generateFlight();
 			break;
-			
+
 			case input.KEY_ESCAPE :
 				main.closeScene();
 			break;
-			
+
 			case input.KEY_F5 :
 				Aircraft a1 = createAircraft();
 				Aircraft a2 = createAircraft();
 				gameOver(a1, a2);
 			break;
-			
+
 		}
 	}
-	
+
 	/**
 	 * Draw the scene GUI and all drawables within it, e.g. aircraft and waypoints
 	 */
@@ -477,43 +614,38 @@ public class Demo extends Scene {
 	public void draw() {
 		graphics.setColour(0, 128, 0);
 		graphics.rectangle(false, 16, 16, window.width() - 32, window.height() - 144);
-		
+
 		graphics.setViewport(16, 16, window.width() - 32, window.height() - 144);
 		graphics.setColour(255, 255, 255, 32);
 		graphics.draw(background, 0, 0);
 		drawMap();		
 		graphics.setViewport();
-		
+
 		if (selectedAircraft != null && selectedAircraft.isManuallyControlled()) {
 			selectedAircraft.drawCompass();
 		}
-		airport.draw();
+
 		ordersBox.draw();
 		altimeter.draw();
 		drawPlaneInfo();
-		
+
 		graphics.setColour(0, 128, 0);
 		drawScore();
 	}
-	
+
 	/**
 	 * draw waypoints, and route of a selected aircraft between waypoints
 	 * print waypoint names next to waypoints
 	 */
 	private void drawMap() {
 		for (Waypoint waypoint : airspaceWaypoints) {
-			if (!waypoint.equals(airport)) { // Skip the airport
-				waypoint.draw();
-			}	
+			waypoint.draw();
 		}
 		graphics.setColour(255, 255, 255);
 		for (Aircraft aircraft : aircraftInAirspace) {
 			aircraft.draw(controlAltitude);
-			if (aircraft.isMouseOver()) {
-				aircraft.drawFlightPath();
-			}
 		}
-		
+
 		if (selectedAircraft != null) {
 			// Flight Path
 			selectedAircraft.drawFlightPath();
@@ -524,16 +656,16 @@ public class Demo extends Scene {
 			graphics.setColour(0, 128, 0);
 			graphics.rectangle(false, (window.width() - 128) / 2, 16, 128, 32);
 			manualOverrideButton.draw();
-			
+
 			selectedAircraft.drawFlightPath();
 			graphics.setColour(0, 128, 0);
-			
+
 		}
-		
+
 		if (selectedWaypoint != null && selectedAircraft.isManuallyControlled() == false) {
 			selectedAircraft.drawModifiedPath(selectedPathpoint, input.mouseX() - 16, input.mouseY() - 16);
 		}
-		
+
 		graphics.setViewport();
 		graphics.setColour(0, 128, 0);
 		graphics.print(LOCATION_NAMES[0], locationWaypoints[0].position().x() + 25, locationWaypoints[0].position().y() + 10);
@@ -542,7 +674,7 @@ public class Demo extends Scene {
 		graphics.print(LOCATION_NAMES[3], locationWaypoints[3].position().x() - 75, locationWaypoints[3].position().y() + 10);
 
 	}
-	
+
 	/**
 	 * draw the info of a selected plane in the scene GUI
 	 */
@@ -569,7 +701,7 @@ public class Demo extends Scene {
 			graphics.setViewport();
 		}
 	}
-	
+
 	/**
 	 * draw a readout of the time the game has been played for, aircraft in the sky, etc.
 	 * Hint: for assessment 3, this could be used to print the player's current score.
@@ -586,7 +718,7 @@ public class Demo extends Scene {
 		graphics.print(String.valueOf(aircraftInAirspace.size()) + " plane" + (planes == 1 ? "" : "s") + " in the sky.", 32, 0);
 		graphics.print("Control Altitude: " + String.valueOf(controlAltitude), 544, 0);
 	}
-	
+
 	/**
 	 * Create a new aircraft object and introduce it to the airspace
 	 */
@@ -595,7 +727,7 @@ public class Demo extends Scene {
 		ordersBox.addOrder("<<< " + a.name() + " incoming from " + a.originName() + " heading towards " + a.destinationName() + ".");
 		aircraftInAirspace.add(a);
 	}
-	
+
 	/**
 	 * Handle nitty gritty of aircraft creating
 	 * including randomisation of entry, exit, altitude, etc.
@@ -612,7 +744,7 @@ public class Demo extends Scene {
 		String destinationName = LOCATION_NAMES[d];
 		Waypoint originPoint = locationWaypoints[o];
 		Waypoint destinationPoint = locationWaypoints[d];
-		
+
 		// Name
 		String name = "";
 		boolean nameTaken = true;
@@ -625,7 +757,7 @@ public class Demo extends Scene {
 		}
 		return new Aircraft(name, destinationName, originName, destinationPoint, originPoint, aircraftImage, 32 + (int)(10 * Math.random()), airspaceWaypoints, difficulty);
 	}
-	
+
 	/**
 	 * Decide which aircraft are selectable at the current control altitude
 	 * Aircraft must be on the current control altitude, or changing altitude towards it
@@ -639,7 +771,7 @@ public class Demo extends Scene {
 		if (a.position().z() > altitude && a.altitudeState() == Aircraft.ALTITUDE_FALL) return true;
 		return false;
 	}
-	
+
 	@Override
 	/**
 	 * cleanly exit by stopping the scene's music
@@ -649,3 +781,5 @@ public class Demo extends Scene {
 	}
 
 }
+
+
