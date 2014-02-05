@@ -9,6 +9,7 @@ import lib.jog.input;
 import lib.jog.window;
 import cls.Aircraft;
 import cls.Airport;
+import cls.Vector;
 import cls.Waypoint;
 import btc.Main;
 
@@ -172,7 +173,7 @@ public class Demo extends Scene {
 	/**
 	 * A list of aircraft present in the airspace
 	 */
-	private java.util.ArrayList<Aircraft> aircraftInAirspace;
+	public java.util.ArrayList<Aircraft> aircraftInAirspace;
 	
 	/**
 	 * An image to be used for aircraft
@@ -406,7 +407,7 @@ public class Demo extends Scene {
 			}
 		}
 		altimeter.update(dt);
-		
+		airport.update(this);
 		if (selectedAircraft != null && selectedAircraft.isManuallyControlled()) {
 			if (input.isKeyDown(input.KEY_LEFT)) {
 				selectedAircraft.turnLeft(dt);
@@ -489,6 +490,12 @@ public class Demo extends Scene {
 				if (a.isMouseOver(x-16, y-16) && aircraftSelectableAtAltitude(a, controlAltitude)) {
 					newSelected = a;
 				}
+				if(airport.isWithinRadius(new Vector(x, y, 0)) && !airport.airport_active ) {
+					if (a.destination.equals(Demo.airport.position()) && a.waiting_to_land) {
+						airport.airport_active = true;
+						a.waiting_to_land = false;
+					}
+				}
 			}
 			if (newSelected != selectedAircraft) {
 				deselectAircraft();
@@ -512,6 +519,7 @@ public class Demo extends Scene {
 					}
 				}
 			}
+			
 		}
 		if (key == input.MOUSE_RIGHT) deselectAircraft();
 		altimeter.mousePressed(key, x, y);

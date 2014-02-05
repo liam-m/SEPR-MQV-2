@@ -88,7 +88,7 @@ public class Aircraft {
 	/**
 	 * The off-screen point the plane will end up at before disappearing.
 	 */
-	private Vector destination;
+	public Vector destination;
 	/**
 	 * The image to be drawn representing the plane.
 	 */
@@ -97,6 +97,10 @@ public class Aircraft {
 	 * Whether the plane has reached its destination and can be disposed of.
 	 */
 	private boolean hasFinished;
+	/**
+	 * Aircraft is landing if the land command has been sent by the user
+	 */
+	public boolean waiting_to_land = true;
 	/**
 	 * The angle the plane is currently turning by.
 	 */
@@ -491,10 +495,13 @@ public class Aircraft {
 		
 		// Update target
 		if (isAt(currentTarget) && currentTarget.equals(destination)) {
-			if (destination.equals(Demo.airport) ) { //&& !land_button_pressed) {
-				hasFinished = true; // Will be changed to false
+			if (destination.equals(Demo.airport.position()) && waiting_to_land) {
+			
 			} else {
 				hasFinished = true;
+				if (!waiting_to_land) { // must have landed so make airport 
+					Demo.airport.airport_active = false;
+				}
 			}
 		} else if (isAt(currentTarget) && (currentRouteStage == route.length-1)) {
 			currentRouteStage++;
@@ -509,7 +516,12 @@ public class Aircraft {
 			turnTowardsTarget(time_difference);
 		}
 	}
-	
+	/**
+	 *  Called by the demo to initiate landing
+	 */
+	public void land() {
+		waiting_to_land = false;
+	}
 	/**
 	 * Turns the plane left.
 	 * @param time_difference the time elapsed since the last frame.
