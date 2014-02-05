@@ -393,7 +393,7 @@ public class Demo extends Scene {
 				}
 				ordersBox.addOrder("Plane successfully left airspace, bonus points: " + plane.getBaseScore());
 				if (effiencyBonus > 1)
-					ordersBox.addOrder("<<< Congrats, you scored extra " + totalEfficiencyBonus + " points for efficiency!");
+					ordersBox.addOrder("<<< Congrats, you scored extra " + totalEfficiencyBonus * multiplier + " points for efficiency!");
 			}
 		}
 		checkCollisions(dt);
