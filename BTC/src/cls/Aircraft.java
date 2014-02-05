@@ -57,7 +57,7 @@ public class Aircraft {
 	/**
 	 * The position the plane is currently flying towards (if not manually controlled).
 	 */
-	private Vector currentTarget;
+	public Vector currentTarget;
 	/**
 	 * The target the player has told the plane to fly at when manually controlled.
 	 */
@@ -100,7 +100,7 @@ public class Aircraft {
 	/**
 	 * Aircraft is landing if the land command has been sent by the user
 	 */
-	public boolean waiting_to_land = true;
+	public boolean is_waiting_to_land = true;
 	/**
 	 * The angle the plane is currently turning by.
 	 */
@@ -495,11 +495,9 @@ public class Aircraft {
 		
 		// Update target
 		if (isAt(currentTarget) && currentTarget.equals(destination)) {
-			if (destination.equals(Demo.airport.position()) && waiting_to_land) {
-			
-			} else {
+			if (!(destination.equals(Demo.airport.position()) && is_waiting_to_land)) {
 				hasFinished = true;
-				if (!waiting_to_land) { // must have landed so make airport 
+				if (!is_waiting_to_land) { // must have landed so make airport available 
 					Demo.airport.airport_active = false;
 				}
 			}
@@ -515,12 +513,6 @@ public class Aircraft {
 		if ( Math.abs(angleToTarget() - bearing()) > 0.01 ) {
 			turnTowardsTarget(time_difference);
 		}
-	}
-	/**
-	 *  Called by the demo to initiate landing
-	 */
-	public void land() {
-		waiting_to_land = false;
 	}
 	/**
 	 * Turns the plane left.
