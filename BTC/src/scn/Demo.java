@@ -491,9 +491,9 @@ public class Demo extends Scene {
 					newSelected = a;
 				}
 				if(airport.isWithinRadius(new Vector(x, y, 0)) && !airport.airport_active ) {
-					if (a.destination.equals(Demo.airport.position()) && a.waiting_to_land) {
+					if (a.destination.equals(Demo.airport.position()) && a.is_waiting_to_land) {
 						airport.airport_active = true;
-						a.waiting_to_land = false;
+						a.is_waiting_to_land = false;
 					}
 				}
 			}
