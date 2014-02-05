@@ -432,11 +432,11 @@ public class Demo extends Scene {
 	/**
 	 * Cause all planes in airspace to update collisions
 	 * Catch and handle a resultant game over state
-	 * @param dt delta time since last collision check
+	 * @param time_difference delta time since last collision check
 	 */
-	private void checkCollisions(double dt) {
+	private void checkCollisions(double time_difference) {
 		for (Aircraft plane : aircraftInAirspace) {
-			int collisionState = plane.updateCollisions(dt, aircraftList());
+			int collisionState = plane.updateCollisions(time_difference, aircraftList());
 			if (collisionState >= 0) {
 				gameOver(plane, aircraftList().get(collisionState));
 				return;
