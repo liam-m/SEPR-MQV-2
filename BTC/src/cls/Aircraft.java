@@ -86,7 +86,7 @@ public class Aircraft {
 	 */
 	private int currentRouteStage;
 	/**
-	 * The off-screen point the plane will end up at before disappearing.
+	 * The point the plane will end up at before being removed.
 	 */
 	public Vector destination;
 	/**
@@ -94,15 +94,18 @@ public class Aircraft {
 	 */
 	private graphics.Image image;
 	/**
-	 * Whether the plane has reached its destination and can be disposed of.
+	 * Aircraft is landing if it has reached the destination
+	 * if its destination is the airport it must also have been given the land command
 	 */
 	private boolean hasFinished;
 	/**
-	 * Aircraft is landing if the land command has been sent by the user
+	 * Whether the aircraft is waiting to land.
+	 * False if the destination is not the airport. 
+	 * If the destination is the airport, True until land() is called.
 	 */
 	public boolean is_waiting_to_land;
 	/**
-	 * The angle the plane is currently turning by.
+	 * The angle (radians) the plane is currently turning by.
 	 */
 	private double currentlyTurningBy;
 	/**
@@ -110,16 +113,15 @@ public class Aircraft {
 	 */
 	private java.util.ArrayList<Aircraft> planesTooNear = new java.util.ArrayList<Aircraft>();
 	/**
-	 * the current state of the plane's altitude, i.e. if the plane is climbing or falling
+	 * The current state of the plane's altitude, i.e. if the plane is climbing or falling
 	 */
 	private int altitudeState;
 	/**
-	 * the speed to climb or fall by. Default 300 for easy mode
+	 * The speed to climb or fall by. Default 300 for easy mode
 	 */
-	private int altitudeChangeSpeed = 300;
-	
+	private int altitudeChangeSpeed = 300;	
 	/**
-	 * This variable is used to calculate how long an aircraft spent in the airspace
+	 * Used to calculate how long an aircraft spent in the airspace
 	 */
 	private double timeOfCreation;
 	/**
