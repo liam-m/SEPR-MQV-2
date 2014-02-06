@@ -17,6 +17,10 @@ public class Airport extends Waypoint {
 	private boolean should_draw_landing_radius = false;
 	public boolean is_active = false; // True if there is an aircraft Landing/Taking off
 	
+	public String name = "Mosbear Aiport";
+	
+	public java.util.ArrayList<Aircraft> ready_to_take_off;
+	
 	public Airport() { 
 		super(x_location, y_location, true);
 	}
@@ -40,7 +44,7 @@ public class Airport extends Waypoint {
 	public void update(Demo demo) {
 		should_draw_landing_radius = false;
 		for (Aircraft aircraft : demo.aircraftInAirspace) {
-			if (this.isWithinRadius(aircraft.position()) && aircraft.destination.equals(this.position()) && aircraft.currentTarget.equals(this.position())) {
+			if (this.isWithinRadius(aircraft.position()) && aircraft.currentTarget.equals(this.position())) {
 				should_draw_landing_radius = true;
 			}
 		}	

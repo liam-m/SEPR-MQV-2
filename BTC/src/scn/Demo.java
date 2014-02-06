@@ -235,7 +235,7 @@ public class Demo extends Scene {
 		"100 Acre Woods",
 		"City of Rightson",
 		"South Sea",
-		"Mosbear Airport"
+		airport.name
 	};
 	
 	/**
@@ -490,11 +490,8 @@ public class Demo extends Scene {
 				if (a.isMouseOver(x-16, y-16) && aircraftSelectableAtAltitude(a, controlAltitude)) {
 					newSelected = a;
 				}
-				if(airport.isWithinRadius(new Vector(x, y, 0)) && !airport.is_active ) {
-					if (a.destination.equals(Demo.airport.position()) && a.is_waiting_to_land) {
-						airport.is_active = true;
-						a.is_waiting_to_land = false;
-					}
+				if (airport.isWithinRadius(new Vector(x, y, 0)) && !airport.is_active && a.currentTarget.equals(airport.position()) && a.is_waiting_to_land) {
+					a.land();
 				}
 			}
 			if (newSelected != selectedAircraft) {
@@ -725,6 +722,9 @@ public class Demo extends Scene {
 	private void generateFlight() {
 		Aircraft a = createAircraft();
 		ordersBox.addOrder("<<< " + a.name() + " incoming from " + a.originName() + " heading towards " + a.destinationName() + ".");
+		if (a.originName().equals(airport.name)) {
+			
+		}
 		aircraftInAirspace.add(a);
 	}
 	
