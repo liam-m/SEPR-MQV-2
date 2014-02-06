@@ -100,7 +100,7 @@ public class Aircraft {
 	/**
 	 * Aircraft is landing if the land command has been sent by the user
 	 */
-	public boolean is_waiting_to_land = true;
+	public boolean is_waiting_to_land;
 	/**
 	 * The angle the plane is currently turning by.
 	 */
@@ -262,6 +262,7 @@ public class Aircraft {
 		
 		isManuallyControlled = false;
 		hasFinished = false;
+		is_waiting_to_land = destination.equals(Demo.airport.position());
 		currentRouteStage = 0;
 		currentlyTurningBy = 0;
 		manualBearingTarget = Double.NaN; 
@@ -497,16 +498,16 @@ public class Aircraft {
 		// Update target		
 		if (isAt(currentTarget)) {
 			if (currentTarget.equals(destination)) { // At destination
-				if (!destination.equals(Demo.airport.position())) { // Not at airport
+				if (!is_waiting_to_land) { // Ready to land
 					hasFinished = true;
-				} else if (!is_waiting_to_land) { // At airport and been given land command
-					hasFinished = true;
-					Demo.airport.is_active = false;
+					if (destination.equals(Demo.airport.position())) { // Landed at airport
+						Demo.airport.is_active = false;
+					}	
 				}
 			} else { // At target but not destination
 				currentRouteStage++;
 				 // Next target is the destination if you're at the end of the plan, otherwise it's the next waypoint
-				currentTarget = currentRouteStage == route.length ? destination : route[currentRouteStage].position();
+				currentTarget = currentRouteStage >= route.length ? destination : route[currentRouteStage].position();
 			}
 		}
 
@@ -843,6 +844,11 @@ public class Aircraft {
 			altitudeState = ALTITUDE_LEVEL;
 			position = new Vector(position.x(), position.y(), 28000);
 		}
+	}
+	
+	public void land() {
+		is_waiting_to_land = false;
+		Demo.airport.is_active = true;
 	}
 	
 	/**

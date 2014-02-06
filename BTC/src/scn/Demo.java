@@ -490,11 +490,8 @@ public class Demo extends Scene {
 				if (a.isMouseOver(x-16, y-16) && aircraftSelectableAtAltitude(a, controlAltitude)) {
 					newSelected = a;
 				}
-				if(airport.isWithinRadius(new Vector(x, y, 0)) && !airport.is_active ) {
-					if (a.destination.equals(Demo.airport.position()) && a.is_waiting_to_land) {
-						airport.is_active = true;
-						a.is_waiting_to_land = false;
-					}
+				if (airport.isWithinRadius(new Vector(x, y, 0)) && !airport.is_active && a.currentTarget.equals(airport.position()) && a.is_waiting_to_land) {
+					a.land();
 				}
 			}
 			if (newSelected != selectedAircraft) {
