@@ -21,7 +21,7 @@ public class Main implements input.EventHandler {
 		new Main();
 	}
 	
-	final private String TITLE = "Bear Traffic Controller";
+	final static public String TITLE = "Bear Traffic Controller";
 	final private int WIDTH = 1280;
 	final private int HEIGHT = 960;
 	final private String[] ICONS = {
