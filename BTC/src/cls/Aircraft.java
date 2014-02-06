@@ -487,26 +487,27 @@ public class Aircraft {
 			climb();
 			break;
 		}
+		
 		// Update position
 		Vector dv = velocity.scaleBy(time_difference);
 		position = position.add(dv);
 		
 		currentlyTurningBy = 0;
 		
-		// Update target
-		if (isAt(currentTarget) && currentTarget.equals(destination)) {
-			if (!(destination.equals(Demo.airport.position()) && is_waiting_to_land)) {
-				hasFinished = true;
-				if (!is_waiting_to_land) { // must have landed so make airport available 
+		// Update target		
+		if (isAt(currentTarget)) {
+			if (currentTarget.equals(destination)) { // At destination
+				if (!destination.equals(Demo.airport.position())) { // Not at airport
+					hasFinished = true;
+				} else if (!is_waiting_to_land) { // At airport and been given land command
+					hasFinished = true;
 					Demo.airport.is_active = false;
 				}
+			} else { // At target but not destination
+				currentRouteStage++;
+				 // Next target is the destination if you're at the end of the plan, otherwise it's the next waypoint
+				currentTarget = currentRouteStage == route.length ? destination : route[currentRouteStage].position();
 			}
-		} else if (isAt(currentTarget) && (currentRouteStage == route.length-1)) {
-			currentRouteStage++;
-			currentTarget = destination;
-		} else if (isAt(currentTarget)) {
-			currentRouteStage++;
-			currentTarget = route[currentRouteStage].position();
 		}
 
 		// Update bearing
