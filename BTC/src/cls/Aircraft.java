@@ -98,7 +98,7 @@ public class Aircraft {
 	 */
 	private boolean hasFinished;
 	/**
-	 * Aircraft is landing if the land command has been sent by the user
+	 * Aircraft is not waiting to land if the land command has been sent by the user
 	 */
 	public boolean is_waiting_to_land;
 	/**
@@ -851,6 +851,10 @@ public class Aircraft {
 		Demo.airport.is_active = true;
 	}
 	
+	public void takeOff() {
+		Demo.airport.is_active = true;
+		Demo.takeOffSequence(this);
+	}
 	/**
 	 * Changes the plane's altitude by a given amount.
 	 * @param height the height by which to change altitude.

@@ -19,7 +19,8 @@ public class Airport extends Waypoint {
 	
 	public String name = "Mosbear Aiport";
 	
-	public java.util.ArrayList<Aircraft> ready_to_take_off;
+	public java.util.ArrayList<Aircraft> aircraft_hangar = new java.util.ArrayList<Aircraft>();;
+	private int hangar_size = 3;
 	
 	public Airport() { 
 		super(x_location, y_location, true);
@@ -41,6 +42,17 @@ public class Airport extends Waypoint {
 		return (x*x + y*y < landing_radius*landing_radius);
 	}
 	
+	public void addToHangar(Aircraft aircraft) {
+		if (aircraft_hangar.size() < hangar_size) {
+			aircraft_hangar.add(aircraft);
+		}
+	}
+	
+	public void signalTakeOff() {
+		Aircraft aircraft = aircraft_hangar.remove(0);
+		aircraft.takeOff();
+	}
+	  
 	public void update(Demo demo) {
 		should_draw_landing_radius = false;
 		for (Aircraft aircraft : demo.aircraftInAirspace) {
@@ -48,5 +60,9 @@ public class Airport extends Waypoint {
 				should_draw_landing_radius = true;
 			}
 		}	
+	}
+	
+	public int getHangarSize() {
+		return hangar_size;
 	}
 }

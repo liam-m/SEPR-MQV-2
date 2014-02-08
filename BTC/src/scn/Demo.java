@@ -9,6 +9,7 @@ import lib.jog.input;
 import lib.jog.window;
 import cls.Aircraft;
 import cls.Airport;
+import cls.AirportControlBox;
 import cls.Vector;
 import cls.Waypoint;
 import btc.Main;
@@ -26,7 +27,12 @@ public class Demo extends Scene {
 	private final int ALTIMETER_W = 244;
 	private final int ALTIMETER_H = 112;
 	
-	private final int ORDERSBOX_X = ALTIMETER_X + ALTIMETER_W + 8;
+	private final int AIRPORT_CONTROL_X = ALTIMETER_X + ALTIMETER_W + 8;
+	private final int AIRPORT_CONTROL_Y = window.height() - 120;
+	private final int AIRPORT_CONTROL_W = 244;
+	private final int AIRPORT_CONTROL_H = 112;
+	
+	private final int ORDERSBOX_X = AIRPORT_CONTROL_X + AIRPORT_CONTROL_W + 8;
 	private final static int ORDERSBOX_Y = window.height() - 120;
 	private final int ORDERSBOX_W = window.width() - (ORDERSBOX_X + 16);
 	private final static int ORDERSBOX_H = 112;
@@ -173,7 +179,7 @@ public class Demo extends Scene {
 	/**
 	 * A list of aircraft present in the airspace
 	 */
-	public java.util.ArrayList<Aircraft> aircraftInAirspace;
+	public static java.util.ArrayList<Aircraft> aircraftInAirspace;
 	
 	/**
 	 * An image to be used for aircraft
@@ -196,6 +202,7 @@ public class Demo extends Scene {
 	/**
 	 * The interval in seconds to generate flights after
 	 */
+	private cls.AirportControlBox airport_control_box;
 	private static double flightGenerationInterval = 12;
 	/**
 	 * The time eleapsed since the last flight was generated
@@ -312,6 +319,7 @@ public class Demo extends Scene {
 		
 		manualOverrideButton = new lib.ButtonText(" Take Control", manual, (window.width() - 128) / 2, 32, 128, 32, 8, 4);
 		altimeter = new cls.Altimeter(ALTIMETER_X, ALTIMETER_Y, ALTIMETER_W, ALTIMETER_H);
+		airport_control_box = new AirportControlBox(AIRPORT_CONTROL_X, AIRPORT_CONTROL_Y, AIRPORT_CONTROL_W, AIRPORT_CONTROL_H, airport);
 		deselectAircraft();
 		
 		switch (difficulty){
@@ -485,6 +493,7 @@ public class Demo extends Scene {
 	@Override
 	public void mousePressed(int key, int x, int y) {
 		if (key == input.MOUSE_LEFT) {
+			airport_control_box.mousePressed(key, x, y);
 			Aircraft newSelected = selectedAircraft;
 			for (Aircraft a : aircraftInAirspace) {
 				if (a.isMouseOver(x-16, y-16) && aircraftSelectableAtAltitude(a, controlAltitude)) {
@@ -524,6 +533,7 @@ public class Demo extends Scene {
 
 	@Override
 	public void mouseReleased(int key, int x, int y) {
+		airport_control_box.mouseReleased(key, x, y);
 		if (selectedAircraft != null && manualOverrideButton.isMouseOver(x, y)) manualOverrideButton.act();
 		if (key == input.MOUSE_LEFT && selectedWaypoint != null) {
 			if (selectedAircraft.isManuallyControlled() == true){
@@ -619,6 +629,7 @@ public class Demo extends Scene {
 		airport.draw();		
 		ordersBox.draw();
 		altimeter.draw();
+		airport_control_box.draw();
 		drawPlaneInfo();
 		
 		graphics.setColour(0, 128, 0);
@@ -721,11 +732,19 @@ public class Demo extends Scene {
 	 */
 	private void generateFlight() {
 		Aircraft a = createAircraft();
-		ordersBox.addOrder("<<< " + a.name() + " incoming from " + a.originName() + " heading towards " + a.destinationName() + ".");
 		if (a.originName().equals(airport.name)) {
-			
+			ordersBox.addOrder("<<< " + a.name() + " is awaiting take off from " + a.originName() + " heading towards " + a.destinationName() + ".");
+			airport.addToHangar(a);
+		} else {
+			ordersBox.addOrder("<<< " + a.name() + " incoming from " + a.originName() + " heading towards " + a.destinationName() + ".");
+			aircraftInAirspace.add(a);
 		}
-		aircraftInAirspace.add(a);
+	}
+	
+	public static void takeOffSequence(Aircraft aircraft) {
+		aircraftInAirspace.add(aircraft);
+		// Space to implement some animation features?
+		airport.is_active = false;
 	}
 	
 	/**
