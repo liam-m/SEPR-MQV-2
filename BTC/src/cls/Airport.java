@@ -19,7 +19,7 @@ public class Airport extends Waypoint {
 	
 	public String name = "Mosbear Aiport";
 	
-	public java.util.ArrayList<Aircraft> aircraft_hangar = new java.util.ArrayList<Aircraft>();;
+	public java.util.ArrayList<Aircraft> aircraft_hangar = new java.util.ArrayList<Aircraft>();
 	private int hangar_size = 3;
 	
 	public Airport() { 

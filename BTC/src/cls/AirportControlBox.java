@@ -77,7 +77,6 @@ public class AirportControlBox implements EventHandler{
 	}
 	
 	private boolean isMouseOverButton(int x, int y) {
-		System.out.println("hello");
 		if (x < positionX || x > positionX + width) return false; 
 		if (y < ((positionY + height) - (height /number_of_divisions)) ||y > (positionY + height)) return false;
 		return true;		
