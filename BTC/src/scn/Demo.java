@@ -414,8 +414,8 @@ public class Demo extends Scene {
 			} else if (input.isKeyDown(input.KEY_RIGHT)) {
 				selectedAircraft.turnRight(time_difference);
 			}
-			if (selectedAircraft.outOfBounds()) {
-				ordersBox.addOrder(">>> " + selectedAircraft.name() + " out of bounds, returning to route");
+			if (selectedAircraft.isOutOfBounds()) {
+				ordersBox.addOrder(">>> " + selectedAircraft.getName() + " out of bounds, returning to route");
 				deselectAircraft();
 			}
 		}
@@ -532,7 +532,7 @@ public class Demo extends Scene {
 				for (Waypoint w : airspaceWaypoints) {
 					if (w.isMouseOver(x-16, y-16)) {
 						selectedAircraft.alterPath(selectedPathpoint, w);
-						ordersBox.addOrder(">>> " + selectedAircraft.name() + " please alter your course");
+						ordersBox.addOrder(">>> " + selectedAircraft.getName() + " please alter your course");
 						ordersBox.addOrder("<<< Roger that. Altering course now.");
 						selectedPathpoint = -1;
 						selectedWaypoint = null;
@@ -547,12 +547,12 @@ public class Demo extends Scene {
 		
 		int altitudeState = 0;
 		if (selectedAircraft != null) {
-			altitudeState = selectedAircraft.altitudeState();
+			altitudeState = selectedAircraft.getAltitudeState();
 		}
 		altimeter.mouseReleased(key, x, y);
 		if (selectedAircraft != null) {
-			if (altitudeState != selectedAircraft.altitudeState()) {
-				ordersBox.addOrder(">>> " + selectedAircraft.name() + ", please adjust your altitude");
+			if (altitudeState != selectedAircraft.getAltitudeState()) {
+				ordersBox.addOrder(">>> " + selectedAircraft.getName() + ", please adjust your altitude");
 				ordersBox.addOrder("<<< Roger that. Altering altitude now.");
 			}
 		}
@@ -680,21 +680,21 @@ public class Demo extends Scene {
 		graphics.rectangle(false, PLANE_INFO_X, PLANE_INFO_Y, PLANE_INFO_W, PLANE_INFO_H);
 		if (selectedAircraft != null) {
 			graphics.setViewport(PLANE_INFO_X, PLANE_INFO_Y, PLANE_INFO_W, PLANE_INFO_H);
-			graphics.printCentred(selectedAircraft.name(), 0, 5, 2, PLANE_INFO_W);
+			graphics.printCentred(selectedAircraft.getName(), 0, 5, 2, PLANE_INFO_W);
 			// Altitude
 			String altitude = String.format("%.0f", selectedAircraft.position().z()) + "£";
 			graphics.print("Altitude:", 10, 40);
 			graphics.print(altitude, PLANE_INFO_W - 10 - altitude.length()*8, 40);
 			// Speed
-			String speed = String.format("%.2f", selectedAircraft.speed() * 1.687810) + "$";
+			String speed = String.format("%.2f", selectedAircraft.getSpeed() * 1.687810) + "$";
 			graphics.print("Speed:", 10, 55);
 			graphics.print(speed, PLANE_INFO_W - 10 - speed.length()*8, 55);
 			// Origin
 			graphics.print("Origin:", 10, 70);
-			graphics.print(selectedAircraft.originName(), PLANE_INFO_W - 10 - selectedAircraft.originName().length()*8, 70);
+			graphics.print(selectedAircraft.getOriginName(), PLANE_INFO_W - 10 - selectedAircraft.getOriginName().length()*8, 70);
 			// Destination
 			graphics.print("Destination:", 10, 85);
-			graphics.print(selectedAircraft.destinationName(), PLANE_INFO_W - 10 - selectedAircraft.destinationName().length()*8, 85);
+			graphics.print(selectedAircraft.getDestinationName(), PLANE_INFO_W - 10 - selectedAircraft.getDestinationName().length()*8, 85);
 			graphics.setViewport();
 		}
 	}
@@ -721,8 +721,8 @@ public class Demo extends Scene {
 	 */
 	private void generateFlight() {
 		Aircraft a = createAircraft();
-		ordersBox.addOrder("<<< " + a.name() + " incoming from " + a.originName() + " heading towards " + a.destinationName() + ".");
-		if (a.originName().equals(airport.name)) {
+		ordersBox.addOrder("<<< " + a.getName() + " incoming from " + a.getOriginName() + " heading towards " + a.getDestinationName() + ".");
+		if (a.getOriginName().equals(airport.name)) {
 			
 		}
 		aircraftInAirspace.add(a);
@@ -752,7 +752,7 @@ public class Demo extends Scene {
 			name = "Flight " + (int)(900 * Math.random() + 100);
 			nameTaken = false;
 			for (Aircraft a : aircraftInAirspace) {
-				if (a.name() == name) nameTaken = true;
+				if (a.getName() == name) nameTaken = true;
 			}
 		}
 		return new Aircraft(name, destinationName, originName, destinationPoint, originPoint, aircraftImage, 32 + (int)(10 * Math.random()), airspaceWaypoints, difficulty);
@@ -767,8 +767,8 @@ public class Demo extends Scene {
 	 */
 	private boolean aircraftSelectableAtAltitude(Aircraft a, int altitude) {
 		if (a.position().z() == altitude) return true;
-		if (a.position().z() < altitude && a.altitudeState() == Aircraft.ALTITUDE_CLIMB) return true;
-		if (a.position().z() > altitude && a.altitudeState() == Aircraft.ALTITUDE_FALL) return true;
+		if (a.position().z() < altitude && a.getAltitudeState() == Aircraft.ALTITUDE_CLIMB) return true;
+		if (a.position().z() > altitude && a.getAltitudeState() == Aircraft.ALTITUDE_FALL) return true;
 		return false;
 	}
 	

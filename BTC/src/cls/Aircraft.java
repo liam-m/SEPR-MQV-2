@@ -323,7 +323,7 @@ public class Aircraft {
 	 * Allows access to the plane's name.
 	 * @return the plane's name.
 	 */
-	public String name () {
+	public String getName() {
 		return flightName;
 	}
 	
@@ -331,7 +331,7 @@ public class Aircraft {
 	 * Allows access to the name of the location from which this plane hails.
 	 * @return the origin's name.
 	 */
-	public String originName() {
+	public String getOriginName() {
 		return originName;
 	}
 	
@@ -339,7 +339,7 @@ public class Aircraft {
 	 * Allows access to the name of the location to which this plane travels.
 	 * @return the destination's name.
 	 */
-	public String destinationName() {
+	public String getDestinationName() {
 		return destinationName;
 	}
 	
@@ -359,7 +359,7 @@ public class Aircraft {
 		return isManuallyControlled;
 	}
 	
-	public int altitudeState() {
+	public int getAltitudeState() {
 		return altitudeState;
 	}
 
@@ -369,7 +369,7 @@ public class Aircraft {
 	 */
 	private double angleToTarget() {
 		if (isManuallyControlled) {
-			return (manualBearingTarget == Double.NaN) ? bearing() : manualBearingTarget;
+			return (manualBearingTarget == Double.NaN) ? getBearing() : manualBearingTarget;
 		} else {
 			return Math.atan2(currentTarget.y() - position.y(), currentTarget.x() - position.x());
 		}
@@ -379,7 +379,7 @@ public class Aircraft {
 	 * Checks whether the plane lies outside of the airspace.
 	 * @return true, if the plane is out of the airspace. False, otherwise.
 	 */
-	public boolean outOfBounds() {
+	public boolean isOutOfBounds() {
 		double x = position.x();
 		double y = position.y();
 		return (x < RADIUS || x > window.width() + RADIUS - 32 || y < RADIUS || y > window.height() + RADIUS - 144);
@@ -389,7 +389,7 @@ public class Aircraft {
 	 * Calculates the angle at which the plane is travelling.
 	 * @return the angle in radians of the plane's current velocity.
 	 */
-	public double bearing() {
+	public double getBearing() {
 		return Math.atan2(velocity.y(), velocity.x());
 	}
 	
@@ -397,7 +397,7 @@ public class Aircraft {
 	 * Allows access to the magnitude of the plane's velocity. 
 	 * @return the speed at which the plane is currently going.
 	 */
-	public double speed() {
+	public double getSpeed() {
 		return velocity.magnitude();
 	}
 	
@@ -514,7 +514,7 @@ public class Aircraft {
 		}
 
 		// Update bearing
-		if ( Math.abs(angleToTarget() - bearing()) > 0.01 ) {
+		if ( Math.abs(angleToTarget() - getBearing()) > 0.01 ) {
 			turnTowardsTarget(time_difference);
 		}
 	}
@@ -556,7 +556,7 @@ public class Aircraft {
 	 */
 	private void turnTowardsTarget(double time_difference) {
 		// Get difference in angle
-		double angleDifference = (angleToTarget() % (2 * Math.PI)) - (bearing() % (2 * Math.PI));
+		double angleDifference = (angleToTarget() % (2 * Math.PI)) - (getBearing() % (2 * Math.PI));
 		boolean crossesPositiveNegativeDivide = angleDifference < -Math.PI * 7 / 8;
 		// Correct difference
 		angleDifference += Math.PI;
@@ -576,7 +576,7 @@ public class Aircraft {
 		double alpha = 255/((Math.abs(position.z() - controlAltitude) + 1000)/1000);
 		double scale = 2*(position.z()/30000);
 		graphics.setColour(128, 128, 128, alpha);
-		graphics.draw(image, scale, position.x(), position.y(), bearing(), 8, 8);
+		graphics.draw(image, scale, position.x(), position.y(), getBearing(), 8, 8);
 		graphics.setColour(128, 128, 128, alpha/2.5);
 		graphics.print(String.format("%.0f", position.z()) + "£", position.x()+8, position.y()-8);
 		drawWarningCircles();
@@ -609,8 +609,8 @@ public class Aircraft {
 			graphics.line(position.x() + 17, position.y() + 17, x, y);
 			graphics.setColour(0, 128, 0, 16);
 		}
-		x = 16 + position.x() + (COMPASS_RADIUS * Math.cos(bearing()));
-		y = 16 + position.y() + (COMPASS_RADIUS * Math.sin(bearing()));
+		x = 16 + position.x() + (COMPASS_RADIUS * Math.cos(getBearing()));
+		y = 16 + position.y() + (COMPASS_RADIUS * Math.sin(getBearing()));
 		graphics.line(position.x() + 16, position.y() + 16, x, y);
 		graphics.line(position.x() + 15, position.y() + 16, x, y);
 		graphics.line(position.x() + 16, position.y() + 15, x, y);
@@ -801,7 +801,12 @@ public class Aircraft {
 	 */
 	public void toggleManualControl() {
 		isManuallyControlled = !isManuallyControlled;
-		if (!isManuallyControlled) resetBearing();
+		if (isManuallyControlled) {
+			setBearing(getBearing());
+		}
+		else {
+			resetBearing();
+		}
 	}
 
 	/**
