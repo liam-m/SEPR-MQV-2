@@ -48,6 +48,10 @@ public class Airport extends Waypoint implements EventHandler {
 		}
 	}
 	
+	public double getLongestTimeInHangar(double currentTime) {
+		return aircraft_hangar.isEmpty() ? 0 : currentTime-time_entered.get(0);
+	}
+	
 	public boolean isWithinRadius(Vector position) {
 		double x = x_location - position.x();
 		double y = y_location - position.y();
@@ -67,7 +71,7 @@ public class Airport extends Waypoint implements EventHandler {
 	}
 	
 	public void signalTakeOff() {
-		if (aircraft_hangar.size() > 0) {
+		if (!aircraft_hangar.isEmpty()) {
 			Aircraft aircraft = aircraft_hangar.remove(0);
 			time_entered.remove(0);
 			aircraft.takeOff();

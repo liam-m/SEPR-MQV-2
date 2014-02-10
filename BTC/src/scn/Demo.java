@@ -122,13 +122,22 @@ public class Demo extends Scene {
 	// Necessary for testing
 		
 	/**
-	 * This method should only be used for unit testing. Its purpose is to update multiplierVariable
+	 * This method should only be used publically for unit testing. Its purpose is to update multiplierVariable
 	 * outside of Demo class. 
 	 * @param difference
 	 */
 	@Deprecated
 	public void increaseMultiplierVariable(int difference) {
 		multiplierVariable += difference;
+		updateMultiplier();
+	}
+	
+	public void decreaseMultiplierVariable(int difference) {
+		if (difference > multiplierVariable) {
+			multiplierVariable = 0;
+		} else {
+			multiplierVariable -= difference;
+		}
 		updateMultiplier();
 	}
 		
@@ -153,6 +162,11 @@ public class Demo extends Scene {
 			multiplier = 5;
 		}
 	}
+	
+	/**
+	 * Has the user been punished for leaving the aircraft in the hangar too long? 
+	 */	
+	private boolean beenPunished = false;
 	
 	/**
 	 * Orders box to print orders from ACTO to aircraft to
@@ -375,12 +389,22 @@ public class Demo extends Scene {
 	@Override
 	public void update(double time_difference) {
 		timeElapsed += time_difference;
+		
+		if (airport.getLongestTimeInHangar(timeElapsed) > 5) {
+			decreaseMultiplierVariable(2);
+			if (!beenPunished) {
+				ordersBox.addOrder(">>> Plane waiting to take off, multiplier decreasing");
+				beenPunished = true;
+			}
+		} else {
+			beenPunished = false;
+		}
+		
 		ordersBox.update(time_difference);
 		for (Aircraft plane : aircraftInAirspace) {
-			plane.update(time_difference);	
+			plane.update(time_difference);
 			if (plane.isFinished()) {
-				multiplierVariable += plane.getPlaneBonusToMultiplier();
-				updateMultiplier();
+				increaseMultiplierVariable(plane.getPlaneBonusToMultiplier());
 				double effiencyBonus =  Aircraft.efficiencyBonus(plane.getOptimalTime(), System.currentTimeMillis()/1000 - plane.getTimeOfCreation()); // Bonus multiplier to score of a particular plane based on its performance
 				increaseTotalScore ((int)(multiplier * plane.getBaseScore() * effiencyBonus));
 				System.out.println("Optimal time :" + plane.getOptimalTime() + "; Actual time spent: " + (System.currentTimeMillis()/1000 - plane.getTimeOfCreation())); // For debugging
