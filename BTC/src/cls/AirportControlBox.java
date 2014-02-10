@@ -60,6 +60,9 @@ public class AirportControlBox implements EventHandler{
 		}
 	}
 	
+	/**
+	 * Draws the flight names and time bars, as well as the text on the button either "TAKE OFF" or "AIRPORT BUSY" 
+	 */
 	private void drawLabels() {	
 		// Take off Button
 		double y =  (window.height() - height / number_of_divisions) - (window.height() - (positionY + height));
@@ -92,6 +95,10 @@ public class AirportControlBox implements EventHandler{
 		
 	}
 	
+	/**
+	 * @param time_entered
+	 * @return a value between 0 and 1 which is used to calculate the ratio of the "progress bar" to draw
+	 */
 	private double barProgress(double time_entered) {
 		double time_elapsed = Demo.getTime() - time_entered;
 		if (time_elapsed > 5) {

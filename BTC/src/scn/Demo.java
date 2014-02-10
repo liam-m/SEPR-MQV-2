@@ -494,6 +494,7 @@ public class Demo extends Scene {
 	public void mousePressed(int key, int x, int y) {
 		if (key == input.MOUSE_LEFT) {
 			airport_control_box.mousePressed(key, x, y);
+			airport.mousePressed(key, x, y);
 			Aircraft newSelected = selectedAircraft;
 			for (Aircraft a : aircraftInAirspace) {
 				if (a.isMouseOver(x-16, y-16) && aircraftSelectableAtAltitude(a, controlAltitude)) {
@@ -534,6 +535,7 @@ public class Demo extends Scene {
 	@Override
 	public void mouseReleased(int key, int x, int y) {
 		airport_control_box.mouseReleased(key, x, y);
+		airport.mouseReleased(key, x, y);
 		if (selectedAircraft != null && manualOverrideButton.isMouseOver(x, y)) manualOverrideButton.act();
 		if (key == input.MOUSE_LEFT && selectedWaypoint != null) {
 			if (selectedAircraft.isManuallyControlled() == true){

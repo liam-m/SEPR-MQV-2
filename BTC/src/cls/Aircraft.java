@@ -119,7 +119,8 @@ public class Aircraft {
 	/**
 	 * The speed to climb or fall by. Default 300 for easy mode
 	 */
-	private int altitudeChangeSpeed = 300;	
+	private int altitudeChangeSpeed = 300;
+	
 	/**
 	 * Used to calculate how long an aircraft spent in the airspace
 	 */

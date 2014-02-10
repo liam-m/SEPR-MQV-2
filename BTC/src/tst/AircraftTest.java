@@ -31,21 +31,21 @@ public class AircraftTest {
 	// Test getName function
 	@Test
 	public void testGetName() {
-		String name = testAircraft.getName();
+		String name = testAircraft.name();
 		assertTrue("Name = testAircraft", "testAircraft" == name);
 	}
 	
 	// Test getOriginName function
 	@Test
 	public void testGetOriginName(){
-		String name = testAircraft.getOriginName();
+		String name = testAircraft.originName();
 		assertTrue("Origin name = Dublin", "Dublin" == name);
 	}
 	
 	// Test getDestinationName function
 	@Test
 	public void testGetDestinationName(){
-		String name = testAircraft.getDestinationName();
+		String name = testAircraft.destinationName();
 		assertTrue("Destination name = Berlin", "Berlin" == name);
 	}
 	
@@ -66,7 +66,7 @@ public class AircraftTest {
 	// Test getSpeed function
 	@Test
 	public void testGetSpeed(){
-		double speed = (int) (testAircraft.getSpeed() + 0.5);
+		double speed = (int) (testAircraft.speed() + 0.5);
 		assertTrue("Speed = 20", speed == 20.0);
 	}
 	
@@ -74,7 +74,7 @@ public class AircraftTest {
 	@Test
 	public void testAltitudeState(){
 		testAircraft.setAltitudeState(1);
-		int altState = testAircraft.getAltitudeState();
+		int altState = testAircraft.altitudeState();
 		assertTrue("Altitude State = 1", altState == 1);
 	}
 	
@@ -83,7 +83,7 @@ public class AircraftTest {
 	public void testOutOfBounds(){
 		Waypoint[] waypointList = new Waypoint[]{new Waypoint(0, 0, true), new Waypoint(100, 100, true), new Waypoint(25, 75, false), new Waypoint(75, 25, false), new Waypoint(50,50, false)};
 		testAircraft = new Aircraft("testAircraft", "Berlin", "Dublin", new Waypoint(100,100, true), new Waypoint(0,0, true), null, 10.0, waypointList, 1);
-		assertTrue("Out of bounds = false", testAircraft.isOutOfBounds());
+		assertTrue("Out of bounds = false", testAircraft.outOfBounds());
 	}
 	
 	// Test set methods
@@ -91,7 +91,7 @@ public class AircraftTest {
 	@Test
 	public void testSetAltitudeState(){
 		testAircraft.setAltitudeState(1);
-		int altState = testAircraft.getAltitudeState();
+		int altState = testAircraft.altitudeState();
 		assertTrue("Altitude State = 1", altState == 1);
 	}
 
