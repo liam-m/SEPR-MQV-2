@@ -163,7 +163,7 @@ public class Demo extends Scene {
 	 * Time since the scene began
 	 * Could be used for score
 	 */
-	private double timeElapsed;
+	private static double timeElapsed;
 	/**
 	 * The currently selected aircraft
 	 */
@@ -799,4 +799,7 @@ public class Demo extends Scene {
 		music.stop();
 	}
 
+	public static double getTime() {
+		return timeElapsed;
+	}
 }

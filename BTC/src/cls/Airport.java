@@ -20,6 +20,7 @@ public class Airport extends Waypoint {
 	public String name = "Mosbear Aiport";
 	
 	public java.util.ArrayList<Aircraft> aircraft_hangar = new java.util.ArrayList<Aircraft>();
+	public java.util.ArrayList<Double> time_entered = new java.util.ArrayList<Double>();
 	private int hangar_size = 3;
 	
 	public Airport() { 
@@ -45,12 +46,14 @@ public class Airport extends Waypoint {
 	public void addToHangar(Aircraft aircraft) {
 		if (aircraft_hangar.size() < hangar_size) {
 			aircraft_hangar.add(aircraft);
+			time_entered.add(Demo.getTime());
 		}
 	}
 	
 	public void signalTakeOff() {
 		if (aircraft_hangar.size() > 0) {
 			Aircraft aircraft = aircraft_hangar.remove(0);
+			time_entered.remove(0);
 			aircraft.takeOff();
 		}	
 	}

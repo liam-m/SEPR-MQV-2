@@ -1,5 +1,6 @@
 package cls;
 
+import scn.Demo;
 import lib.jog.graphics;
 import lib.jog.input;
 import lib.jog.window;
@@ -27,7 +28,6 @@ public class AirportControlBox implements EventHandler{
 		width = w;
 		height = h;
 		this.airport = airport;
-		
 		number_of_divisions = airport.getHangarSize() + 1;
 	}
 	
@@ -57,7 +57,6 @@ public class AirportControlBox implements EventHandler{
 			graphics.line(positionX, y, positionX + width, y);
 			y -= height / number_of_divisions;
 		}
-
 	}
 	
 	private void drawLabels() {	
@@ -70,10 +69,35 @@ public class AirportControlBox implements EventHandler{
 		}
 		
 		//Airport Hangar
+		double y_position = (y + 12);
+		double percentage_complete;
 		for (int i = 0; i < airport.aircraft_hangar.size(); i++) {
-			graphics.print(airport.aircraft_hangar.get(i).name(), positionX + ((width - 70)/2), (y + 12) - ((i+1) * (height / number_of_divisions)));
+			y_position -= (height / number_of_divisions);
+			
+			graphics.setColour(0, 128, 0);
+			graphics.print(airport.aircraft_hangar.get(i).name(), positionX + ((width - 70)/2), y_position);
+			
+			percentage_complete = barProgress(airport.time_entered.get(i));
+			
+			if (percentage_complete == 1) {
+				graphics.setColour(128, 0, 0);
+				graphics.line(positionX, y_position + 10, positionX + (width * percentage_complete), y_position + 10);
+			} else {
+				graphics.setColour(128, 128, 0);
+				graphics.line(positionX, y_position + 10, positionX + (width * percentage_complete), y_position + 10);
+			}
+			
 		}
 		
+	}
+	
+	private double barProgress(double time_entered) {
+		double time_elapsed = Demo.getTime() - time_entered;
+		if (time_elapsed > 5) {
+			return 1;
+		} else {
+			return time_elapsed/5;
+		}
 	}
 	
 	private boolean isMouseOverButton(int x, int y) {
