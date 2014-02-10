@@ -530,7 +530,7 @@ public class Demo extends Scene {
 				return;
 			} else {
 				for (Waypoint w : airspaceWaypoints) {
-					if (w.isMouseOver(x-16, y-16)) {
+					if (w.isMouseOver(x-16, y-16) && !w.isEntryOrExit()) {
 						selectedAircraft.alterPath(selectedPathpoint, w);
 						ordersBox.addOrder(">>> " + selectedAircraft.getName() + " please alter your course");
 						ordersBox.addOrder("<<< Roger that. Altering course now.");
