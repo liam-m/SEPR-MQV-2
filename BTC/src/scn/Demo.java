@@ -404,7 +404,8 @@ public class Demo extends Scene {
 		for (Aircraft plane : aircraftInAirspace) {
 			plane.update(time_difference);
 			if (plane.isFinished()) {
-				increaseMultiplierVariable(plane.getPlaneBonusToMultiplier());
+				multiplierVariable += plane.getPlaneBonusToMultiplier();
+				updateMultiplier();
 				double effiencyBonus =  Aircraft.efficiencyBonus(plane.getOptimalTime(), System.currentTimeMillis()/1000 - plane.getTimeOfCreation()); // Bonus multiplier to score of a particular plane based on its performance
 				increaseTotalScore ((int)(multiplier * plane.getBaseScore() * effiencyBonus));
 				System.out.println("Optimal time :" + plane.getOptimalTime() + "; Actual time spent: " + (System.currentTimeMillis()/1000 - plane.getTimeOfCreation())); // For debugging
