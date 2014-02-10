@@ -86,7 +86,7 @@ public class Aircraft {
 	 */
 	private int currentRouteStage;
 	/**
-	 * The point the plane will end up at before being removed.
+	 * The off-screen point the plane will end up at before disappearing.
 	 */
 	public Vector destination;
 	/**
@@ -94,18 +94,15 @@ public class Aircraft {
 	 */
 	private graphics.Image image;
 	/**
-	 * Aircraft is landing if it has reached the destination
-	 * if its destination is the airport it must also have been given the land command
+	 * Whether the plane has reached its destination and can be disposed of.
 	 */
 	private boolean hasFinished;
 	/**
-	 * Whether the aircraft is waiting to land.
-	 * False if the destination is not the airport. 
-	 * If the destination is the airport, True until land() is called.
+	 * Aircraft is not waiting to land if the land command has been sent by the user
 	 */
 	public boolean is_waiting_to_land;
 	/**
-	 * The angle (radians) the plane is currently turning by.
+	 * The angle the plane is currently turning by.
 	 */
 	private double currentlyTurningBy;
 	/**
@@ -113,15 +110,16 @@ public class Aircraft {
 	 */
 	private java.util.ArrayList<Aircraft> planesTooNear = new java.util.ArrayList<Aircraft>();
 	/**
-	 * The current state of the plane's altitude, i.e. if the plane is climbing or falling
+	 * the current state of the plane's altitude, i.e. if the plane is climbing or falling
 	 */
 	private int altitudeState;
 	/**
-	 * The speed to climb or fall by. Default 300 for easy mode
+	 * the speed to climb or fall by. Default 300 for easy mode
 	 */
-	private int altitudeChangeSpeed = 300;	
+	private int altitudeChangeSpeed = 300;
+	
 	/**
-	 * Used to calculate how long an aircraft spent in the airspace
+	 * This variable is used to calculate how long an aircraft spent in the airspace
 	 */
 	private double timeOfCreation;
 	/**
@@ -323,7 +321,7 @@ public class Aircraft {
 	 * Allows access to the plane's name.
 	 * @return the plane's name.
 	 */
-	public String getName() {
+	public String name () {
 		return flightName;
 	}
 	
@@ -331,7 +329,7 @@ public class Aircraft {
 	 * Allows access to the name of the location from which this plane hails.
 	 * @return the origin's name.
 	 */
-	public String getOriginName() {
+	public String originName() {
 		return originName;
 	}
 	
@@ -339,7 +337,7 @@ public class Aircraft {
 	 * Allows access to the name of the location to which this plane travels.
 	 * @return the destination's name.
 	 */
-	public String getDestinationName() {
+	public String destinationName() {
 		return destinationName;
 	}
 	
@@ -359,7 +357,7 @@ public class Aircraft {
 		return isManuallyControlled;
 	}
 	
-	public int getAltitudeState() {
+	public int altitudeState() {
 		return altitudeState;
 	}
 
@@ -369,7 +367,7 @@ public class Aircraft {
 	 */
 	private double angleToTarget() {
 		if (isManuallyControlled) {
-			return (manualBearingTarget == Double.NaN) ? getBearing() : manualBearingTarget;
+			return (manualBearingTarget == Double.NaN) ? bearing() : manualBearingTarget;
 		} else {
 			return Math.atan2(currentTarget.y() - position.y(), currentTarget.x() - position.x());
 		}
@@ -379,7 +377,7 @@ public class Aircraft {
 	 * Checks whether the plane lies outside of the airspace.
 	 * @return true, if the plane is out of the airspace. False, otherwise.
 	 */
-	public boolean isOutOfBounds() {
+	public boolean outOfBounds() {
 		double x = position.x();
 		double y = position.y();
 		return (x < RADIUS || x > window.width() + RADIUS - 32 || y < RADIUS || y > window.height() + RADIUS - 144);
@@ -389,7 +387,7 @@ public class Aircraft {
 	 * Calculates the angle at which the plane is travelling.
 	 * @return the angle in radians of the plane's current velocity.
 	 */
-	public double getBearing() {
+	public double bearing() {
 		return Math.atan2(velocity.y(), velocity.x());
 	}
 	
@@ -397,7 +395,7 @@ public class Aircraft {
 	 * Allows access to the magnitude of the plane's velocity. 
 	 * @return the speed at which the plane is currently going.
 	 */
-	public double getSpeed() {
+	public double speed() {
 		return velocity.magnitude();
 	}
 	
@@ -514,7 +512,7 @@ public class Aircraft {
 		}
 
 		// Update bearing
-		if ( Math.abs(angleToTarget() - getBearing()) > 0.01 ) {
+		if ( Math.abs(angleToTarget() - bearing()) > 0.01 ) {
 			turnTowardsTarget(time_difference);
 		}
 	}
@@ -556,7 +554,7 @@ public class Aircraft {
 	 */
 	private void turnTowardsTarget(double time_difference) {
 		// Get difference in angle
-		double angleDifference = (angleToTarget() % (2 * Math.PI)) - (getBearing() % (2 * Math.PI));
+		double angleDifference = (angleToTarget() % (2 * Math.PI)) - (bearing() % (2 * Math.PI));
 		boolean crossesPositiveNegativeDivide = angleDifference < -Math.PI * 7 / 8;
 		// Correct difference
 		angleDifference += Math.PI;
@@ -576,7 +574,7 @@ public class Aircraft {
 		double alpha = 255/((Math.abs(position.z() - controlAltitude) + 1000)/1000);
 		double scale = 2*(position.z()/30000);
 		graphics.setColour(128, 128, 128, alpha);
-		graphics.draw(image, scale, position.x(), position.y(), getBearing(), 8, 8);
+		graphics.draw(image, scale, position.x(), position.y(), bearing(), 8, 8);
 		graphics.setColour(128, 128, 128, alpha/2.5);
 		graphics.print(String.format("%.0f", position.z()) + "£", position.x()+8, position.y()-8);
 		drawWarningCircles();
@@ -609,8 +607,8 @@ public class Aircraft {
 			graphics.line(position.x() + 17, position.y() + 17, x, y);
 			graphics.setColour(0, 128, 0, 16);
 		}
-		x = 16 + position.x() + (COMPASS_RADIUS * Math.cos(getBearing()));
-		y = 16 + position.y() + (COMPASS_RADIUS * Math.sin(getBearing()));
+		x = 16 + position.x() + (COMPASS_RADIUS * Math.cos(bearing()));
+		y = 16 + position.y() + (COMPASS_RADIUS * Math.sin(bearing()));
 		graphics.line(position.x() + 16, position.y() + 16, x, y);
 		graphics.line(position.x() + 15, position.y() + 16, x, y);
 		graphics.line(position.x() + 16, position.y() + 15, x, y);
@@ -801,12 +799,7 @@ public class Aircraft {
 	 */
 	public void toggleManualControl() {
 		isManuallyControlled = !isManuallyControlled;
-		if (isManuallyControlled) {
-			setBearing(getBearing());
-		}
-		else {
-			resetBearing();
-		}
+		if (!isManuallyControlled) resetBearing();
 	}
 
 	/**
