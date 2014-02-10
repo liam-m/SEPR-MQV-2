@@ -733,7 +733,6 @@ public class Demo extends Scene {
 	 */
 	private void generateFlight() {
 		Aircraft a = createAircraft();
-		ordersBox.addOrder("<<< " + a.getName() + " incoming from " + a.getOriginName() + " heading towards " + a.getDestinationName() + ".");
 		if (a.getOriginName().equals(airport.name)) {
 			ordersBox.addOrder("<<< " + a.getName() + " is awaiting take off from " + a.getOriginName() + " heading towards " + a.getDestinationName() + ".");
 			airport.addToHangar(a);
