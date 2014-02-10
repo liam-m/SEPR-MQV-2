@@ -576,7 +576,7 @@ public class Aircraft {
 		double alpha = 255/((Math.abs(position.z() - controlAltitude) + 1000)/1000);
 		double scale = 2*(position.z()/30000);
 		graphics.setColour(128, 128, 128, alpha);
-		graphics.draw(image, scale, position.x(), position.y(), getBearing(), 8, 8);
+		graphics.draw(image, scale, position.x()-image.width()/2, position.y()-image.height()/2, getBearing(), 8, 8);
 		graphics.setColour(128, 128, 128, alpha/2.5);
 		graphics.print(String.format("%.0f", position.z()) + "£", position.x()+8, position.y()-8);
 		drawWarningCircles();
@@ -637,13 +637,13 @@ public class Aircraft {
 	public void drawFlightPath() {
 		graphics.setColour(0, 128, 128);
 		if (currentTarget != destination) {
-			graphics.line(position.x(), position.y(), route[currentRouteStage].position().x(), route[currentRouteStage].position().y());
+			graphics.line(position.x()-image.width()/2, position.y()-image.height()/2, route[currentRouteStage].position().x(), route[currentRouteStage].position().y());
 		}
 		for (int i = currentRouteStage; i < route.length-1; i++) {
 			graphics.line(route[i].position().x(), route[i].position().y(), route[i+1].position().x(), route[i+1].position().y());	
 		}
 		if (currentTarget == destination) {
-			graphics.line(position.x(), position.y(), destination.x(), destination.y());
+			graphics.line(position.x()-image.width()/2, position.y()-image.height()/2, destination.x(), destination.y());
 		} else {
 			graphics.line(route[route.length-1].position().x(), route[route.length-1].position().y(), destination.x(), destination.y());
 		}
