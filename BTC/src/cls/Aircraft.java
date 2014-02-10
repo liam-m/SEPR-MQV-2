@@ -858,6 +858,10 @@ public class Aircraft {
 		Demo.airport.is_active = true;
 	}
 	
+	public void takeOff() {
+		Demo.airport.is_active = true;
+		Demo.takeOffSequence(this);
+	}
 	/**
 	 * Changes the plane's altitude by a given amount.
 	 * @param height the height by which to change altitude.
