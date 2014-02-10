@@ -76,7 +76,7 @@ public class AirportControlBox implements EventHandler{
 			y_position -= (height / number_of_divisions);
 			
 			graphics.setColour(0, 128, 0);
-			graphics.print(airport.aircraft_hangar.get(i).name(), positionX + ((width - 70)/2), y_position);
+			graphics.print(airport.aircraft_hangar.get(i).getName(), positionX + ((width - 70)/2), y_position);
 			
 			percentage_complete = barProgress(airport.time_entered.get(i));
 			

@@ -735,10 +735,10 @@ public class Demo extends Scene {
 		Aircraft a = createAircraft();
 		ordersBox.addOrder("<<< " + a.getName() + " incoming from " + a.getOriginName() + " heading towards " + a.getDestinationName() + ".");
 		if (a.getOriginName().equals(airport.name)) {
-			ordersBox.addOrder("<<< " + a.name() + " is awaiting take off from " + a.originName() + " heading towards " + a.destinationName() + ".");
+			ordersBox.addOrder("<<< " + a.getName() + " is awaiting take off from " + a.getOriginName() + " heading towards " + a.getDestinationName() + ".");
 			airport.addToHangar(a);
 		} else {
-			ordersBox.addOrder("<<< " + a.name() + " incoming from " + a.originName() + " heading towards " + a.destinationName() + ".");
+			ordersBox.addOrder("<<< " + a.getName() + " incoming from " + a.getOriginName() + " heading towards " + a.getDestinationName() + ".");
 			aircraftInAirspace.add(a);
 		}
 	}
