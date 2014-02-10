@@ -5,9 +5,11 @@ import java.io.File;
 import scn.Demo;
 
 import lib.jog.graphics;
+import lib.jog.input;
+import lib.jog.input.EventHandler;
 import lib.jog.window;
 
-public class Airport extends Waypoint {
+public class Airport extends Waypoint implements EventHandler {
 
 	private static double x_location = window.width()/2;
 	private static double y_location = window.height()/2;		
@@ -16,9 +18,14 @@ public class Airport extends Waypoint {
 	
 	private boolean should_draw_landing_radius = false;
 	public boolean is_active = false; // True if there is an aircraft Landing/Taking off
+	private boolean clicked = false;
 	
 	public String name = "Mosbear Aiport";
 	
+	/**
+	 * Time entered is directly related to the aircraft hangar and stores the time each aircraft entered the hangar
+	 * this is used to determine score multiplier decrease if aircraft is in the hangar for too long
+	 */
 	public java.util.ArrayList<Aircraft> aircraft_hangar = new java.util.ArrayList<Aircraft>();
 	public java.util.ArrayList<Double> time_entered = new java.util.ArrayList<Double>();
 	private int hangar_size = 3;
@@ -33,7 +40,11 @@ public class Airport extends Waypoint {
 		graphics.draw(airport, x_location, y_location);
 		if (should_draw_landing_radius) {
 			graphics.setColour(0, 128, 0, 128);
-			graphics.circle(false, x_location, y_location, landing_radius);
+			if (clicked) {
+				graphics.circle(true, x_location, y_location, landing_radius);
+			} else {
+				graphics.circle(false, x_location, y_location, landing_radius);
+			}	
 		}
 	}
 	
@@ -43,6 +54,11 @@ public class Airport extends Waypoint {
 		return (x*x + y*y < landing_radius*landing_radius);
 	}
 	
+	/**
+	 * Adds aircraft to the back of the hangar and records the time in the time_entered list
+	 * will only add the aircraft if the current size is less than the maximum denoted by hangar_size
+	 * @param aircraft
+	 */
 	public void addToHangar(Aircraft aircraft) {
 		if (aircraft_hangar.size() < hangar_size) {
 			aircraft_hangar.add(aircraft);
@@ -58,6 +74,10 @@ public class Airport extends Waypoint {
 		}	
 	}
 	  
+	/** 
+	 * decides whether to draw the radius around the airport by checking if any aircraft which are landing are close
+	 * @param demo
+	 */
 	public void update(Demo demo) {
 		should_draw_landing_radius = false;
 		for (Aircraft aircraft : demo.aircraftInAirspace) {
@@ -69,5 +89,30 @@ public class Airport extends Waypoint {
 	
 	public int getHangarSize() {
 		return hangar_size;
+	}
+
+	@Override
+	public void mousePressed(int key, int x, int y) {
+		if (key == input.MOUSE_LEFT && isWithinRadius(new Vector(x, y, 0))) {
+			clicked = true;
+		}
+	}
+
+
+	@Override
+	public void mouseReleased(int key, int x, int y) {
+		clicked = false;
+	}
+
+	@Override
+	public void keyPressed(int key) {
+		
+		
+	}
+
+	@Override
+	public void keyReleased(int key) {
+		
+		
 	}
 }
