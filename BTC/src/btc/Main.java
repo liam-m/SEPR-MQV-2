@@ -65,7 +65,7 @@ public class Main implements input.EventHandler {
 		graphics.setFont(font);
 		sceneStack = new java.util.Stack<scn.Scene>();
 		setScene(new scn.Title(this));
-		lastfps = ((Sys.getTime()* 1000) / Sys.getTimerResolution()); //set lastFPS to current Time
+		lastfps = ((Sys.getTime()* 1000) / Sys.getTimerResolution()); // set lastFPS to current Time
 	}
 	
 	/**
@@ -133,9 +133,8 @@ public class Main implements input.EventHandler {
 	 * Updates the fps
 	 */
 	public void updateFPS() {
-		long time = ((Sys.getTime()* 1000) / Sys.getTimerResolution()); //set lastFPS to current Time
-		if (time - lastfps > 1000) 
-		{
+		long time = ((Sys.getTime()* 1000) / Sys.getTimerResolution()); // set lastFPS to current Time
+		if (time - lastfps > 1000) {
 			window.setTitle("Bear Traffic Controller - FPS: " + fps);
 			fps = 0; // reset the FPS counter
 			lastfps += time - lastfps; // add on the time difference
