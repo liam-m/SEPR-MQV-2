@@ -144,8 +144,8 @@ public class GameOver extends Scene {
 	 */
 	public void draw() {
 		graphics.setColour(0, 128, 0);
-		graphics.printCentred(crashedPlane1.name() + 
-				" crashed into " + crashedPlane2.name() + ".", 0, 32, 2, window.width());
+		graphics.printCentred(crashedPlane1.getName() + 
+				" crashed into " + crashedPlane2.getName() + ".", 0, 32, 2, window.width());
 		if (explosionAnim.hasFinished()) {
 			textBox.draw();
 		} else {
