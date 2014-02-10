@@ -126,7 +126,6 @@ public class Demo extends Scene {
 	 * outside of Demo class. 
 	 * @param difference
 	 */
-	@Deprecated
 	public void increaseMultiplierVariable(int difference) {
 		multiplierVariable += difference;
 		updateMultiplier();
@@ -404,8 +403,7 @@ public class Demo extends Scene {
 		for (Aircraft plane : aircraftInAirspace) {
 			plane.update(time_difference);
 			if (plane.isFinished()) {
-				multiplierVariable += plane.getPlaneBonusToMultiplier();
-				updateMultiplier();
+				increaseMultiplierVariable(plane.getPlaneBonusToMultiplier());
 				double effiencyBonus =  Aircraft.efficiencyBonus(plane.getOptimalTime(), System.currentTimeMillis()/1000 - plane.getTimeOfCreation()); // Bonus multiplier to score of a particular plane based on its performance
 				increaseTotalScore ((int)(multiplier * plane.getBaseScore() * effiencyBonus));
 				System.out.println("Optimal time :" + plane.getOptimalTime() + "; Actual time spent: " + (System.currentTimeMillis()/1000 - plane.getTimeOfCreation())); // For debugging
