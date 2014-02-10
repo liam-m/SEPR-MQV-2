@@ -244,9 +244,9 @@ public class Demo extends Scene {
 	public static Waypoint[] locationWaypoints = new Waypoint[] {
 		/* A set of Waypoints which are origin / destination points */
 		new Waypoint(8, 8, true), //top left
-		new Waypoint(8, window.height() - ORDERSBOX_H - 40, true), //bottom left
+		new Waypoint(8, window.height() - ORDERSBOX_H - 72, true), //bottom left
 		new Waypoint(window.width() - 40, 8, true), // top right
-		new Waypoint(window.width() - 40, window.height() - ORDERSBOX_H - 40, true), //bottom right
+		new Waypoint(window.width() - 40, window.height() - ORDERSBOX_H - 72, true), //bottom right
 		airport
 	};
 
@@ -586,6 +586,7 @@ public class Demo extends Scene {
 			break;
 			
 			case input.KEY_ESCAPE :
+				input.game_mouse_adjust = 0;
 				main.closeScene();
 			break;
 			
@@ -604,9 +605,9 @@ public class Demo extends Scene {
 	@Override
 	public void draw() {
 		graphics.setColour(0, 128, 0);
-		graphics.rectangle(false, 16, 16, window.width() - 32, window.height() - 144);
+		graphics.rectangle(false, 16, 48, window.width() - 32, window.height() - 176);
 		
-		graphics.setViewport(16, 16, window.width() - 32, window.height() - 144);
+		graphics.setViewport(16, 48, window.width() - 32, window.height() - 176);
 		graphics.setColour(255, 255, 255, 32);
 		graphics.draw(background, 0, 0);
 		drawMap();		
@@ -631,9 +632,8 @@ public class Demo extends Scene {
 	 */
 	private void drawMap() {
 		for (Waypoint waypoint : airspaceWaypoints) {
-			if(!waypoint.equals(airport)) { // Skip the airport
+			if (!waypoint.equals(airport))
 				waypoint.draw();
-			}
 		}
 		graphics.setColour(255, 255, 255);
 		for (Aircraft aircraft : aircraftInAirspace) {
@@ -665,10 +665,10 @@ public class Demo extends Scene {
 		
 		graphics.setViewport();
 		graphics.setColour(0, 128, 0);
-		graphics.print(LOCATION_NAMES[0], locationWaypoints[0].position().x() + 25, locationWaypoints[0].position().y() + 10);
-		graphics.print(LOCATION_NAMES[1], locationWaypoints[1].position().x() + 25, locationWaypoints[1].position().y() + 10);
-		graphics.print(LOCATION_NAMES[2], locationWaypoints[2].position().x() - 125, locationWaypoints[2].position().y() + 10);
-		graphics.print(LOCATION_NAMES[3], locationWaypoints[3].position().x() - 75, locationWaypoints[3].position().y() + 10);
+		graphics.print(LOCATION_NAMES[0], locationWaypoints[0].position().x() + 25, locationWaypoints[0].position().y() + 42);
+		graphics.print(LOCATION_NAMES[1], locationWaypoints[1].position().x() + 25, locationWaypoints[1].position().y() + 42);
+		graphics.print(LOCATION_NAMES[2], locationWaypoints[2].position().x() - 125, locationWaypoints[2].position().y() + 42);
+		graphics.print(LOCATION_NAMES[3], locationWaypoints[3].position().x() - 75, locationWaypoints[3].position().y() + 42);
 
 	}
 	

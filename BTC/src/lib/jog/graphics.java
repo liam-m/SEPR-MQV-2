@@ -341,7 +341,7 @@ public abstract class graphics {
 	
 	/**
 	 * Sets a new viewport for graphics to be drawn to. Anything graphical that would
-	 * affect pixels outside the new viewport will not do affect those pixels.
+	 * affect pixels outside the new viewport will not affect those pixels.
 	 * All graphical operations are also transformed by the x and y coordinates,
 	 * essentially setting a new window.
 	 * @param x the x coordinate of the new viewport, relative to the window.

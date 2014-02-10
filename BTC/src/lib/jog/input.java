@@ -2,7 +2,6 @@ package lib.jog;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.input.Keyboard;
-
 /**
  * <h1>jog.input</h1>
  * <p>Provides a layer for the LWJGL libraries' Mouse and Keyboard classes.
@@ -11,6 +10,7 @@ import org.lwjgl.input.Keyboard;
  */
 public abstract class input {
 	
+	public static int game_mouse_adjust = 0;
 	/**
 	 * Interface for a class that is to receive keyboard and mouse events.
 	 * @author IMP1
@@ -123,7 +123,7 @@ public abstract class input {
 	 * @return the current y coordinate of the mouse
 	 */
 	public static int mouseY() {
-		return window.height() - Mouse.getY();
+		return window.height() - game_mouse_adjust - Mouse.getY();
 	}
 	
 	/*

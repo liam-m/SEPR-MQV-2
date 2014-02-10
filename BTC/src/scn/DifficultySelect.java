@@ -57,6 +57,7 @@ public class DifficultySelect extends Scene {
 		for (lib.ButtonText b : buttons) {
 			if (b.isMouseOver(x, y)) {
 				b.act();
+				input.game_mouse_adjust = 32;
 			}
 		}
 	}

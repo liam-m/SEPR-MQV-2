@@ -100,6 +100,8 @@ public class Credits extends Scene {
 		graphics.printCentred("Josh Adams", 0, currentHeight, 2, window.width()/3);
 		graphics.printCentred("Huw Taylor", window.width()/3, currentHeight, 2, window.width()/3);
 		graphics.printCentred("Stephen Webb", 2*window.width()/3, currentHeight, 2, window.width()/3);
+		currentHeight += 64;
+		graphics.printCentred("Matt 'Matidy' Munro", window.width()/3, currentHeight, 2, window.width()/3);
 		currentHeight += gap * 2;
 		
 		graphics.printCentred("Website", 0, currentHeight, 2, window.width());
