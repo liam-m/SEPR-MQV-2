@@ -30,7 +30,7 @@ public class Airport extends Waypoint {
 	@Override
 	public void draw() { 
 		graphics.Image airport = graphics.newImage("gfx" + File.separator + "Airport.png");
-		graphics.draw(airport, x_location, y_location);
+		graphics.draw(airport, x_location-airport.width()/2, y_location-airport.height()/2);
 		if (should_draw_landing_radius) {
 			graphics.setColour(0, 128, 0, 128);
 			graphics.circle(false, x_location, y_location, landing_radius);
@@ -60,7 +60,7 @@ public class Airport extends Waypoint {
 	  
 	public void update(Demo demo) {
 		should_draw_landing_radius = false;
-		for (Aircraft aircraft : demo.aircraftInAirspace) {
+		for (Aircraft aircraft : Demo.aircraftInAirspace) {
 			if (this.isWithinRadius(aircraft.position()) && aircraft.currentTarget.equals(this.position())) {
 				should_draw_landing_radius = true;
 			}
