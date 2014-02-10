@@ -99,7 +99,7 @@ public class AirportControlBox implements EventHandler{
 	 * @param time_entered
 	 * @return a value between 0 and 1 which is used to calculate the ratio of the "progress bar" to draw
 	 */
-	private double barProgress(double time_entered) {
+	public double barProgress(double time_entered) {
 		double time_elapsed = Demo.getTime() - time_entered;
 		if (time_elapsed > 5) {
 			return 1;

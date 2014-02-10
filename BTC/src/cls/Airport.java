@@ -115,4 +115,13 @@ public class Airport extends Waypoint implements EventHandler {
 		
 		
 	}
+	
+	// Used in testing avoiding the need to have a demo instance
+	@Deprecated
+	public void signalTakeOffTesting() {
+		if (aircraft_hangar.size() > 0) {
+			aircraft_hangar.remove(0);
+			time_entered.remove(0);
+		}	
+	}
 }
