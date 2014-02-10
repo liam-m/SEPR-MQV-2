@@ -49,8 +49,10 @@ public class Airport extends Waypoint {
 	}
 	
 	public void signalTakeOff() {
-		Aircraft aircraft = aircraft_hangar.remove(0);
-		aircraft.takeOff();
+		if (aircraft_hangar.size() > 0) {
+			Aircraft aircraft = aircraft_hangar.remove(0);
+			aircraft.takeOff();
+		}	
 	}
 	  
 	public void update(Demo demo) {
