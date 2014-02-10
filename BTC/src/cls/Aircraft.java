@@ -588,11 +588,13 @@ public class Aircraft {
 	 */
 	public void drawCompass() {
 		graphics.setColour(0, 128, 0);
-		graphics.circle(false, position.x() + 16, position.y() + 16, COMPASS_RADIUS);
+		Double xpos = position.x()-image.width()/2; // Centre position of aircraft
+		Double ypos = position.y()-image.height()/2;
+		graphics.circle(false, xpos + 16, ypos + 16, COMPASS_RADIUS);
 		for (int i = 0; i < 360; i += 60) {
 			double r = Math.toRadians(i - 90);
-			double x = position.x() + 16 + (1.1 * COMPASS_RADIUS * Math.cos(r));
-			double y = position.y() + 14 + (1.1 * COMPASS_RADIUS * Math.sin(r));
+			double x = xpos + 16 + (1.1 * COMPASS_RADIUS * Math.cos(r));
+			double y = ypos + 14 + (1.1 * COMPASS_RADIUS * Math.sin(r));
 			if (i > 170) x -= 24;
 			if (i == 180) x += 12;
 			graphics.print(String.valueOf(i), x, y);
@@ -601,22 +603,22 @@ public class Aircraft {
 		if (isManuallyControlled && input.isMouseDown(input.MOUSE_LEFT)) {
 			graphics.setColour(0, 128, 0, 128);
 			double r = Math.atan2(input.mouseY() - position.y(), input.mouseX() - position.x());
-			x = 16 + position.x() + (COMPASS_RADIUS * Math.cos(r));
-			y = 16 + position.y() + (COMPASS_RADIUS * Math.sin(r));
-			graphics.line(position.x() + 16, position.y() + 16, x, y);
-			graphics.line(position.x() + 15, position.y() + 16, x, y);
-			graphics.line(position.x() + 16, position.y() + 15, x, y);
-			graphics.line(position.x() + 17, position.y() + 16, x, y);
-			graphics.line(position.x() + 17, position.y() + 17, x, y);
+			x = 16 + xpos + (COMPASS_RADIUS * Math.cos(r));
+			y = 16 + ypos + (COMPASS_RADIUS * Math.sin(r));
+			graphics.line(xpos + 16, ypos + 16, x, y);
+			graphics.line(xpos + 15, ypos + 16, x, y);
+			graphics.line(xpos + 16, ypos + 15, x, y);
+			graphics.line(xpos + 17, ypos + 16, x, y);
+			graphics.line(xpos + 17, ypos + 17, x, y);
 			graphics.setColour(0, 128, 0, 16);
 		}
-		x = 16 + position.x() + (COMPASS_RADIUS * Math.cos(getBearing()));
-		y = 16 + position.y() + (COMPASS_RADIUS * Math.sin(getBearing()));
-		graphics.line(position.x() + 16, position.y() + 16, x, y);
-		graphics.line(position.x() + 15, position.y() + 16, x, y);
-		graphics.line(position.x() + 16, position.y() + 15, x, y);
-		graphics.line(position.x() + 17, position.y() + 16, x, y);
-		graphics.line(position.x() + 17, position.y() + 17, x, y);
+		x = 16 + xpos + (COMPASS_RADIUS * Math.cos(getBearing()));
+		y = 16 + ypos + (COMPASS_RADIUS * Math.sin(getBearing()));
+		graphics.line(xpos + 16, ypos + 16, x, y);
+		graphics.line(xpos + 15, ypos + 16, x, y);
+		graphics.line(xpos + 16, ypos + 15, x, y);
+		graphics.line(xpos + 17, ypos + 16, x, y);
+		graphics.line(xpos + 17, ypos + 17, x, y);
 		
 	}
 	

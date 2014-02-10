@@ -90,8 +90,8 @@ public class Waypoint {
 	 */
 	public void draw(double x, double y) {
 		graphics.setColour(128, 0, 0, 128); 
-		graphics.circle(false, x, y, RADIUS);
-		graphics.circle(true, x, y, RADIUS - 2);
+		graphics.circle(false, x-RADIUS/2, y-RADIUS/2, RADIUS);
+		graphics.circle(true, x-RADIUS/2, y-RADIUS/2, RADIUS - 2);
 	}
 
 	public void draw() {
