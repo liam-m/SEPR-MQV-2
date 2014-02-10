@@ -38,6 +38,7 @@ public class AirportControlBox implements EventHandler{
 		drawBoxShell();
 		drawLabels();
 		if (clicked) {
+			graphics.setColour(0, 128, 0);
 			graphics.rectangle(true, positionX, (positionY + height) - (height /number_of_divisions), width, height/number_of_divisions);
 		}
 	}
@@ -108,11 +109,8 @@ public class AirportControlBox implements EventHandler{
 			
 	@Override
 	public void mousePressed(int key, int x, int y) {
-		if (key == input.MOUSE_LEFT && isMouseOverButton(x, y)){
+		if (key == input.MOUSE_LEFT && isMouseOverButton(x, y)) {
 			clicked = true;
-			if (!airport.is_active) {
-				airport.signalTakeOff();
-			}
 		}
 	}
 
@@ -120,6 +118,11 @@ public class AirportControlBox implements EventHandler{
 	@Override
 	public void mouseReleased(int key, int x, int y) {
 		clicked = false;
+		if (key == input.MOUSE_LEFT && isMouseOverButton(x, y)) {
+			if (!airport.is_active) {
+				airport.signalTakeOff();
+			}
+		}
 	}
 
 
