@@ -590,7 +590,7 @@ public class Aircraft {
 		graphics.setColour(0, 128, 0);
 		Double xpos = position.x()-image.width()/2; // Centre position of aircraft
 		Double ypos = position.y()-image.height()/2;
-		graphics.circle(false, xpos + 16, ypos + 16, COMPASS_RADIUS);
+		graphics.circle(false, xpos + 16, ypos + 16, COMPASS_RADIUS, 30);
 		for (int i = 0; i < 360; i += 60) {
 			double r = Math.toRadians(i - 90);
 			double x = xpos + 16 + (1.1 * COMPASS_RADIUS * Math.cos(r));
