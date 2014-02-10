@@ -586,6 +586,7 @@ public class Demo extends Scene {
 			break;
 			
 			case input.KEY_ESCAPE :
+				aircraftInAirspace.clear();
 				main.closeScene();
 			break;
 			
