@@ -134,22 +134,22 @@ public class AircraftTest {
 				assertTrue(testDemo.multiplier == 1);
 
 			if (multVar >= 10 && multVar < 40) 
-				assertTrue(testDemo.multiplier == 2);
-
-			if (multVar >= 40 && multVar < 80) 
 				assertTrue(testDemo.multiplier == 3);
 
+			if (multVar >= 40 && multVar < 80) 
+				assertTrue(testDemo.multiplier == 5);
+
 			if (multVar >= 80 && multVar < 130) 
-				assertTrue(testDemo.multiplier == 4); 
+				assertTrue(testDemo.multiplier == 7); 
 
 			if (multVar >= 130) 
-				assertTrue(testDemo.multiplier == 5);
+				assertTrue(testDemo.multiplier == 10);
 
 			testDemo.increaseMultiplierVariable(1);
 			multVar = testDemo.getMultiplierVariable();
 		}
 
-		assertTrue(testDemo.multiplier == 5);
+		assertTrue(testDemo.multiplier == 10);
 		testDemo.resetMultiplier();
 		assertTrue(testDemo.multiplier == 1);
 	}
