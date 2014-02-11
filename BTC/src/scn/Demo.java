@@ -678,6 +678,7 @@ public class Demo extends Scene {
 		for (Waypoint waypoint : airspaceWaypoints) {
 			if (!waypoint.equals(airport)) { // Skip the airport
 				waypoint.draw();
+			}
 		}
 		graphics.setColour(255, 255, 255);
 		for (Aircraft aircraft : aircraftInAirspace) {
