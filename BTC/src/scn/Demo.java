@@ -264,9 +264,9 @@ public class Demo extends Scene {
 	public static Waypoint[] locationWaypoints = new Waypoint[] {
 		/* A set of Waypoints which are origin / destination points */
 		new Waypoint(8, 8, true), //top left
-		new Waypoint(8, window.height() - ORDERSBOX_H - 40, true), //bottom left
+		new Waypoint(8, window.height() - ORDERSBOX_H - 72, true), //bottom left
 		new Waypoint(window.width() - 40, 8, true), // top right
-		new Waypoint(window.width() - 40, window.height() - ORDERSBOX_H - 40, true), //bottom right
+		new Waypoint(window.width() - 40, window.height() - ORDERSBOX_H - 72, true), //bottom right
 		airport
 	};
 
@@ -323,14 +323,14 @@ public class Demo extends Scene {
 				toggleManualControl();
 			}
 		};
-		manualOverrideButton = new lib.ButtonText("Take Control", manual, (window.width() - 128) / 2, 32, 128, 32, 8, 4);
+		manualOverrideButton = new lib.ButtonText("Take Control", manual, (window.width() - 128) / 2, 32, 128, 64, 8, 4);
 		timeElapsed = 0;
 		compassDragged = false;
 		selectedAircraft = null;
 		selectedWaypoint = null;
 		selectedPathpoint = -1;
 		
-		manualOverrideButton = new lib.ButtonText(" Take Control", manual, (window.width() - 128) / 2, 32, 128, 32, 8, 4);
+		manualOverrideButton = new lib.ButtonText(" Take Control", manual, (window.width() - 128) / 2, 32, 128, 64, 8, 4);
 		altimeter = new cls.Altimeter(ALTIMETER_X, ALTIMETER_Y, ALTIMETER_W, ALTIMETER_H);
 		airport_control_box = new AirportControlBox(AIRPORT_CONTROL_X, AIRPORT_CONTROL_Y, AIRPORT_CONTROL_W, AIRPORT_CONTROL_H, airport);
 		deselectAircraft();
@@ -520,7 +520,7 @@ public class Demo extends Scene {
 			airport.mousePressed(key, x, y);
 			Aircraft newSelected = selectedAircraft;
 			for (Aircraft a : aircraftInAirspace) {
-				if (a.isMouseOver(x-16, y-16) && aircraftSelectableAtAltitude(a, controlAltitude)) {
+				if (a.isMouseOver(x-16, y-48) && aircraftSelectableAtAltitude(a, controlAltitude)) {
 					newSelected = a;
 				}
 				if (airport.isWithinRadius(new Vector(x, y, 0)) && !airport.is_active && a.currentTarget.equals(airport.position()) && a.is_waiting_to_land) {
@@ -534,7 +534,7 @@ public class Demo extends Scene {
 			altimeter.show(selectedAircraft);
 			if (selectedAircraft != null) {
 				for (Waypoint w : airspaceWaypoints) {
-					if (w.isMouseOver(x-16, y-16) && selectedAircraft.flightPathContains(w) > -1) {
+					if (w.isMouseOver(x-16, y-48) && selectedAircraft.flightPathContains(w) > -1) {
 						selectedWaypoint = w;
 						selectedPathpoint = selectedAircraft.flightPathContains(w);
 					}
@@ -565,7 +565,7 @@ public class Demo extends Scene {
 				return;
 			} else {
 				for (Waypoint w : airspaceWaypoints) {
-					if (w.isMouseOver(x-16, y-16) && !w.isEntryOrExit()) {
+					if (w.isMouseOver(x-16, y-48) && !w.isEntryOrExit()) {
 						selectedAircraft.alterPath(selectedPathpoint, w);
 						ordersBox.addOrder(">>> " + selectedAircraft.getName() + " please alter your course");
 						ordersBox.addOrder("<<< Roger that. Altering course now.");
@@ -640,9 +640,9 @@ public class Demo extends Scene {
 	@Override
 	public void draw() {
 		graphics.setColour(0, 128, 0);
-		graphics.rectangle(false, 16, 16, window.width() - 32, window.height() - 144);
+		graphics.rectangle(false, 16, 48, window.width() - 32, window.height() - 176);
 		
-		graphics.setViewport(16, 16, window.width() - 32, window.height() - 144);
+		graphics.setViewport(16, 48, window.width() - 32, window.height() - 176);
 		graphics.setColour(255, 255, 255, 32);
 		graphics.draw(background, 0, 0);
 		drawMap();		
@@ -668,9 +668,8 @@ public class Demo extends Scene {
 	 */
 	private void drawMap() {
 		for (Waypoint waypoint : airspaceWaypoints) {
-			if(!waypoint.equals(airport)) { // Skip the airport
+			if (!waypoint.equals(airport)) { // Skip the airport
 				waypoint.draw();
-			}
 		}
 		graphics.setColour(255, 255, 255);
 		for (Aircraft aircraft : aircraftInAirspace) {
@@ -697,15 +696,15 @@ public class Demo extends Scene {
 		}
 		
 		if (selectedWaypoint != null && selectedAircraft.isManuallyControlled() == false) {
-			selectedAircraft.drawModifiedPath(selectedPathpoint, input.mouseX() - 16, input.mouseY() - 16);
+			selectedAircraft.drawModifiedPath(selectedPathpoint, input.mouseX() - 16, input.mouseY() - 48);
 		}
 		
 		graphics.setViewport();
 		graphics.setColour(0, 128, 0);
-		graphics.print(LOCATION_NAMES[0], locationWaypoints[0].position().x() + 25, locationWaypoints[0].position().y() + 10);
-		graphics.print(LOCATION_NAMES[1], locationWaypoints[1].position().x() + 25, locationWaypoints[1].position().y() + 10);
-		graphics.print(LOCATION_NAMES[2], locationWaypoints[2].position().x() - 125, locationWaypoints[2].position().y() + 10);
-		graphics.print(LOCATION_NAMES[3], locationWaypoints[3].position().x() - 75, locationWaypoints[3].position().y() + 10);
+		graphics.print(LOCATION_NAMES[0], locationWaypoints[0].position().x() + 25, locationWaypoints[0].position().y() + 42);
+		graphics.print(LOCATION_NAMES[1], locationWaypoints[1].position().x() + 25, locationWaypoints[1].position().y() + 42);
+		graphics.print(LOCATION_NAMES[2], locationWaypoints[2].position().x() - 125, locationWaypoints[2].position().y() + 42);
+		graphics.print(LOCATION_NAMES[3], locationWaypoints[3].position().x() - 75, locationWaypoints[3].position().y() + 42);
 
 	}
 	

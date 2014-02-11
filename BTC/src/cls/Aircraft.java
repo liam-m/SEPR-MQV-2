@@ -383,7 +383,7 @@ public class Aircraft {
 	public boolean isOutOfBounds() {
 		double x = position.x();
 		double y = position.y();
-		return (x < RADIUS || x > window.width() + RADIUS - 32 || y < RADIUS || y > window.height() + RADIUS - 144);
+		return (x < RADIUS || x > window.width() + RADIUS - 32 || y < RADIUS || y > window.height() + RADIUS - 176);
 	}
 
 	/**
@@ -590,11 +590,11 @@ public class Aircraft {
 		graphics.setColour(0, 128, 0);
 		Double xpos = position.x()-image.width()/2; // Centre position of aircraft
 		Double ypos = position.y()-image.height()/2;
-		graphics.circle(false, xpos + 16, ypos + 16, COMPASS_RADIUS, 30);
+		graphics.circle(false, xpos + 16, ypos + 48, COMPASS_RADIUS, 30);
 		for (int i = 0; i < 360; i += 60) {
 			double r = Math.toRadians(i - 90);
 			double x = xpos + 16 + (1.1 * COMPASS_RADIUS * Math.cos(r));
-			double y = ypos + 14 + (1.1 * COMPASS_RADIUS * Math.sin(r));
+			double y = ypos + 46 + (1.1 * COMPASS_RADIUS * Math.sin(r));
 			if (i > 170) x -= 24;
 			if (i == 180) x += 12;
 			graphics.print(String.valueOf(i), x, y);
@@ -604,21 +604,21 @@ public class Aircraft {
 			graphics.setColour(0, 128, 0, 128);
 			double r = Math.atan2(input.mouseY() - position.y(), input.mouseX() - position.x());
 			x = 16 + xpos + (COMPASS_RADIUS * Math.cos(r));
-			y = 16 + ypos + (COMPASS_RADIUS * Math.sin(r));
-			graphics.line(xpos + 16, ypos + 16, x, y);
-			graphics.line(xpos + 15, ypos + 16, x, y);
-			graphics.line(xpos + 16, ypos + 15, x, y);
-			graphics.line(xpos + 17, ypos + 16, x, y);
-			graphics.line(xpos + 17, ypos + 17, x, y);
+			y = 48 + ypos + (COMPASS_RADIUS * Math.sin(r));
+			graphics.line(xpos + 16, ypos + 48, x, y);
+			graphics.line(xpos + 15, ypos + 48, x, y);
+			graphics.line(xpos + 16, ypos + 47, x, y);
+			graphics.line(xpos + 17, ypos + 48, x, y);
+			graphics.line(xpos + 17, ypos + 49, x, y);
 			graphics.setColour(0, 128, 0, 16);
 		}
 		x = 16 + xpos + (COMPASS_RADIUS * Math.cos(getBearing()));
-		y = 16 + ypos + (COMPASS_RADIUS * Math.sin(getBearing()));
-		graphics.line(xpos + 16, ypos + 16, x, y);
-		graphics.line(xpos + 15, ypos + 16, x, y);
-		graphics.line(xpos + 16, ypos + 15, x, y);
-		graphics.line(xpos + 17, ypos + 16, x, y);
-		graphics.line(xpos + 17, ypos + 17, x, y);
+		y = 48 + ypos + (COMPASS_RADIUS * Math.sin(getBearing()));
+		graphics.line(xpos + 16, ypos + 48, x, y);
+		graphics.line(xpos + 15, ypos + 48, x, y);
+		graphics.line(xpos + 16, ypos + 47, x, y);
+		graphics.line(xpos + 17, ypos + 48, x, y);
+		graphics.line(xpos + 17, ypos + 49, x, y);
 		
 	}
 	

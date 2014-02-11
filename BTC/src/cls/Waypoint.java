@@ -89,7 +89,11 @@ public class Waypoint {
 	 * @param y the y location to draw at
 	 */
 	public void draw(double x, double y) {
-		graphics.setColour(128, 0, 0, 128); 
+		if (this.isEntryOrExit()) 
+			graphics.setColour(64, 128, 0, 192);
+		else
+			graphics.setColour(128, 0, 0, 128);
+		
 		graphics.circle(false, x-RADIUS/2, y-RADIUS/2, RADIUS);
 		graphics.circle(true, x-RADIUS/2, y-RADIUS/2, RADIUS - 2);
 	}

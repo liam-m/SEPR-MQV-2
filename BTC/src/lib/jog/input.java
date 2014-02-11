@@ -2,7 +2,6 @@ package lib.jog;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.input.Keyboard;
-
 /**
  * <h1>jog.input</h1>
  * <p>Provides a layer for the LWJGL libraries' Mouse and Keyboard classes.
@@ -10,7 +9,6 @@ import org.lwjgl.input.Keyboard;
  * @author IMP1
  */
 public abstract class input {
-	
 	/**
 	 * Interface for a class that is to receive keyboard and mouse events.
 	 * @author IMP1
