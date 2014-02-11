@@ -149,16 +149,16 @@ public class Demo extends Scene {
 			multiplier = 1;
 		}
 		else if (multiplierVariable < 40) { 
-			multiplier = 2;
-		}
-		else if (multiplierVariable < 80) {
 			multiplier = 3;
 		}
+		else if (multiplierVariable < 80) {
+			multiplier = 5;
+		}
 		else if (multiplierVariable < 130) { 
-			multiplier = 4;
+			multiplier = 7;
 		}
 		else {
-			multiplier = 5;
+			multiplier = 10;
 		}
 	}
 	
