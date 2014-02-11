@@ -493,6 +493,8 @@ public class Demo extends Scene {
 	 * @param plane2 the second plane in the collision
 	 */
 	public void gameOver(Aircraft plane1, Aircraft plane2) {
+		aircraftInAirspace.clear();
+		airport.clear();
 		playSound(audio.newSoundEffect("sfx" + File.separator + "crash.ogg"));
 		main.closeScene();
 		main.setScene(new GameOver(main, plane1, plane2));
@@ -630,6 +632,7 @@ public class Demo extends Scene {
 			
 			case input.KEY_ESCAPE :
 				aircraftInAirspace.clear();
+				airport.clear();
 				main.closeScene();
 			break;
 			

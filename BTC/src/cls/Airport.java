@@ -128,4 +128,9 @@ public class Airport extends Waypoint implements EventHandler {
 			time_entered.remove(0);
 		}	
 	}
+
+	public void clear() {
+		aircraft_hangar.clear();
+		time_entered.clear();
+	}
 }
