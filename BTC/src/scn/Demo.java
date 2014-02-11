@@ -144,8 +144,10 @@ public class Demo extends Scene {
 	 * Updates multiplier based on the value of multiplierVariable and the interval it is 
 	 * currently in.
 	 */		
-	private void updateMultiplier() {	 
+	private void updateMultiplier() {
 		if (multiplierVariable < 10) {
+			if (multiplierVariable < 0)
+				multiplierVariable = 0;
 			multiplier = 1;
 		}
 		else if (multiplierVariable < 40) { 
@@ -440,11 +442,14 @@ public class Demo extends Scene {
 		altimeter.update(time_difference);
 		airport.update(this);
 		if (selectedAircraft != null && selectedAircraft.isManuallyControlled()) {
-			if (input.isKeyDown(input.KEY_LEFT)) {
+			if (input.isKeyDown(input.KEY_S)|| input.isKeyDown(input.KEY_DOWN)) {
+				selectedAircraft.setAltitudeState(Aircraft.ALTITUDE_FALL);
+			} else if (input.isKeyDown(input.KEY_W)|| input.isKeyDown(input.KEY_UP))
+				selectedAircraft.setAltitudeState(Aircraft.ALTITUDE_CLIMB);
+			if (input.isKeyDown(input.KEY_LEFT) || input.isKeyDown(input.KEY_A)) {
 				selectedAircraft.turnLeft(time_difference);
-			} else if (input.isKeyDown(input.KEY_RIGHT)) {
+			} else if (input.isKeyDown(input.KEY_RIGHT) || input.isKeyDown(input.KEY_D)) 
 				selectedAircraft.turnRight(time_difference);
-			}
 			if (selectedAircraft.isOutOfBounds()) {
 				ordersBox.addOrder(">>> " + selectedAircraft.getName() + " out of bounds, returning to route");
 				deselectAircraft();
@@ -520,9 +525,12 @@ public class Demo extends Scene {
 			airport.mousePressed(key, x, y);
 			Aircraft newSelected = selectedAircraft;
 			for (Aircraft a : aircraftInAirspace) {
-				if (a.isMouseOver(x-16, y-48) && aircraftSelectableAtAltitude(a, controlAltitude)) {
+				if (a.isMouseOver(x-16, y-48)) {
 					newSelected = a;
+					if (!a.isManuallyControlled())
+						toggleManualControl();
 				}
+				
 				if (airport.isWithinRadius(new Vector(x, y, 0)) && !airport.is_active && a.currentTarget.equals(airport.position()) && a.is_waiting_to_land) {
 					a.land();
 				}
