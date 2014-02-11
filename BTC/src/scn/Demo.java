@@ -303,14 +303,14 @@ public class Demo extends Scene {
 				toggleManualControl();
 			}
 		};
-		manualOverrideButton = new lib.ButtonText("Take Control", manual, (window.width() - 128) / 2, 32, 128, 32, 8, 4);
+		manualOverrideButton = new lib.ButtonText("Take Control", manual, (window.width() - 128) / 2, 32, 128, 64, 8, 4);
 		timeElapsed = 0;
 		compassDragged = false;
 		selectedAircraft = null;
 		selectedWaypoint = null;
 		selectedPathpoint = -1;
 		
-		manualOverrideButton = new lib.ButtonText(" Take Control", manual, (window.width() - 128) / 2, 32, 128, 32, 8, 4);
+		manualOverrideButton = new lib.ButtonText(" Take Control", manual, (window.width() - 128) / 2, 32, 128, 64, 8, 4);
 		altimeter = new cls.Altimeter(ALTIMETER_X, ALTIMETER_Y, ALTIMETER_W, ALTIMETER_H);
 		deselectAircraft();
 		
@@ -487,7 +487,7 @@ public class Demo extends Scene {
 		if (key == input.MOUSE_LEFT) {
 			Aircraft newSelected = selectedAircraft;
 			for (Aircraft a : aircraftInAirspace) {
-				if (a.isMouseOver(x-16, y-16) && aircraftSelectableAtAltitude(a, controlAltitude)) {
+				if (a.isMouseOver(x-16, y-48) && aircraftSelectableAtAltitude(a, controlAltitude)) {
 					newSelected = a;
 				}
 				if (airport.isWithinRadius(new Vector(x, y, 0)) && !airport.is_active && a.currentTarget.equals(airport.position()) && a.is_waiting_to_land) {
@@ -501,7 +501,7 @@ public class Demo extends Scene {
 			altimeter.show(selectedAircraft);
 			if (selectedAircraft != null) {
 				for (Waypoint w : airspaceWaypoints) {
-					if (w.isMouseOver(x-16, y-16) && selectedAircraft.flightPathContains(w) > -1) {
+					if (w.isMouseOver(x-16, y-48) && selectedAircraft.flightPathContains(w) > -1) {
 						selectedWaypoint = w;
 						selectedPathpoint = selectedAircraft.flightPathContains(w);
 					}
@@ -530,7 +530,7 @@ public class Demo extends Scene {
 				return;
 			} else {
 				for (Waypoint w : airspaceWaypoints) {
-					if (w.isMouseOver(x-16, y-16)) {
+					if (w.isMouseOver(x-16, y-48)) {
 						selectedAircraft.alterPath(selectedPathpoint, w);
 						ordersBox.addOrder(">>> " + selectedAircraft.name() + " please alter your course");
 						ordersBox.addOrder("<<< Roger that. Altering course now.");
@@ -586,7 +586,6 @@ public class Demo extends Scene {
 			break;
 			
 			case input.KEY_ESCAPE :
-				input.game_mouse_adjust = 0;
 				main.closeScene();
 			break;
 			
@@ -660,7 +659,7 @@ public class Demo extends Scene {
 		}
 		
 		if (selectedWaypoint != null && selectedAircraft.isManuallyControlled() == false) {
-			selectedAircraft.drawModifiedPath(selectedPathpoint, input.mouseX() - 16, input.mouseY() - 16);
+			selectedAircraft.drawModifiedPath(selectedPathpoint, input.mouseX() - 16, input.mouseY() - 48);
 		}
 		
 		graphics.setViewport();

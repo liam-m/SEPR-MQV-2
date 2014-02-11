@@ -382,7 +382,7 @@ public class Aircraft {
 	public boolean outOfBounds() {
 		double x = position.x();
 		double y = position.y();
-		return (x < RADIUS || x > window.width() + RADIUS - 32 || y < RADIUS || y > window.height() + RADIUS - 144);
+		return (x < RADIUS || x > window.width() + RADIUS - 32 || y < RADIUS || y > window.height() + RADIUS - 176);
 	}
 
 	/**
@@ -587,11 +587,11 @@ public class Aircraft {
 	 */
 	public void drawCompass() {
 		graphics.setColour(0, 128, 0);
-		graphics.circle(false, position.x() + 16, position.y() + 16, COMPASS_RADIUS);
+		graphics.circle(false, position.x() + 16, position.y() + 48, COMPASS_RADIUS);
 		for (int i = 0; i < 360; i += 60) {
 			double r = Math.toRadians(i - 90);
 			double x = position.x() + 16 + (1.1 * COMPASS_RADIUS * Math.cos(r));
-			double y = position.y() + 14 + (1.1 * COMPASS_RADIUS * Math.sin(r));
+			double y = position.y() + 46 + (1.1 * COMPASS_RADIUS * Math.sin(r));
 			if (i > 170) x -= 24;
 			if (i == 180) x += 12;
 			graphics.print(String.valueOf(i), x, y);
@@ -601,21 +601,21 @@ public class Aircraft {
 			graphics.setColour(0, 128, 0, 128);
 			double r = Math.atan2(input.mouseY() - position.y(), input.mouseX() - position.x());
 			x = 16 + position.x() + (COMPASS_RADIUS * Math.cos(r));
-			y = 16 + position.y() + (COMPASS_RADIUS * Math.sin(r));
-			graphics.line(position.x() + 16, position.y() + 16, x, y);
-			graphics.line(position.x() + 15, position.y() + 16, x, y);
-			graphics.line(position.x() + 16, position.y() + 15, x, y);
-			graphics.line(position.x() + 17, position.y() + 16, x, y);
-			graphics.line(position.x() + 17, position.y() + 17, x, y);
+			y = 48 + position.y() + (COMPASS_RADIUS * Math.sin(r));
+			graphics.line(position.x() + 16, position.y() + 48, x, y);
+			graphics.line(position.x() + 15, position.y() + 48, x, y);
+			graphics.line(position.x() + 16, position.y() + 47, x, y);
+			graphics.line(position.x() + 17, position.y() + 48, x, y);
+			graphics.line(position.x() + 17, position.y() + 49, x, y);
 			graphics.setColour(0, 128, 0, 16);
 		}
 		x = 16 + position.x() + (COMPASS_RADIUS * Math.cos(bearing()));
-		y = 16 + position.y() + (COMPASS_RADIUS * Math.sin(bearing()));
-		graphics.line(position.x() + 16, position.y() + 16, x, y);
-		graphics.line(position.x() + 15, position.y() + 16, x, y);
-		graphics.line(position.x() + 16, position.y() + 15, x, y);
-		graphics.line(position.x() + 17, position.y() + 16, x, y);
-		graphics.line(position.x() + 17, position.y() + 17, x, y);
+		y = 48 + position.y() + (COMPASS_RADIUS * Math.sin(bearing()));
+		graphics.line(position.x() + 16, position.y() + 48, x, y);
+		graphics.line(position.x() + 15, position.y() + 48, x, y);
+		graphics.line(position.x() + 16, position.y() + 47, x, y);
+		graphics.line(position.x() + 17, position.y() + 48, x, y);
+		graphics.line(position.x() + 17, position.y() + 49, x, y);
 		
 	}
 	
