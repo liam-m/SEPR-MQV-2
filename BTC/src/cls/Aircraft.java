@@ -279,7 +279,7 @@ public class Aircraft {
 				separationRule = 64;
 				turnSpeed = Math.PI / 4;
 				altitudeChangeSpeed = 400;
-				baseScore = 100;
+				baseScore = 50;
 				planeBonusToMultiplier = 1;
 				optimalTime = totalDistanceInFlightPlan()/speed;
 			break;
@@ -289,7 +289,7 @@ public class Aircraft {
 				velocity = velocity.scaleBy(2);
 				turnSpeed = Math.PI / 3;
 				altitudeChangeSpeed = 200;
-				baseScore = 200;
+				baseScore = 150;
 				planeBonusToMultiplier = 2;
 				optimalTime = totalDistanceInFlightPlan()/(speed * 2);
 			break;
@@ -301,7 +301,7 @@ public class Aircraft {
 				// this helps keep the aircraft on track.
 				turnSpeed = Math.PI / 2;
 				altitudeChangeSpeed = 100;
-				baseScore = 300;
+				baseScore = 250;
 				planeBonusToMultiplier = 3;
 				optimalTime = totalDistanceInFlightPlan()/(speed * 3);
 			break;

@@ -1,6 +1,7 @@
 package scn;
 
 import java.io.File;
+import java.util.Arrays;
 
 import lib.RandomNumber;
 import lib.jog.audio;
@@ -69,6 +70,11 @@ public class Demo extends Scene {
 	
 	// Scoring bit
 	
+	
+	private int current_digits_in_score;
+	private final int MAX_DIGITS_IN_SCORE = 7;
+	private final int MAX_SCORE = 9999999;
+	
 	/**
 	 * Records the total score the user has achieved at a given time.
 	 */	
@@ -79,6 +85,7 @@ public class Demo extends Scene {
 	 * @return totalScore
 	 */	
 	public int getTotalScore() {
+		if (totalScore > MAX_SCORE) totalScore = MAX_SCORE;
 		return totalScore;
 	}
 	
@@ -314,7 +321,7 @@ public class Demo extends Scene {
 	public void start() {
 		background = graphics.newImage("gfx" + File.separator + "map.png");
 		music = audio.newMusic("sfx" + File.separator + "Gypsy_Shoegazer.ogg");
-		music.play();
+		//music.play();
 		ordersBox = new cls.OrdersBox(ORDERSBOX_X, ORDERSBOX_Y, ORDERSBOX_W, ORDERSBOX_H, 6);
 		aircraftInAirspace = new java.util.ArrayList<Aircraft>();
 		aircraftImage = graphics.newImage("gfx" + File.separator + "plane.png");
@@ -758,10 +765,27 @@ public class Demo extends Scene {
 		double seconds = timeElapsed % 60;
 		java.text.DecimalFormat df = new java.text.DecimalFormat("00.00");
 		String timePlayed = String.format("%d:%02d:", hours, minutes) + df.format(seconds); 
-		graphics.print(timePlayed, window.width() - (timePlayed.length() * 8 + 32), 0);
+		graphics.print(timePlayed, window.width() - (timePlayed.length() * 8 + 32), 32);
 		int planes = aircraftInAirspace.size();
-		graphics.print(String.valueOf(aircraftInAirspace.size()) + " plane" + (planes == 1 ? "" : "s") + " in the sky.", 32, 0);
-		graphics.print("Control Altitude: " + String.valueOf(controlAltitude), 544, 0);
+		graphics.print(String.valueOf(aircraftInAirspace.size()) + " plane" + (planes == 1 ? "" : "s") + " in the sky.", 32, 32);
+		
+		
+		/**
+		 * Takes the maximum possible digits in the score and calculates how many of them are currently 0.
+		 * 
+		 */
+		current_digits_in_score = (getTotalScore() != 0) ? (int)Math.log10(getTotalScore()) + 1 : 0;
+		char[] chars = new char[MAX_DIGITS_IN_SCORE - current_digits_in_score];
+		Arrays.fill(chars, '0');
+		String zeros = new String(chars);
+		
+		/**
+		 * Prints the unused score digits as 0s, and the current score.
+		 */
+		graphics.setColour(0, 128, 0, 128);
+		graphics.print(zeros, 264, 3, 5);
+		graphics.setColour(0, 128, 0);
+		if (getTotalScore() != 0) graphics.printRight(String.valueOf(getTotalScore()), 544, 3, 5, 0);
 	}
 	
 	/**
