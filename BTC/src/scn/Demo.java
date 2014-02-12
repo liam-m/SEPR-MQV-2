@@ -165,9 +165,9 @@ public class Demo extends Scene {
 	}
 	
 	/**
-	 * Has the user been punished for leaving the aircraft in the hangar too long? 
+	 * Has the user been shown the message for leaving the aircraft in the hangar too long? 
 	 */	
-	private boolean beenPunished = false;
+	private boolean shownAircraftWaitingMessage = false;
 	
 	/**
 	 * Orders box to print orders from ACTO to aircraft to
@@ -399,12 +399,12 @@ public class Demo extends Scene {
 		
 		if (airport.getLongestTimeInHangar(timeElapsed) > 5) {
 			decreaseMultiplierVariable(2);
-			if (!beenPunished) {
+			if (!shownAircraftWaitingMessage) {
 				ordersBox.addOrder(">>> Plane waiting to take off, multiplier decreasing");
-				beenPunished = true;
+				shownAircraftWaitingMessage = true;
 			}
 		} else {
-			beenPunished = false;
+			shownAircraftWaitingMessage = false;
 		}
 		
 		ordersBox.update(time_difference);
