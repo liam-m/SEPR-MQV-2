@@ -218,7 +218,7 @@ public class Demo extends Scene {
 	 * The interval in seconds to generate flights after
 	 */
 	private cls.AirportControlBox airport_control_box;
-	private static double flightGenerationInterval = 12;
+	private  double flightGenerationInterval = 60 /getMaxAircraft();
 	/**
 	 * The time eleapsed since the last flight was generated
 	 */
@@ -342,19 +342,6 @@ public class Demo extends Scene {
 		altimeter = new cls.Altimeter(ALTIMETER_X, ALTIMETER_Y, ALTIMETER_W, ALTIMETER_H);
 		airport_control_box = new AirportControlBox(AIRPORT_CONTROL_X, AIRPORT_CONTROL_Y, AIRPORT_CONTROL_W, AIRPORT_CONTROL_H, airport);
 		deselectAircraft();
-		
-		switch (difficulty){
-		// Set attributes according to the selected difficulty
-		// Flights spawn more often on harder difficulties.
-		case DIFFICULTY_EASY:
-			break;
-		case DIFFICULTY_MEDIUM:
-			flightGenerationInterval = flightGenerationInterval / 1.3;
-			break;
-		case DIFFICULTY_HARD:
-			flightGenerationInterval = flightGenerationInterval / 1.6;
-			break;
-		}
 	}
 	
 	/**
