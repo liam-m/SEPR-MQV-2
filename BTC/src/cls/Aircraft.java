@@ -157,14 +157,16 @@ public class Aircraft {
 	 * @param timeTaken - Total time a plane spent in the airspace. 
 	 * @return 2 for very efficient, alternatively 1.5 
 	 */
-	public static double efficiencyBonus(double optimalTime, double timeTaken) {
-		if ((optimalTime/ timeTaken) > 0.9)
+	public static double efficiencyFactor(double optimalTime, double timeTaken) {
+		/*if ((optimalTime/ timeTaken) > 0.9)
 			return 2;
 		if ((optimalTime/ timeTaken) > 0.75)
 			return 1.5;
 		if ((optimalTime/ timeTaken) > 0.6)
-			return 1.25;
-		return 1;
+			return 1.25;*/
+		
+		double efficiency = optimalTime/timeTaken;
+		return efficiency;
 	}
 	
 	/**
@@ -279,7 +281,7 @@ public class Aircraft {
 				separationRule = 64;
 				turnSpeed = Math.PI / 4;
 				altitudeChangeSpeed = 400;
-				baseScore = 50;
+				baseScore = 60;
 				planeBonusToMultiplier = 1;
 				optimalTime = totalDistanceInFlightPlan()/speed;
 			break;
@@ -301,7 +303,7 @@ public class Aircraft {
 				// this helps keep the aircraft on track.
 				turnSpeed = Math.PI / 2;
 				altitudeChangeSpeed = 100;
-				baseScore = 250;
+				baseScore = 240;
 				planeBonusToMultiplier = 3;
 				optimalTime = totalDistanceInFlightPlan()/(speed * 3);
 			break;
@@ -895,5 +897,6 @@ public class Aircraft {
 		
 		return dist;
 	}
-	
+
+
 }

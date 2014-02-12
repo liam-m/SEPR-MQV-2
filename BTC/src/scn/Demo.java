@@ -311,13 +311,14 @@ public class Demo extends Scene {
 			plane.update(time_difference);
 			if (plane.isFinished()) {
 				scoreBar.increaseMultiplierVariable(plane.getPlaneBonusToMultiplier());
-				double effiencyBonus =  Aircraft.efficiencyBonus(plane.getOptimalTime(), System.currentTimeMillis()/1000 - plane.getTimeOfCreation()); // Bonus multiplier to score of a particular plane based on its performance
-				scoreBar.increaseTotalScore ((int)(scoreBar.multiplier * plane.getBaseScore() * effiencyBonus));
+				double effiencyBonus =  Aircraft.efficiencyFactor(plane.getOptimalTime(), System.currentTimeMillis()/1000 - plane.getTimeOfCreation()); // calculates how optimal the player was, by taking the ratio of the time to traverse the shortest path to the actual time taken.
+				int plane_bonus = (int)((plane.getBaseScore()/3) * effiencyBonus); // bonus per plane is 2*baseScore * efficiency. If the player is optimal efficiency = 1, for any time beyond that efficiency gets closer to 0.
+				int plane_score = scoreBar.multiplier * (plane.getBaseScore() + plane_bonus);// Score per plane consists of (base score + bonus) * multiplier.
+				scoreBar.increaseTotalScore (plane_score);
 				System.out.println("Optimal time :" + plane.getOptimalTime() + "; Actual time spent: " + (System.currentTimeMillis()/1000 - plane.getTimeOfCreation())); // For debugging
 				System.out.println("Total score: " + scoreBar.getTotalScore() + "; Multiplier: " + scoreBar.multiplier + "; multiplierVariable: " + scoreBar.getMultiplierVariable() + "\n "); // For debugging
 				if (plane.getPlaneBonusToMultiplier() < 0)
 					ordersBox.addOrder("<<< The plane has breached separation rules on its path, your multiplier may be reduced ");
-				int totalEfficiencyBonus = (int) ((scoreBar.multiplier * plane.getBaseScore() * effiencyBonus) - scoreBar.multiplier * plane.getBaseScore()); // Used to show how many points were scored just for being efficient
 				
 				switch (RandomNumber.randInclusiveInt(0, 2)){
 				case 0:
@@ -330,9 +331,8 @@ public class Demo extends Scene {
 					ordersBox.addOrder("<<< Many thanks Comrade");
 					break;
 				}
-				ordersBox.addOrder("Plane successfully left airspace, bonus points: " + plane.getBaseScore() * scoreBar.multiplier);
-				if (effiencyBonus > 1)
-					ordersBox.addOrder("<<< Congrats, you scored extra " + totalEfficiencyBonus  + " points for efficiency!");
+				ordersBox.addOrder("Plane successfully left airspace, points: " + plane_score);
+				ordersBox.addOrder("<<< Congrats, you scored extra " + plane_bonus  + " points for efficiency!");
 			}
 		}
 		checkCollisions(time_difference);
