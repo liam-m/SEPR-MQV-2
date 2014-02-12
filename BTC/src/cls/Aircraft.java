@@ -191,7 +191,7 @@ public class Aircraft {
 	/**
 	 * This variable increases the multiplierVariable when a plane successfully leaves the airspace.
 	 */
-	private int planeBonusToMultiplier; 
+	private int planeBonusToMultiplier = 1; 
 	
 	/**
 	 * Used to get a base score per plane outside of Aircraft class.
@@ -282,7 +282,6 @@ public class Aircraft {
 				turnSpeed = Math.PI / 4;
 				altitudeChangeSpeed = 400;
 				baseScore = 60;
-				planeBonusToMultiplier = 1;
 				optimalTime = totalDistanceInFlightPlan()/speed;
 			break;
 			
@@ -292,7 +291,6 @@ public class Aircraft {
 				turnSpeed = Math.PI / 3;
 				altitudeChangeSpeed = 200;
 				baseScore = 150;
-				planeBonusToMultiplier = 2;
 				optimalTime = totalDistanceInFlightPlan()/(speed * 2);
 			break;
 			
@@ -304,7 +302,6 @@ public class Aircraft {
 				turnSpeed = Math.PI / 2;
 				altitudeChangeSpeed = 100;
 				baseScore = 240;
-				planeBonusToMultiplier = 3;
 				optimalTime = totalDistanceInFlightPlan()/(speed * 3);
 			break;
 			
@@ -778,7 +775,7 @@ public class Aircraft {
 				if (collisionWarningSoundFlag == false) {
 					collisionWarningSoundFlag = true;
 					WARNING_SOUND.play();
-					plane.setPlaneBonusToMultiplier(-3); // Punishment for breaching separation rules (applies to all aircraft involved - usually 2)
+					plane.setPlaneBonusToMultiplier(-2); // Punishment for breaching separation rules (applies to all aircraft involved - usually 2)
 				}
 			}
 		}
