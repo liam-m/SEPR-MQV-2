@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import lib.jog.graphics;
 
-public class ScoreBar {
+public class Score {
 	
 	public final int MAX_DIGITS_IN_SCORE = 7;
 	public final int MAX_SCORE = 9999999;
@@ -35,6 +35,32 @@ public class ScoreBar {
 			totalScore += amount;
 	}
 	
+	/**
+	 * Takes an aircraft and calculates it's score.
+	 * Score per plane is based on a base score (which varies with difficulty) for the plane,
+	 * and how efficient the player has been in navigating the aircraft to it's destination.
+	 * A minimum of the base score is always awarded with a bonus of up to base_score/3.
+	 */
+	public int calculateAircraftScore(Aircraft aircraft) {
+		double efficiency = efficiencyFactor(aircraft);
+		int base_score = aircraft.getBaseScore();
+		int bonus = (int)((base_score/3) * efficiency);
+		int aircraft_score = base_score + bonus;
+		return aircraft_score;
+	}
+	
+	/**
+	 * calculates how optimal the player was, by taking the ratio of the time to traverse the shortest path to the actual time taken.
+	 * @param optimalTime - Ideal time, not really possible to achieve.  
+	 * @param timeTaken - Total time a plane spent in the airspace. 
+	 * @return the extent to which the player achieved optimal time.
+	 */
+	private double efficiencyFactor(Aircraft aircraft) {
+		double optimalTime = aircraft.getOptimalTime();
+		double timeTaken = System.currentTimeMillis()/1000 - aircraft.getTimeOfCreation();
+		double efficiency = optimalTime/timeTaken;
+		return efficiency;
+	}
 	/**
 	 * Initially set to 1. This is the main multiplier for score. As more planes leave airspace 
 	 * it may be incremented based on the value of multiplierVariable (the interval it is currently in).
@@ -108,7 +134,12 @@ public class ScoreBar {
 		}
 	}
 	
-	public void drawScore() {
+	public void draw() {
+		drawScore();
+		drawMultiplier();
+	}
+	
+	private void drawScore() {
 		/**
 		 * Takes the maximum possible digits in the score and calculates how many of them are currently 0.
 		 * 
@@ -129,7 +160,7 @@ public class ScoreBar {
 		
 	}
 	
-	public void drawMultiplier() {
+	private void drawMultiplier() {
 		graphics.setColour(0, 128, 0, 64);
 		
 		int bar_segments = 16;

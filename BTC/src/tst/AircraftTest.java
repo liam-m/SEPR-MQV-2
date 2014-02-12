@@ -10,17 +10,17 @@ import scn.Demo;
 import cls.Aircraft;
 import cls.Waypoint;
 import cls.Vector;
-import cls.ScoreBar;
+import cls.Score;
 
 public class AircraftTest {	
 	Aircraft testAircraft;
-	ScoreBar testScoreBar;
+	Score testScore;
 	
 	@Before
 	public void setUp() {
 		Waypoint[] waypointList = new Waypoint[]{new Waypoint(0, 0, true), new Waypoint(100, 100, true), new Waypoint(25, 75, false), new Waypoint(75, 25, false), new Waypoint(50,50, false)};
 		testAircraft = new Aircraft("testAircraft", "Berlin", "Dublin", new Waypoint(100,100, true), new Waypoint(0,0, true), null, 10.0, waypointList, 1);
-		testScoreBar = new ScoreBar();
+		testScore = new Score();
 	}
 	
 	// Test get functions
@@ -108,53 +108,53 @@ public class AircraftTest {
 		testDemo.aircraftList().add(testAircraft);
 		Aircraft plane = testDemo.aircraftList().get(0);
 
-		assertTrue(testScoreBar.getTotalScore() == 0);
-		assertTrue(testScoreBar.multiplier == 1);
-		assertTrue(testScoreBar.getMultiplierVariable() == 0);
+		assertTrue(testScore.getTotalScore() == 0);
+		assertTrue(testScore.multiplier == 1);
+		assertTrue(testScore.getMultiplierVariable() == 0);
 		assertTrue(plane.getBaseScore() == 150);
-		assertTrue(plane.getPlaneBonusToMultiplier() == 2);
+		assertTrue(plane.getAdditionToMultiplier() == 2);
 
 		// Simulating Demo class' update from here (calling that function would otherwise interfere with testing):
 
-		testScoreBar.increaseMultiplierVariable(plane.getPlaneBonusToMultiplier());
-		testScoreBar.increaseTotalScore(testScoreBar.multiplier * plane.getBaseScore());
+		testScore.increaseMultiplierVariable(plane.getAdditionToMultiplier());
+		testScore.increaseTotalScore(testScore.multiplier * plane.getBaseScore());
 
-		assertTrue(testScoreBar.getTotalScore() == 150);
-		assertTrue(testScoreBar.multiplier == 1);
-		assertTrue(testScoreBar.getMultiplierVariable() == 2);	
+		assertTrue(testScore.getTotalScore() == 150);
+		assertTrue(testScore.multiplier == 1);
+		assertTrue(testScore.getMultiplierVariable() == 2);	
 	}
 
 	// Testing multiplier 
 	@Test
 	public void testScoreMultiplier() {
 		Demo testDemo = new Demo(1);
-		int multVar = testScoreBar.getMultiplierVariable();
+		int multVar = testScore.getMultiplierVariable();
 
-		assertTrue(testScoreBar.multiplier == 1);
+		assertTrue(testScore.multiplier == 1);
 		for (int i = 0; i < 132; i++) {
 
 			if (multVar >= 0 && multVar < 10) 
-				assertTrue(testScoreBar.multiplier == 1);
+				assertTrue(testScore.multiplier == 1);
 
 			if (multVar >= 10 && multVar < 40) 
-				assertTrue(testScoreBar.multiplier == 3);
+				assertTrue(testScore.multiplier == 3);
 
 			if (multVar >= 40 && multVar < 80) 
-				assertTrue(testScoreBar.multiplier == 5);
+				assertTrue(testScore.multiplier == 5);
 
 			if (multVar >= 80 && multVar < 130) 
-				assertTrue(testScoreBar.multiplier == 7); 
+				assertTrue(testScore.multiplier == 7); 
 
 			if (multVar >= 130) 
-				assertTrue(testScoreBar.multiplier == 10);
+				assertTrue(testScore.multiplier == 10);
 
-			testScoreBar.increaseMultiplierVariable(1);
-			multVar = testScoreBar.getMultiplierVariable();
+			testScore.increaseMultiplierVariable(1);
+			multVar = testScore.getMultiplierVariable();
 		}
 
-		assertTrue(testScoreBar.multiplier == 10);
-		testScoreBar.resetMultiplier();
-		assertTrue(testScoreBar.multiplier == 1);
+		assertTrue(testScore.multiplier == 10);
+		testScore.resetMultiplier();
+		assertTrue(testScore.multiplier == 1);
 	}
 
 	// Testing totalDistanceInFlightPlan 

@@ -68,7 +68,7 @@ public class Demo extends Scene {
 	}
 	
 	// Scoring bit
-	private cls.ScoreBar scoreBar; 
+	private cls.Score score; 
 	
 	private boolean beenPunished = false;
 	/**
@@ -97,6 +97,8 @@ public class Demo extends Scene {
 	 * A list of aircraft present in the airspace
 	 */
 	public static java.util.ArrayList<Aircraft> aircraftInAirspace;
+	
+	public java.util.ArrayList<Aircraft> recentlyDepartedAircraft;
 	
 	/**
 	 * An image to be used for aircraft
@@ -228,7 +230,7 @@ public class Demo extends Scene {
 			}
 		};
 		
-		scoreBar = new cls.ScoreBar();
+		score = new cls.Score();
 		
 		manualOverrideButton = new lib.ButtonText("Take Control", manual, (window.width() - 128) / 2, 32, 128, 64, 8, 4);
 		timeElapsed = 0;
@@ -297,7 +299,7 @@ public class Demo extends Scene {
 		timeElapsed += time_difference;
 		
 		if (airport.getLongestTimeInHangar(timeElapsed) > 5) {
-			scoreBar.decreaseMultiplierVariable(2);
+			score.decreaseMultiplierVariable(2);
 			if (!beenPunished) {
 				ordersBox.addOrder(">>> Plane waiting to take off, multiplier decreasing");
 				beenPunished = true;
@@ -307,18 +309,18 @@ public class Demo extends Scene {
 		}
 		
 		ordersBox.update(time_difference);
-		for (Aircraft plane : aircraftInAirspace) {
-			plane.update(time_difference);
-			if (plane.isFinished()) {
-				scoreBar.increaseMultiplierVariable(plane.getPlaneBonusToMultiplier());
-				double effiencyBonus =  Aircraft.efficiencyFactor(plane.getOptimalTime(), System.currentTimeMillis()/1000 - plane.getTimeOfCreation()); // calculates how optimal the player was, by taking the ratio of the time to traverse the shortest path to the actual time taken.
-				int plane_bonus = (int)((plane.getBaseScore()/3) * effiencyBonus); // bonus per plane is 2*baseScore * efficiency. If the player is optimal efficiency = 1, for any time beyond that efficiency gets closer to 0.
-				int plane_score = scoreBar.multiplier * (plane.getBaseScore() + plane_bonus);// Score per plane consists of (base score + bonus) * multiplier.
-				scoreBar.increaseTotalScore (plane_score);
+		for (Aircraft aircraft : aircraftInAirspace) {
+			aircraft.update(time_difference);
+			if (aircraft.isFinished()) {
+				score.increaseMultiplierVariable(aircraft.getAdditionToMultiplier());
+				aircraft.setScore(score.calculateAircraftScore(aircraft));
+				score.increaseTotalScore (score.multiplier * aircraft.getScore());
 				
-				System.out.println("Optimal time :" + plane.getOptimalTime() + "; Actual time spent: " + (System.currentTimeMillis()/1000 - plane.getTimeOfCreation())); // For debugging
-				System.out.println("Total score: " + scoreBar.getTotalScore() + "; Multiplier: " + scoreBar.multiplier + "; multiplierVariable: " + scoreBar.getMultiplierVariable() + "\n "); // For debugging
-				if (plane.getPlaneBonusToMultiplier() < 0)
+				//recentlyDepartedAircraft.add(plane);
+				
+				System.out.println("Optimal time :" + aircraft.getOptimalTime() + "; Actual time spent: " + (System.currentTimeMillis()/1000 - aircraft.getTimeOfCreation())); // For debugging
+				System.out.println("Total score: " + score.getTotalScore() + "; Multiplier: " + score.multiplier + "; multiplierVariable: " + score.getMultiplierVariable() + "\n "); // For debugging
+				if (aircraft.getAdditionToMultiplier() < 0)
 					ordersBox.addOrder("<<< The plane has breached separation rules on its path, your multiplier may be reduced ");
 				
 				switch (RandomNumber.randInclusiveInt(0, 2)){
@@ -332,8 +334,6 @@ public class Demo extends Scene {
 					ordersBox.addOrder("<<< Many thanks Comrade");
 					break;
 				}
-				ordersBox.addOrder("Plane successfully left airspace, points: " + plane_score);
-				ordersBox.addOrder("<<< Congrats, you scored extra " + plane_bonus  + " points for efficiency!");
 			}
 		}
 		checkCollisions(time_difference);
@@ -565,8 +565,7 @@ public class Demo extends Scene {
 		drawMap();		
 		graphics.setViewport();
 		
-		scoreBar.drawScore();
-		scoreBar.drawMultiplier();
+		score.draw();
 		
 		if (selectedAircraft != null && selectedAircraft.isManuallyControlled()) {
 			selectedAircraft.drawCompass();
@@ -658,8 +657,11 @@ public class Demo extends Scene {
 	
 	/*private void drawPlaneScoreLabels() {
 		for (int i = 0; i<n.length(); i++) {
-			
-		}
+			Array[i] = currentDepartedAircraft
+			currentDepartedAircraft.alpha -= 1
+			if (currentDepartedAircraft.alpha > 16) graphics.print(0, 128, 0, currentDepartedAircraft.alpha);
+			else Array.remove(i);
+		}  
 	}*/
 	
 	/**

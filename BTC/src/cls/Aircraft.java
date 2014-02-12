@@ -152,24 +152,6 @@ public class Aircraft {
 	public static final int ALTITUDE_LEVEL = 0;
 	
 	/**
-	 * This method returns multiplier bonus to reward players for fast and efficient management of planes
-	 * @param optimalTime - Ideal time, not really possible to achieve.  
-	 * @param timeTaken - Total time a plane spent in the airspace. 
-	 * @return 2 for very efficient, alternatively 1.5 
-	 */
-	public static double efficiencyFactor(double optimalTime, double timeTaken) {
-		/*if ((optimalTime/ timeTaken) > 0.9)
-			return 2;
-		if ((optimalTime/ timeTaken) > 0.75)
-			return 1.5;
-		if ((optimalTime/ timeTaken) > 0.6)
-			return 1.25;*/
-		
-		double efficiency = optimalTime/timeTaken;
-		return efficiency;
-	}
-	
-	/**
 	 * Flags whether the collision warning sound has been played before.
 	 * If set, plane will not play warning again until it the separation violation involving it ends
 	 */
@@ -187,11 +169,12 @@ public class Aircraft {
 	 *leaves the airspace.
 	 */
 	private int baseScore;
+	private int individualScore;
 	
 	/**
 	 * This variable increases the multiplierVariable when a plane successfully leaves the airspace.
 	 */
-	private int planeBonusToMultiplier = 1; 
+	private int additionToMultiplier = 1; 
 	
 	/**
 	 * Used to get a base score per plane outside of Aircraft class.
@@ -202,19 +185,33 @@ public class Aircraft {
 	}
 	
 	/**
+	 * Gets the score for a specific aircraft.
+	 */
+	public int getScore() {
+		return individualScore;
+	}
+	
+	/**
+	 * Sets the score for a specific aircraft.
+	 */
+	public void setScore(int score) {
+		individualScore = score;
+	}
+	
+	/**
 	 * Used to get a planeBonusToMultiplier outside of Aircraft class.
 	 * @return planeBonusToMultiplier
 	*/
-	public int getPlaneBonusToMultiplier() {
-		return planeBonusToMultiplier;
+	public int getAdditionToMultiplier() {
+		return additionToMultiplier;
 	}
 	
 	/**
 	 * Used to set planeBonusToMultiplier outside of Aircraft class.
 	 * @param number
 	 */
-	public void setPlaneBonusToMultiplier(int number) {
-		planeBonusToMultiplier = number;
+	public void setAdditionToMultiplier(int number) {
+		additionToMultiplier = number;
 	}
 	
 	/**
@@ -775,7 +772,7 @@ public class Aircraft {
 				if (collisionWarningSoundFlag == false) {
 					collisionWarningSoundFlag = true;
 					WARNING_SOUND.play();
-					plane.setPlaneBonusToMultiplier(-2); // Punishment for breaching separation rules (applies to all aircraft involved - usually 2)
+					plane.setAdditionToMultiplier(-2); // Punishment for breaching separation rules (applies to all aircraft involved - usually 2)
 				}
 			}
 		}
