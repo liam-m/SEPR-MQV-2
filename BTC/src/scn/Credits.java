@@ -93,37 +93,40 @@ public class Credits extends Scene {
 		graphics.printCentred("Bear Traffic Controller", 0, currentHeight, 3, window.width());
 		currentHeight += gap * 2;
 		
-		graphics.printCentred("Programming", 0, currentHeight, 2, window.width());
+		graphics.printCentred("Created by", 0, currentHeight, 2, window.width());
 		graphics.printCentred("___________", 0, currentHeight + 8, 2, window.width());
 		graphics.printCentred("__________", 4, currentHeight + 8, 2, window.width());
 		currentHeight += gap;
-		graphics.printCentred("Josh Adams(FLR)", 0, currentHeight, 2, window.width()/3);
-		graphics.printCentred("Huw Taylor(FLR)", window.width()/3, currentHeight, 2, window.width()/3);
-		graphics.printCentred("Stephen Webb(FLR)", 2*window.width()/3, currentHeight, 2, window.width()/3);
-		currentHeight += 64;
-		graphics.printCentred("Liam Mullane(MQV)",  0, currentHeight, 2, window.width()/4);
-		graphics.printCentred("Liam Wellacott(MQV)", window.width()/4,currentHeight, 2 , window.width()/4);
-		graphics.printCentred("Jakub Brezonak(MQV)", 2 * window.width()/4,currentHeight, 2 , window.width()/4);
-		graphics.printCentred("Matt Munro(MQV)", 3* window.width()/4,currentHeight, 2 , window.width()/4);
+		graphics.printCentred("Team FLR:", 0, currentHeight, 2, window.width());
+		currentHeight += gap;
+		
+		graphics.printCentred("Josh Adams", 0, currentHeight, 2, window.width()/3);
+		graphics.printCentred("Gareth Handley", window.width()/3, currentHeight, 2, window.width()/3);
+		graphics.printCentred("Sanjit Samaddar", 2 * window.width()/3, currentHeight, 2, window.width()/3);
+		currentHeight += gap;
+		graphics.printCentred("Alex Stewart", 0, currentHeight, 2, window.width()/3);
+		graphics.printCentred("Huw Taylor", window.width()/3, currentHeight, 2, window.width()/3);
+		graphics.printCentred("Stephen Webb)", 2 * window.width()/3, currentHeight, 2, window.width()/3);
 		
 		currentHeight += gap * 2;
 		
-		graphics.printCentred("Website", 0, currentHeight, 2, window.width());
-		graphics.printCentred("_______", 0, currentHeight + 8, 2, window.width());
-		graphics.printCentred("______", 4, currentHeight + 8, 2, window.width());
-		currentHeight += gap;
-		graphics.printCentred("Gareth Handley(FLR)", 0, currentHeight, 2, window.width()/2);
-		graphics.printCentred("Adam Aljidy(MQV)", window.width()/2, currentHeight, 2, window.width()/2);
+	
 		
-		currentHeight += gap * 2;
-		
-		graphics.printCentred("Testing", 0, currentHeight, 2, window.width());
-		graphics.printCentred("_______", 0, currentHeight + 8, 2, window.width());
-		graphics.printCentred("______", 4, currentHeight + 8, 2, window.width());
+		graphics.printCentred("Improved by", 0, currentHeight, 2, window.width());
+		graphics.printCentred("___________", 0, currentHeight + 8, 2, window.width());
+		graphics.printCentred("__________", 4, currentHeight + 8, 2, window.width());
 		currentHeight += gap;
-		graphics.printCentred("Sanjit Samaddar(FLR)", 0, currentHeight, 2, window.width()/3);
-		graphics.printCentred("Alex Stewart(FLR)", window.width()/3, currentHeight, 2, window.width()/3);
-		graphics.printCentred("Jack Chapman(MQV)", 2 * window.width()/3, currentHeight, 2, window.width()/3);
+		graphics.printCentred("Team MQV:", 0, currentHeight, 2, window.width());
+		currentHeight += gap;
+		
+		graphics.printCentred("Adam Aljidy", 0, currentHeight, 2, window.width()/3);
+		graphics.printCentred("Jakub Brezonak", window.width()/3, currentHeight, 2, window.width()/3);
+		graphics.printCentred("Jack Chapman", 2 * window.width()/3, currentHeight, 2, window.width()/3);
+		currentHeight += gap;
+		graphics.printCentred("Liam Mullane", 0, currentHeight, 2, window.width()/3);
+		graphics.printCentred("Matt Munro", window.width()/3, currentHeight, 2, window.width()/3);
+		graphics.printCentred("Liam Wellacott", 2 * window.width()/3, currentHeight, 2, window.width()/3);
+		
 		currentHeight += gap * 2;
 
 		graphics.printCentred("Music", 0, currentHeight, 2, window.width());
