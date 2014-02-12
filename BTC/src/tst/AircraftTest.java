@@ -20,6 +20,7 @@ public class AircraftTest {
 	public void setUp() {
 		Waypoint[] waypointList = new Waypoint[]{new Waypoint(0, 0, true), new Waypoint(100, 100, true), new Waypoint(25, 75, false), new Waypoint(75, 25, false), new Waypoint(50,50, false)};
 		testAircraft = new Aircraft("testAircraft", "Berlin", "Dublin", new Waypoint(100,100, true), new Waypoint(0,0, true), null, 10.0, waypointList, 1);
+		testScoreBar = new ScoreBar();
 	}
 	
 	// Test get functions
@@ -110,7 +111,7 @@ public class AircraftTest {
 		assertTrue(testScoreBar.getTotalScore() == 0);
 		assertTrue(testScoreBar.multiplier == 1);
 		assertTrue(testScoreBar.getMultiplierVariable() == 0);
-		assertTrue(plane.getBaseScore() == 200);
+		assertTrue(plane.getBaseScore() == 150);
 		assertTrue(plane.getPlaneBonusToMultiplier() == 2);
 
 		// Simulating Demo class' update from here (calling that function would otherwise interfere with testing):
@@ -118,7 +119,7 @@ public class AircraftTest {
 		testScoreBar.increaseMultiplierVariable(plane.getPlaneBonusToMultiplier());
 		testScoreBar.increaseTotalScore(testScoreBar.multiplier * plane.getBaseScore());
 
-		assertTrue(testScoreBar.getTotalScore() == 200);
+		assertTrue(testScoreBar.getTotalScore() == 150);
 		assertTrue(testScoreBar.multiplier == 1);
 		assertTrue(testScoreBar.getMultiplierVariable() == 2);	
 	}
