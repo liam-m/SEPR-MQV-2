@@ -456,6 +456,8 @@ public class Demo extends Scene {
 				generateFlight();
 			}
 		}
+		if (aircraftInAirspace.size() == 0)
+			generateFlight();
 	}
 	
 	/**

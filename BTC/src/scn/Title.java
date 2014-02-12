@@ -54,7 +54,7 @@ public class Title extends Scene {
 		beep = audio.newSoundEffect("sfx" + File.separator + "beep.ogg");
 		beep.setVolume(0.2f);
 		
-		buttons = new lib.ButtonText[5];
+		buttons = new lib.ButtonText[4];
 		// Demo Button
 		lib.ButtonText.Action demo = new lib.ButtonText.Action() {
 			@Override
@@ -62,7 +62,7 @@ public class Title extends Scene {
 				main.setScene(new DifficultySelect(main, DifficultySelect.CREATE_DEMO));
 			}
 		};
-		buttons[0] = new lib.ButtonText("Play Demo", demo, window.height(), window.height()/2 + 96, window.width() - window.height(), 24, 8, 6);
+		buttons[0] = new lib.ButtonText("Play Full Game", demo, window.height(), window.height()/2 + 96, window.width() - window.height(), 24, 8, 6);
 		// Game Button
 		lib.ButtonText.Action play = new lib.ButtonText.Action() {
 			@Override
@@ -70,8 +70,7 @@ public class Title extends Scene {
 //				_main.setScene(new Game(main));
 			}
 		};
-		buttons[1] = new lib.ButtonText("Play Full Game", play, window.height(), window.height()/2 + 126, window.width() - window.height(), 24, 8, 6);
-		buttons[1].setAvailability(false);
+	
 		// Credits Button
 		lib.ButtonText.Action credits = new lib.ButtonText.Action() {
 			@Override
@@ -79,7 +78,7 @@ public class Title extends Scene {
 				main.setScene(new Credits(main));
 				}
 			};
-		buttons[2] = new lib.ButtonText("Credits", credits, window.height(), window.height()/2 + 156, window.width() - window.height(), 24, 8, 6);
+		buttons[1] = new lib.ButtonText("Credits", credits, window.height(), window.height()/2 + 126, window.width() - window.height(), 24, 8, 6);
 		// Help Button
 		lib.ButtonText.Action help = new lib.ButtonText.Action() {
 			@Override
@@ -91,7 +90,7 @@ public class Title extends Scene {
 				}
 			}
 		};
-		buttons[3] = new lib.ButtonText("Help               (Opens in Browser)", help, window.height(), window.height()/2 + 186, window.width() - window.height(), 24, 8, 6);
+		buttons[2] = new lib.ButtonText("Help               (Opens in Browser)", help, window.height(), window.height()/2 + 156, window.width() - window.height(), 24, 8, 6);
 		// Exit Button
 				lib.ButtonText.Action exit = new lib.ButtonText.Action() {
 					@Override
@@ -99,7 +98,7 @@ public class Title extends Scene {
 						main.quit();
 					}
 				};
-		buttons[4] = new lib.ButtonText("Exit", exit, window.height(), window.height()/2 + 216, window.width() - window.height(), 24, 8, 6);
+		buttons[3] = new lib.ButtonText("Exit", exit, window.height(), window.height()/2 + 186, window.width() - window.height(), 24, 8, 6);
 		
 		angle = 0;
 	}
@@ -231,7 +230,6 @@ public class Title extends Scene {
 		graphics.line(window.height(), window.height()/2 + 150, window.width() - 16, window.height()/2 + 150);
 		graphics.line(window.height(), window.height()/2 + 180, window.width() - 16, window.height()/2 + 180);
 		graphics.line(window.height(), window.height()/2 + 210, window.width() - 16, window.height()/2 + 210);
-		graphics.line(window.height(), window.height()/2 + 240, window.width() - 16, window.height()/2 + 240);
 	}
 
 	@Override
