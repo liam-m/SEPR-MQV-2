@@ -150,6 +150,7 @@ public class Credits extends Scene {
 		graphics.printCentred("JOG", 2*window.width()/3, currentHeight, 2, window.width()/3);
 		currentHeight += gap * 2;
 		
+		graphics.printCentred("Thank you for playing!", 0, currentHeight, 2, window.width());
 		graphics.pop();
 	}
 
