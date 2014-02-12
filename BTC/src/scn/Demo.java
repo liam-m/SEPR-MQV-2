@@ -207,7 +207,7 @@ public class Demo extends Scene {
 	 */
 	private lib.ButtonText manualOverrideButton;
 	/**
-	 * Tracks if manual heading compass of a manually controller aircraft has been dragged
+	 * Tracks if manual heading compass of a manually controller aircraft has been clicked
 	 */
 	private boolean compassClicked;
 	/**
@@ -577,21 +577,18 @@ public class Demo extends Scene {
 		
 		if (selectedAircraft != null && manualOverrideButton.isMouseOver(x, y)) manualOverrideButton.act(); // Clicked manual override
 		if (key == input.MOUSE_LEFT && selectedWaypoint != null) { // Clicked a waypoint in mousePressed
-			if (selectedAircraft.isManuallyControlled()){
-				return;
-			} else {
+			if (!selectedAircraft.isManuallyControlled()) {
 				for (Waypoint w : airspaceWaypoints) {
 					if (w.isMouseOver(x-16, y-48) && !w.isEntryOrExit()) { // Dragged to that waypoint
 						selectedAircraft.alterPath(selectedPathpoint, w);
 						ordersBox.addOrder(">>> " + selectedAircraft.getName() + " please alter your course");
 						ordersBox.addOrder("<<< Roger that. Altering course now.");
 						selectedPathpoint = -1;
-						selectedWaypoint = null;
-					} else {
-						selectedWaypoint = null;
+						break;
 					}
 				}
 			}
+			selectedWaypoint = null; // This may fix this issue
 		}
 		if (key == input.MOUSE_WHEEL_UP && controlAltitude < 30000)	controlAltitude += 2000;
 		if (key == input.MOUSE_WHEEL_DOWN && controlAltitude > 28000) controlAltitude -= 2000;
