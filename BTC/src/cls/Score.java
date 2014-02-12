@@ -163,19 +163,40 @@ public class Score {
 	private void drawMultiplier() {
 		graphics.setColour(0, 128, 0, 64);
 		
+		int meter_fill = 256;
 		int bar_segments = 16;
 		int bar_segment_dif = 24;
-		int bar_x_start = 608;
-		int bar_y = 8;
+		int bar_x_offset = 608;
+		int bar_y_offset = 8;
+		int segment_width = 32;
+		int segment_height = 16;
+		
 		for (int i = 0; i <= bar_segments; i++) {
-			graphics.rectangle(true, bar_x_start, bar_y, 16, 32);
-			bar_x_start += bar_segment_dif;
+			graphics.setColour(0, 128, 0, 128);
+			graphics.rectangle(true, bar_x_offset, bar_y_offset, segment_height, segment_width);
+			graphics.setColour(0, 128, 0);
+			drawMultiplierSegment(meter_fill, i, bar_x_offset, bar_y_offset, segment_width, segment_height);
+			bar_x_offset += bar_segment_dif;
 		}
 		graphics.setColour(0, 128, 0);
 		
-		bar_x_start += 16;
+		bar_x_offset += 16;
 		String mul_var = String.format("%d", multiplier);
-		graphics.print("x", bar_x_start, 18, 3);
-		graphics.print(mul_var, bar_x_start + 16, 4, 5);
+		graphics.print("x", bar_x_offset, 18, 3);
+		graphics.print(mul_var, bar_x_offset + 16, 4, 5);
+	}
+
+
+	private void drawMultiplierSegment(int meter_fill, int segment_number, int bar_x_offset, int bar_y_offset, int segment_width, int segment_height) {
+		int start_x = segment_number*segment_width;
+		int end_x = start_x + segment_width;
+		
+		if ((meter_fill >= start_x) && (meter_fill < end_x)) {
+			graphics.rectangle(true, bar_x_offset, bar_y_offset, (meter_fill - start_x), segment_height);
+		}
+		if (meter_fill > end_x) {
+			graphics.rectangle(true, bar_x_offset, bar_y_offset, segment_width, segment_height);
+		}
+		else;
 	}
 }
