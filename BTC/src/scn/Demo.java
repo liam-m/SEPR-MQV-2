@@ -315,6 +315,7 @@ public class Demo extends Scene {
 				int plane_bonus = (int)((plane.getBaseScore()/3) * effiencyBonus); // bonus per plane is 2*baseScore * efficiency. If the player is optimal efficiency = 1, for any time beyond that efficiency gets closer to 0.
 				int plane_score = scoreBar.multiplier * (plane.getBaseScore() + plane_bonus);// Score per plane consists of (base score + bonus) * multiplier.
 				scoreBar.increaseTotalScore (plane_score);
+				
 				System.out.println("Optimal time :" + plane.getOptimalTime() + "; Actual time spent: " + (System.currentTimeMillis()/1000 - plane.getTimeOfCreation())); // For debugging
 				System.out.println("Total score: " + scoreBar.getTotalScore() + "; Multiplier: " + scoreBar.multiplier + "; multiplierVariable: " + scoreBar.getMultiplierVariable() + "\n "); // For debugging
 				if (plane.getPlaneBonusToMultiplier() < 0)
@@ -655,8 +656,14 @@ public class Demo extends Scene {
 		}
 	}
 	
+	/*private void drawPlaneScoreLabels() {
+		for (int i = 0; i<n.length(); i++) {
+			
+		}
+	}*/
+	
 	/**
-	 * draw a readout of the time the game has been played for, aircraft in the sky, etc.
+	 * draw a readout of the time the game has been played for & aircraft in the sky.
 	 */
 	private void drawAdditional() {
 		int hours = (int)(timeElapsed / (60 * 60));
