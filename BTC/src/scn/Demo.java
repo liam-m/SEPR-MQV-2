@@ -820,20 +820,6 @@ public class Demo extends Scene {
 		return new Aircraft(name, destinationName, originName, destinationPoint, originPoint, aircraftImage, 32 + (int)(10 * Math.random()), airspaceWaypoints, difficulty);
 	}
 	
-	/**
-	 * Decide which aircraft are selectable at the current control altitude
-	 * Aircraft must be on the current control altitude, or changing altitude towards it
-	 * @param a an aircraft to be checked for selectability
-	 * @param altitude the current control altitude
-	 * @return whether or not the aircraft is selectable at the current control altitude
-	 */
-	private boolean aircraftSelectableAtAltitude(Aircraft a, int altitude) {
-		if (a.position().z() == altitude) return true;
-		if (a.position().z() < altitude && a.getAltitudeState() == Aircraft.ALTITUDE_CLIMB) return true;
-		if (a.position().z() > altitude && a.getAltitudeState() == Aircraft.ALTITUDE_FALL) return true;
-		return false;
-	}
-	
 	@Override
 	/**
 	 * cleanly exit by stopping the scene's music
