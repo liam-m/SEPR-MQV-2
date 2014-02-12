@@ -682,13 +682,13 @@ public class Demo extends Scene {
 		for (Aircraft aircraft : aircraftInAirspace) {
 			aircraft.draw(controlAltitude);
 			if (aircraft.isMouseOver()) {
-				aircraft.drawFlightPath();
+				aircraft.drawFlightPath(false);
 			}
 		}
 		
 		if (selectedAircraft != null) {
 			// Flight Path
-			selectedAircraft.drawFlightPath();
+			selectedAircraft.drawFlightPath(true);
 			graphics.setColour(0, 128, 0);
 			// Override Button
 			graphics.setColour(0, 0, 0);
@@ -697,7 +697,7 @@ public class Demo extends Scene {
 			graphics.rectangle(false, (window.width() - 128) / 2, 16, 128, 32);
 			manualOverrideButton.draw();
 			
-			selectedAircraft.drawFlightPath();
+			selectedAircraft.drawFlightPath(true);
 			graphics.setColour(0, 128, 0);
 			
 		}

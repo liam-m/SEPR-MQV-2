@@ -623,8 +623,13 @@ public class Aircraft {
 	/**
 	 * Draws lines starting from the plane, along its flight path to its destination.
 	 */
-	public void drawFlightPath() {
-		graphics.setColour(0, 128, 128);
+	public void drawFlightPath(boolean selected) {
+		if (selected) {
+			graphics.setColour(0, 128, 128);
+		} else {
+			graphics.setColour(0, 128, 128, 128);
+		}
+		
 		if (currentTarget != destination) {
 			graphics.line(position.x()-image.width()/2, position.y()-image.height()/2, route[currentRouteStage].position().x(), route[currentRouteStage].position().y());
 		}
