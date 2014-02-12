@@ -223,11 +223,17 @@ public class Demo extends Scene {
 	 * The time eleapsed since the last flight was generated
 	 */
 	private double flightGenerationTimeElapsed = 6;
+	
 	/**
-	 * Max aircraft in the airspace at once
-	 * Changed to 10 for Assessment 3.
+	 * This method provides maximum number of planes using value of multiplier
+	 * @return maximum number of planes
 	 */
-	private int maxAircraft = 10;
+	private int getMaxAircraft() {
+		if (multiplier == 1) 
+			return 3;
+		else
+			return multiplier;
+	}
 	/**
 	 * The current control altitude of the ACTO
 	 * initially 30,000
@@ -459,7 +465,7 @@ public class Demo extends Scene {
 		flightGenerationTimeElapsed += time_difference;
 		if(flightGenerationTimeElapsed >= flightGenerationInterval){
 			flightGenerationTimeElapsed -= flightGenerationInterval;
-			if (aircraftInAirspace.size() < maxAircraft){
+			if (aircraftInAirspace.size() < getMaxAircraft()){
 				generateFlight();
 			}
 		}
