@@ -782,19 +782,40 @@ public class Demo extends Scene {
 	/**
 	 * Handle nitty gritty of aircraft creating
 	 * including randomisation of entry, exit, altitude, etc.
-	 * @return the create aircraft object
+	 * @return the created aircraft object
 	 */
 	private Aircraft createAircraft() {
 		// Origin and Destination
-		int o = RandomNumber.randInclusiveInt(0, locationWaypoints.length - 1);
-		int d = RandomNumber.randInclusiveInt(0, locationWaypoints.length - 1);
-		while (LOCATION_NAMES[d] == LOCATION_NAMES[o]){
-			d = RandomNumber.randInclusiveInt(0, locationWaypoints.length - 1);
-		}
-		String originName = LOCATION_NAMES[o];
-		String destinationName = LOCATION_NAMES[d];
-		Waypoint originPoint = locationWaypoints[o];
-		Waypoint destinationPoint = locationWaypoints[d];
+		String destinationName = null;
+		String originName = null;
+		Waypoint originPoint = null;
+		Waypoint destinationPoint = null;
+		boolean chosen = false;
+		
+		while(!chosen) {
+			int origin = RandomNumber.randInclusiveInt(0, locationWaypoints.length - 1);
+			int destination = RandomNumber.randInclusiveInt(0, locationWaypoints.length - 1);
+			if (LOCATION_NAMES[destination] == LOCATION_NAMES[origin])
+				destination = RandomNumber.randInclusiveInt(0, locationWaypoints.length - 1);
+
+			originName = LOCATION_NAMES[origin];
+			destinationName = LOCATION_NAMES[destination];
+			originPoint = locationWaypoints[origin];
+			destinationPoint = locationWaypoints[destination];
+			chosen = true;
+			
+			/**
+			 * prevents spawning a plane in waypoint both:
+			 * if any plane is currently going towards it 
+			 * if any plane is less than 250 from it
+			 */
+	
+			//for (Aircraft aircrft : aircraftInAirspace) {
+			//	check if any plane is currently going towards the exit point/chosen originPoint
+			//		chosen = false;
+		    // check if any plane is less than 250 (distance) from the chosen originPoint
+			//		chosen = false;
+			}
 		
 		// Name
 		String name = "";
