@@ -1,7 +1,6 @@
 package scn;
 
 import java.io.File;
-import java.util.Arrays;
 
 import lib.RandomNumber;
 import lib.jog.audio;
@@ -69,113 +68,9 @@ public class Demo extends Scene {
 	}
 	
 	// Scoring bit
+	private cls.ScoreBar scoreBar; 
 	
-	
-	private int current_digits_in_score;
-	private final int MAX_DIGITS_IN_SCORE = 7;
-	private final int MAX_SCORE = 9999999;
-	
-	/**
-	 * Records the total score the user has achieved at a given time.
-	 */	
-	private int totalScore = 0;
-	
-	/**
-	 * Getter for total score in case it is needed outside the Demo class.
-	 * @return totalScore
-	 */	
-	public int getTotalScore() {
-		if (totalScore > MAX_SCORE) totalScore = MAX_SCORE;
-		return totalScore;
-	}
-	
-	/**
-	 * Allows for increasing total score outside of Demo class.
-	 * @param scoreDifference
-	 */	
-	public void increaseTotalScore(int amount) {
-		if (amount > 0)
-			totalScore += amount;
-	}
-	
-	/**
-	 * Initially set to 1. This is the main multiplier for score. As more planes leave airspace 
-	 * it may be incremented based on the value of multiplierVariable (the interval it is currently in).
-	 */	
-	public int multiplier = 1; 
-	
-	/**
-	 * Allows to reset multiplier to 1.
-	 */	
-	public void resetMultiplier() {
-		this.multiplier = 1;
-	} 
-	
-	/**
-	 * This variable is used to increase main multiplier for score. Score multiplier varies based on 
-	 * the immediate range this variable is in. I.e. When it is < 10 -> multiplier = 1, when 
-	 *  10 <= multiplierVariable < 40 -> multiplier = 2, etc. 
-	 */
-	private int multiplierVariable = 0;
-	
-	/**
-	 * Used to get multiplierVariable outside of Demo class.
-	 * @return multiplierVariable
-	 */	
-	public int getMultiplierVariable() {
-		return multiplierVariable;
-	}
-	
-	// Necessary for testing
-		
-	/**
-	 * This method should only be used publically for unit testing. Its purpose is to update multiplierVariable
-	 * outside of Demo class. 
-	 * @param difference
-	 */
-	public void increaseMultiplierVariable(int difference) {
-		multiplierVariable += difference;
-		updateMultiplier();
-	}
-	
-	public void decreaseMultiplierVariable(int difference) {
-		if (difference > multiplierVariable) {
-			multiplierVariable = 0;
-		} else {
-			multiplierVariable -= difference;
-		}
-		updateMultiplier();
-	}
-		
-	/**
-	 * Updates multiplier based on the value of multiplierVariable and the interval it is 
-	 * currently in.
-	 */		
-	private void updateMultiplier() {
-		if (multiplierVariable < 10) {
-			if (multiplierVariable < 0)
-				multiplierVariable = 0;
-			multiplier = 1;
-		}
-		else if (multiplierVariable < 40) { 
-			multiplier = 3;
-		}
-		else if (multiplierVariable < 80) {
-			multiplier = 5;
-		}
-		else if (multiplierVariable < 130) { 
-			multiplier = 7;
-		}
-		else {
-			multiplier = 10;
-		}
-	}
-	
-	/**
-	 * Has the user been punished for leaving the aircraft in the hangar too long? 
-	 */	
 	private boolean beenPunished = false;
-	
 	/**
 	 * Orders box to print orders from ACTO to aircraft to
 	 */
@@ -332,6 +227,9 @@ public class Demo extends Scene {
 				toggleManualControl();
 			}
 		};
+		
+		scoreBar = new cls.ScoreBar();
+		
 		manualOverrideButton = new lib.ButtonText("Take Control", manual, (window.width() - 128) / 2, 32, 128, 64, 8, 4);
 		timeElapsed = 0;
 		compassDragged = false;
@@ -399,7 +297,7 @@ public class Demo extends Scene {
 		timeElapsed += time_difference;
 		
 		if (airport.getLongestTimeInHangar(timeElapsed) > 5) {
-			decreaseMultiplierVariable(2);
+			scoreBar.decreaseMultiplierVariable(2);
 			if (!beenPunished) {
 				ordersBox.addOrder(">>> Plane waiting to take off, multiplier decreasing");
 				beenPunished = true;
@@ -412,14 +310,14 @@ public class Demo extends Scene {
 		for (Aircraft plane : aircraftInAirspace) {
 			plane.update(time_difference);
 			if (plane.isFinished()) {
-				increaseMultiplierVariable(plane.getPlaneBonusToMultiplier());
+				scoreBar.increaseMultiplierVariable(plane.getPlaneBonusToMultiplier());
 				double effiencyBonus =  Aircraft.efficiencyBonus(plane.getOptimalTime(), System.currentTimeMillis()/1000 - plane.getTimeOfCreation()); // Bonus multiplier to score of a particular plane based on its performance
-				increaseTotalScore ((int)(multiplier * plane.getBaseScore() * effiencyBonus));
+				scoreBar.increaseTotalScore ((int)(scoreBar.multiplier * plane.getBaseScore() * effiencyBonus));
 				System.out.println("Optimal time :" + plane.getOptimalTime() + "; Actual time spent: " + (System.currentTimeMillis()/1000 - plane.getTimeOfCreation())); // For debugging
-				System.out.println("Total score: " + totalScore + "; Multiplier: " + multiplier + "; multiplierVariable: " + multiplierVariable + "\n "); // For debugging
+				System.out.println("Total score: " + scoreBar.getTotalScore() + "; Multiplier: " + scoreBar.multiplier + "; multiplierVariable: " + scoreBar.getMultiplierVariable() + "\n "); // For debugging
 				if (plane.getPlaneBonusToMultiplier() < 0)
 					ordersBox.addOrder("<<< The plane has breached separation rules on its path, your multiplier may be reduced ");
-				int totalEfficiencyBonus = (int) ((multiplier * plane.getBaseScore() * effiencyBonus) - multiplier * plane.getBaseScore()); // Used to show how many points were scored just for being efficient
+				int totalEfficiencyBonus = (int) ((scoreBar.multiplier * plane.getBaseScore() * effiencyBonus) - scoreBar.multiplier * plane.getBaseScore()); // Used to show how many points were scored just for being efficient
 				
 				switch (RandomNumber.randInclusiveInt(0, 2)){
 				case 0:
@@ -432,7 +330,7 @@ public class Demo extends Scene {
 					ordersBox.addOrder("<<< Many thanks Comrade");
 					break;
 				}
-				ordersBox.addOrder("Plane successfully left airspace, bonus points: " + plane.getBaseScore() * multiplier);
+				ordersBox.addOrder("Plane successfully left airspace, bonus points: " + plane.getBaseScore() * scoreBar.multiplier);
 				if (effiencyBonus > 1)
 					ordersBox.addOrder("<<< Congrats, you scored extra " + totalEfficiencyBonus  + " points for efficiency!");
 			}
@@ -666,6 +564,9 @@ public class Demo extends Scene {
 		drawMap();		
 		graphics.setViewport();
 		
+		scoreBar.drawScore();
+		scoreBar.drawMultiplier();
+		
 		if (selectedAircraft != null && selectedAircraft.isManuallyControlled()) {
 			selectedAircraft.drawCompass();
 		}
@@ -677,7 +578,7 @@ public class Demo extends Scene {
 		drawPlaneInfo();
 		
 		graphics.setColour(0, 128, 0);
-		drawScore();
+		drawAdditional();
 	}
 	
 	/**
@@ -756,9 +657,8 @@ public class Demo extends Scene {
 	
 	/**
 	 * draw a readout of the time the game has been played for, aircraft in the sky, etc.
-	 * Hint: for assessment 3, this could be used to print the player's current score.
 	 */
-	private void drawScore() {
+	private void drawAdditional() {
 		int hours = (int)(timeElapsed / (60 * 60));
 		int minutes = (int)(timeElapsed / 60);
 		minutes %= 60;
@@ -768,24 +668,6 @@ public class Demo extends Scene {
 		graphics.print(timePlayed, window.width() - (timePlayed.length() * 8 + 32), 32);
 		int planes = aircraftInAirspace.size();
 		graphics.print(String.valueOf(aircraftInAirspace.size()) + " plane" + (planes == 1 ? "" : "s") + " in the sky.", 32, 32);
-		
-		
-		/**
-		 * Takes the maximum possible digits in the score and calculates how many of them are currently 0.
-		 * 
-		 */
-		current_digits_in_score = (getTotalScore() != 0) ? (int)Math.log10(getTotalScore()) + 1 : 0;
-		char[] chars = new char[MAX_DIGITS_IN_SCORE - current_digits_in_score];
-		Arrays.fill(chars, '0');
-		String zeros = new String(chars);
-		
-		/**
-		 * Prints the unused score digits as 0s, and the current score.
-		 */
-		graphics.setColour(0, 128, 0, 128);
-		graphics.print(zeros, 264, 3, 5);
-		graphics.setColour(0, 128, 0);
-		if (getTotalScore() != 0) graphics.printRight(String.valueOf(getTotalScore()), 544, 3, 5, 0);
 	}
 	
 	/**
