@@ -209,7 +209,7 @@ public class Demo extends Scene {
 	/**
 	 * Tracks if manual heading compass of a manually controller aircraft has been dragged
 	 */
-	private boolean compassDragged;
+	private boolean compassClicked;
 	/**
 	 * An altimeter to display aircraft altitidue, heading, etc.
 	 */
@@ -327,7 +327,7 @@ public class Demo extends Scene {
 		};
 		manualOverrideButton = new lib.ButtonText("Take Control", manual, (window.width() - 128) / 2, 32, 128, 64, 8, 4);
 		timeElapsed = 0;
-		compassDragged = false;
+		compassClicked = false;
 		selectedAircraft = null;
 		selectedWaypoint = null;
 		selectedPathpoint = -1;
@@ -522,60 +522,66 @@ public class Demo extends Scene {
 	 */
 	@Override
 	public void mousePressed(int key, int x, int y) {
+		// Pass the click through to other objects
+		airport_control_box.mousePressed(key, x, y);
+		airport.mousePressed(key, x, y);
+		altimeter.mousePressed(key, x, y);
+		
+				
 		if (key == input.MOUSE_LEFT) {
-			airport_control_box.mousePressed(key, x, y);
-			airport.mousePressed(key, x, y);
 			Aircraft newSelected = selectedAircraft;
 			for (Aircraft a : aircraftInAirspace) {
-				if (a.isMouseOver(x-16, y-48)) {
+				if (a.isMouseOver(x-16, y-48)) { // Clicked on the aircraft
 					newSelected = a;
 					if (!a.isManuallyControlled())
 						toggleManualControl();
 				}
 				
-				if (airport.isWithinRadius(new Vector(x, y, 0)) && !airport.is_active && a.currentTarget.equals(airport.position()) && a.is_waiting_to_land) {
+				if (airport.isWithinRadius(new Vector(x, y, 0)) && !airport.is_active && a.currentTarget.equals(airport.position()) && a.is_waiting_to_land) { // Clicked on the airport
 					a.land();
 				}
 			}
-			if (newSelected != selectedAircraft) {
+			if (newSelected != selectedAircraft) { // Selected aircraft changed
 				deselectAircraft();
 				selectedAircraft = newSelected;
 			}
 			altimeter.show(selectedAircraft);
 			if (selectedAircraft != null) {
 				for (Waypoint w : airspaceWaypoints) {
-					if (w.isMouseOver(x-16, y-48) && selectedAircraft.flightPathContains(w) > -1) {
+					if (w.isMouseOver(x-16, y-48) && selectedAircraft.flightPathContains(w) > -1) { // Clicked waypoint
 						selectedWaypoint = w;
 						selectedPathpoint = selectedAircraft.flightPathContains(w);
 					}
 				}
 				if (selectedWaypoint == null && selectedAircraft.isManuallyControlled()) {
-					// If mouse is over compass
 					double dx = selectedAircraft.position().x() - input.mouseX();
 					double dy = selectedAircraft.position().y() - input.mouseY();
 					int r = Aircraft.COMPASS_RADIUS;
-					if (dx*dx + dy*dy < r*r) {
-						compassDragged = true;
+					if (dx*dx + dy*dy < r*r) { // If mouse is over compass
+						compassClicked = true; // Flag for mouseReleased
 					}
 				}
 			}
 			
 		}
-		if (key == input.MOUSE_RIGHT) deselectAircraft();
-		altimeter.mousePressed(key, x, y);
+		else if (key == input.MOUSE_RIGHT) deselectAircraft();
 	}
 
 	@Override
 	public void mouseReleased(int key, int x, int y) {
+		// Pass the click through to other objects
 		airport_control_box.mouseReleased(key, x, y);
 		airport.mouseReleased(key, x, y);
-		if (selectedAircraft != null && manualOverrideButton.isMouseOver(x, y)) manualOverrideButton.act();
-		if (key == input.MOUSE_LEFT && selectedWaypoint != null) {
-			if (selectedAircraft.isManuallyControlled() == true){
+		altimeter.mouseReleased(key, x, y); // Not implemented anything yet
+		
+		
+		if (selectedAircraft != null && manualOverrideButton.isMouseOver(x, y)) manualOverrideButton.act(); // Clicked manual override
+		if (key == input.MOUSE_LEFT && selectedWaypoint != null) { // Clicked a waypoint in mousePressed
+			if (selectedAircraft.isManuallyControlled()){
 				return;
 			} else {
 				for (Waypoint w : airspaceWaypoints) {
-					if (w.isMouseOver(x-16, y-48) && !w.isEntryOrExit()) {
+					if (w.isMouseOver(x-16, y-48) && !w.isEntryOrExit()) { // Dragged to that waypoint
 						selectedAircraft.alterPath(selectedPathpoint, w);
 						ordersBox.addOrder(">>> " + selectedAircraft.getName() + " please alter your course");
 						ordersBox.addOrder("<<< Roger that. Altering course now.");
@@ -594,7 +600,6 @@ public class Demo extends Scene {
 		if (selectedAircraft != null) {
 			altitudeState = selectedAircraft.getAltitudeState();
 		}
-		altimeter.mouseReleased(key, x, y);
 		if (selectedAircraft != null) {
 			if (altitudeState != selectedAircraft.getAltitudeState()) {
 				ordersBox.addOrder(">>> " + selectedAircraft.getName() + ", please adjust your altitude");
@@ -602,13 +607,13 @@ public class Demo extends Scene {
 			}
 		}
 
-		if (compassDragged && selectedAircraft != null) {
+		if (compassClicked && selectedAircraft != null) { // Flag from mousePressed
 			double dx = input.mouseX() - selectedAircraft.position().x();
 			double dy = input.mouseY() - selectedAircraft.position().y();
 			double newHeading = Math.atan2(dy, dx);
 			selectedAircraft.setBearing(newHeading);
 		}
-		compassDragged = false;
+		compassClicked = false;
 	}
 
 	@Override
