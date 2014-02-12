@@ -239,23 +239,9 @@ public class Aircraft {
 		destination = destinationPoint.position();
 		// Place on spawn waypoint
 		position = originPoint.position(); 
-		// Offset spawn position. Helps avoid aircraft crashes very soon after spawn
 		
-		// Offsets the spawn location of the aircraft around the origin waypoint, for variety
-		// This also prevents collisions between just-spawned aircraft and existing aircraft flying to the waypoint.
-		int offset;
-		if (RandomNumber.randInclusiveInt(0, 1) == 0) {
-			offset = RandomNumber.randInclusiveInt(-separationRule, -10);
-		} else {
-			offset = RandomNumber.randInclusiveInt(10, separationRule);
-		}
-		int altitudeOffset;
-		if (RandomNumber.randInclusiveInt(0, 1) == 0) {
-			altitudeOffset = 28000;
-		} else {
-			altitudeOffset = 30000;
-		}
-		position = position.add(new Vector(offset, 0, altitudeOffset));
+		int altitudeOffset = RandomNumber.randInclusiveInt(0, 1) == 0 ? 28000 : 30000;
+		position = position.add(new Vector(0, 0, altitudeOffset));
 		
 		// Calculate initial velocity (direction)
 		currentTarget = route[0].position();
