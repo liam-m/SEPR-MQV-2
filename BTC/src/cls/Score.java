@@ -91,7 +91,7 @@ public class Score {
 		multiplierLevel = 1;
 	} 
 	
-	
+	private boolean meter_draining = false;
 	
 	/**
 	 * Used to get multiplierVariable outside of Demo class.
@@ -219,10 +219,16 @@ public class Score {
 		int segment_width = 16;
 		int segment_height = 32;
 		
+		int red = 0;
+		int green = 128;
+		if (meter_draining) {
+			red = 128;
+			green = 0;
+		}
 		for (int i = 0; i < bar_segments; i++) {
-			graphics.setColour(0, 128, 0, 64);
+			graphics.setColour(red, green, 0, 64);
 			graphics.rectangle(true, bar_x_offset, bar_y_offset, segment_width, segment_height);
-			graphics.setColour(0, 128, 0);
+			graphics.setColour(red, green, 0);
 			drawMultiplierSegment(meter_fill, i, bar_x_offset, bar_y_offset, segment_width, segment_height);
 			bar_x_offset += bar_segment_dif;
 		}
@@ -252,17 +258,20 @@ public class Score {
 		if (targetScore - totalScore <= 9) 
 			totalScore = targetScore;
 		else
-			totalScore += 9;	
+			totalScore += 9;
 		if (target_meter_fill != meter_fill) {
-			if (target_meter_fill > meter_fill)
+			if (target_meter_fill > meter_fill) {
+				meter_draining = false;
 				meter_fill++;
-			else {
+			} else {
+				meter_draining = true;
 				if (meter_fill - target_meter_fill > 2)
 					meter_fill -= 2;
 				else
 					meter_fill--;
 			}
 			updateMultiplierLevel();
-		}
+		} else
+			meter_draining = false;
 	}
 }
