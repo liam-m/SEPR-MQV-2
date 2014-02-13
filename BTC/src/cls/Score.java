@@ -75,6 +75,8 @@ public class Score {
 	 */
 	private int meter_fill = 0;
 	
+	private int target_meter_fill = 0;
+	
 	/**
 	 * This variable is used to increase main multiplier for score. Score multiplier varies based on 
 	 * the immediate range this variable is in. I.e. When it is < 10 -> multiplier = 1, when 
@@ -153,24 +155,34 @@ public class Score {
 		}
 	}
 	
-	public void setMeterFill(int change_to_meter) {
-		meter_fill += change_to_meter;
-		
+	private void updateMultiplierLevel() {
 		if (meter_fill >= 256) {
 			if (multiplierLevel != 5) {
 				increaseMultiplierLevel();
 				meter_fill -= 256;
+				target_meter_fill -= 256;
 			}
-			else meter_fill = 256;		
+			else {
+				meter_fill = 256;
+				target_meter_fill = 256;
+			}
 		}
 			
 		if (meter_fill <= 0) {
 			if (multiplierLevel != 1) {
 				decreaseMultiplierLevel();
 				meter_fill += 256;
+				target_meter_fill += 256;
 			}
-			else meter_fill = 0;
-		}			
+			else {
+				meter_fill = 0;
+				target_meter_fill = 0;
+			}
+		}	
+	}
+	
+	public void increaseMeterFill(int change_to_meter) {
+		target_meter_fill += change_to_meter;
 	}
 	
 	public void draw() {
@@ -240,6 +252,17 @@ public class Score {
 		if (targetScore - totalScore <= 9) 
 			totalScore = targetScore;
 		else
-			totalScore += 9;				
+			totalScore += 9;	
+		if (target_meter_fill != meter_fill) {
+			if (target_meter_fill > meter_fill)
+				meter_fill++;
+			else {
+				if (meter_fill - target_meter_fill > 2)
+					meter_fill -= 2;
+				else
+					meter_fill--;
+			}
+			updateMultiplierLevel();
+		}
 	}
 }

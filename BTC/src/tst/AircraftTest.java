@@ -132,7 +132,7 @@ public class AircraftTest {
 		assertTrue(testScore.getMultiplier() == 1);
 		assertTrue(testScore.getMeterFill() == 0);
 		
-		testScore.setMeterFill(256);
+		testScore.increaseMeterFill(256);
 		
 		assertTrue(testScore.getMultiplierLevel() == 2);
 		assertTrue(testScore.getMultiplier() == 3);

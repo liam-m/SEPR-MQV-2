@@ -303,7 +303,7 @@ public class Demo extends Scene {
 		score.update();
 		
 		if (airport.getLongestTimeInHangar(timeElapsed) > 5) {
-			score.setMeterFill(-1);
+			score.increaseMeterFill(-1);
 			if (!shownAircraftWaitingMessage) {
 				ordersBox.addOrder(">>> Plane waiting to take off, multiplier decreasing");
 				shownAircraftWaitingMessage = true;
@@ -317,7 +317,7 @@ public class Demo extends Scene {
 			aircraft.update(time_difference);
 			if (aircraft.isFinished()) {
 				aircraft.setAdditionToMultiplier(score.getMultiplierLevel());
-				score.setMeterFill(aircraft.getAdditionToMultiplier());
+				score.increaseMeterFill(aircraft.getAdditionToMultiplier());
 				aircraft.setScore(score.calculateAircraftScore(aircraft));
 				score.increaseTotalScore(score.getMultiplier() * aircraft.getScore());
 				

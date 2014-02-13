@@ -778,7 +778,7 @@ public class Aircraft {
 				return i;
 			} else if (plane != this && isWithin(plane, separationRule)) {
 				planesTooNear.add(plane);
-				score.setMeterFill(-1); // Punishment for breaching separation rules (applies to all aircraft involved - usually 2)
+				score.increaseMeterFill(-1); // Punishment for breaching separation rules (applies to all aircraft involved - usually 2)
 				if (collisionWarningSoundFlag == false) {
 					collisionWarningSoundFlag = true;
 					WARNING_SOUND.play();
