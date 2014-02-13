@@ -435,11 +435,13 @@ public class Aircraft {
 	 * @param newWaypoint the new waypoint to travel to.
 	 */
 	public void alterPath(int routeStage, Waypoint newWaypoint) {
-		route[routeStage] = newWaypoint;
-		if (!isManuallyControlled) resetBearing();
-		if (routeStage == currentRouteStage) {
-			currentTarget = newWaypoint.position();
-			turnTowardsTarget(0);
+		if (routeStage > -1) {
+			route[routeStage] = newWaypoint;
+			if (!isManuallyControlled) resetBearing();
+			if (routeStage == currentRouteStage) {
+				currentTarget = newWaypoint.position();
+				turnTowardsTarget(0);
+			}
 		}
 	}
 	
@@ -586,7 +588,7 @@ public class Aircraft {
 			graphics.print(String.valueOf(i), x, y);
 		}
 		double x, y;
-		if (isManuallyControlled && input.isMouseDown(input.MOUSE_LEFT)) {
+		if (isManuallyControlled && input.isMouseDown(input.MOUSE_RIGHT)) {
 			graphics.setColour(0, 128, 0, 128);
 			double r = Math.atan2(input.mouseY() - position.y(), input.mouseX() - position.x());
 			x = 16 + xpos + (COMPASS_RADIUS * Math.cos(r));
@@ -810,7 +812,7 @@ public class Aircraft {
 	 * Resets the direction towards which the plane will head.
 	 */
 	private void resetBearing() {
-		if (currentRouteStage < route.length) {
+		if (currentRouteStage < route.length & route[currentRouteStage] != null) {
 			currentTarget = route[currentRouteStage].position();
 		}
 		turnTowardsTarget(0);
