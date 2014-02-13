@@ -143,7 +143,7 @@ public class Demo extends Scene {
 	private int getMaxAircraft() {
 		if (score.getMultiplier() == 1) 
 			return 3;
-		if (score.getMultiplier() == 3) 
+		else if (score.getMultiplier() == 3) 
 			return 5;
 		else
 			return score.getMultiplier();
@@ -368,9 +368,9 @@ public class Demo extends Scene {
 		}
 		
 		flightGenerationTimeElapsed += time_difference;
-		if(flightGenerationTimeElapsed >= getFlightGenerationInterval()){
+		if(flightGenerationTimeElapsed >= getFlightGenerationInterval()) {
 			flightGenerationTimeElapsed -= getFlightGenerationInterval();
-			if (aircraftInAirspace.size() < getMaxAircraft()){
+			if (aircraftInAirspace.size() < getMaxAircraft()) {
 				generateFlight();
 			}
 		}
@@ -394,7 +394,7 @@ public class Demo extends Scene {
 	}
 	
 	@Override
-	public void playSound(audio.Sound sound){
+	public void playSound(audio.Sound sound) {
 		sound.stop();
 		sound.play();
 	}
