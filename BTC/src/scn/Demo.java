@@ -300,6 +300,7 @@ public class Demo extends Scene {
 	@Override
 	public void update(double time_difference) {
 		timeElapsed += time_difference;
+		score.update();
 		
 		if (airport.getLongestTimeInHangar(timeElapsed) > 5) {
 			score.setMeterFill(-1);

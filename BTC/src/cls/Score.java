@@ -16,6 +16,7 @@ public class Score {
 	 * Records the total score the user has achieved at a given time.
 	 */	
 	private int totalScore = 0;
+	private int targetScore = 0;
 	
 	/**
 	 * Getter for total score in case it is needed outside the Demo class.
@@ -32,7 +33,7 @@ public class Score {
 	 */	
 	public void increaseTotalScore(int amount) {
 		if (amount > 0)
-			totalScore += amount;
+			targetScore += amount;
 	}
 	
 	/**
@@ -233,5 +234,12 @@ public class Score {
 			graphics.rectangle(true, bar_x_offset, bar_y_offset, segment_width, segment_height);
 		}
 		else;
+	}
+	
+	public void update() {
+		if (targetScore - totalScore <= 9) 
+			totalScore = targetScore;
+		else
+			totalScore += 9;				
 	}
 }
