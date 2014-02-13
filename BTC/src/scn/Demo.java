@@ -186,7 +186,7 @@ public class Demo extends Scene {
 	/**
 	 * The currently selected waypoint
 	 */
-	private Waypoint selectedWaypoint;
+	private Waypoint clickedWaypoint;
 	/**
 	 * Selected path point, in an aircraft's route, used for altering the route
 	 */
@@ -333,7 +333,7 @@ public class Demo extends Scene {
 		timeElapsed = 0;
 		compassClicked = false;
 		selectedAircraft = null;
-		selectedWaypoint = null;
+		clickedWaypoint = null;
 		selectedPathpoint = -1;
 		
 		manualOverrideButton = new lib.ButtonText(" Take Control", manual, (window.width() - 128) / 2, 32, 128, 64, 8, 4);
@@ -381,7 +381,7 @@ public class Demo extends Scene {
 			manualOverrideButton.setText(" Take Control");
 		}
 		selectedAircraft = null;
-		selectedWaypoint = null; 
+		clickedWaypoint = null; 
 		selectedPathpoint = -1;
 		altimeter.hide();
 	}
@@ -591,10 +591,10 @@ public class Demo extends Scene {
 					altimeter.show(selectedAircraft);
 				}
 			} else if (waypointInFlightplanClicked(x, y, selectedAircraft) && !selectedAircraft.isManuallyControlled()) {
-				selectedWaypoint = findClickedWaypoint(x, y); // Would like to rename to clickedWaypoint
-				if (selectedWaypoint != null) {
+				clickedWaypoint = findClickedWaypoint(x, y);
+				if (clickedWaypoint != null) {
 					waypointClicked = true; // Flag to mouseReleased
-					selectedPathpoint = selectedAircraft.flightPathContains(selectedWaypoint);					
+					selectedPathpoint = selectedAircraft.flightPathContains(clickedWaypoint);					
 				}
 			} else if (airportClicked(x, y)) {
 				airport.mousePressed(key, x, y); // Only cares about left click for now
@@ -636,7 +636,7 @@ public class Demo extends Scene {
 				}
 				selectedPathpoint = -1;
 			}
-			selectedWaypoint = null; // Fine to set to null now as will have been dealt with
+			clickedWaypoint = null; // Fine to set to null now as will have been dealt with
 		} else if (key == input.MOUSE_RIGHT) {
 			if (compassClicked && selectedAircraft != null) {
 				double dx = input.mouseX() - selectedAircraft.position().x();
@@ -747,7 +747,7 @@ public class Demo extends Scene {
 			
 		}
 		
-		if (selectedWaypoint != null && selectedAircraft.isManuallyControlled() == false) {
+		if (clickedWaypoint != null && selectedAircraft.isManuallyControlled() == false) {
 			selectedAircraft.drawModifiedPath(selectedPathpoint, input.mouseX() - 16, input.mouseY() - 48);
 		}
 		
