@@ -221,6 +221,7 @@ public class Score {
 		
 		int red = 0;
 		int green = 128;
+		
 		if (meter_draining) {
 			red = 128;
 			green = 0;
