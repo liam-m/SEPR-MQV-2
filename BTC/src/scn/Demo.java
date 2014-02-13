@@ -265,7 +265,7 @@ public class Demo extends Scene {
 		"South Sea",
 		airport.name
 	};
-	
+	 
 	/**
 	 * The set of waypoints in the airspace which are origins / destinations
 	 */
@@ -760,23 +760,62 @@ public class Demo extends Scene {
 	}
 	
 	/**
-	 * Create a new aircraft object and introduce it to the airspace
+	 * Creates a new aircraft object and introduces it to the airspace. 
 	 */
 	private void generateFlight() {
 		Aircraft a = createAircraft();
-		if (a.getOriginName().equals(airport.name)) {
-			ordersBox.addOrder("<<< " + a.getName() + " is awaiting take off from " + a.getOriginName() + " heading towards " + a.getDestinationName() + ".");
-			airport.addToHangar(a);
-		} else {
-			ordersBox.addOrder("<<< " + a.getName() + " incoming from " + a.getOriginName() + " heading towards " + a.getDestinationName() + ".");
-			aircraftInAirspace.add(a);
+		if (a != null) {
+			if (a.getOriginName().equals(airport.name)) {
+				ordersBox.addOrder("<<< " + a.getName() + " is awaiting take off from " + a.getOriginName() + " heading towards " + a.getDestinationName() + ".");
+				airport.addToHangar(a);
+			} else {
+				ordersBox.addOrder("<<< " + a.getName() + " incoming from " + a.getOriginName() + " heading towards " + a.getDestinationName() + ".");
+				aircraftInAirspace.add(a);
+			}
 		}
 	}
 	
+	/**
+	 * Sets the airport to busy, adds the aircraft passed to the airspace, where it begins its flight plan starting at the airport
+	 * @param aircraft
+	 */
 	public static void takeOffSequence(Aircraft aircraft) {
 		aircraftInAirspace.add(aircraft);
 		// Space to implement some animation features?
 		airport.is_active = false;
+	}
+	
+	/**
+	 * Returns array of entry points that are fair to be entry points for a plane (no plane is currently going to exit the airspace there,
+	 * also it is not too close to any plane). 
+	 * @param aircraft
+	 */
+	
+	private java.util.ArrayList<Waypoint> getAvailableEntryPoints() {
+		java.util.ArrayList<Waypoint> available_entry_points = new java.util.ArrayList<Waypoint>();
+		
+		for (Waypoint entry_point : locationWaypoints) {
+			
+			boolean is_available = true;
+			/**
+			 * prevents spawning a plane in waypoint both:
+			 * if any plane is currently going towards it 
+			 * if any plane is less than 250 from it
+			 */
+			
+			for (Aircraft aircraft : aircraftInAirspace) {
+				// Check if any plane is currently going towards the exit point/chosen originPoint
+				// Check if any plane is less than what is defined as too close from the chosen originPoint
+				if (aircraft.currentTarget.equals(entry_point.position()) || aircraft.isCloseToEntry(entry_point.position()))   {
+					is_available = false;
+				}	
+			}
+			
+			if (is_available) {
+				available_entry_points.add(entry_point);
+			}	
+		}
+		return available_entry_points;
 	}
 	
 	/**
@@ -786,36 +825,45 @@ public class Demo extends Scene {
 	 */
 	private Aircraft createAircraft() {
 		// Origin and Destination
-		String destinationName = null;
-		String originName = null;
-		Waypoint originPoint = null;
-		Waypoint destinationPoint = null;
-		boolean chosen = false;
-		
-		while(!chosen) {
-			int origin = RandomNumber.randInclusiveInt(0, locationWaypoints.length - 1);
-			int destination = RandomNumber.randInclusiveInt(0, locationWaypoints.length - 1);
-			if (LOCATION_NAMES[destination] == LOCATION_NAMES[origin])
-				destination = RandomNumber.randInclusiveInt(0, locationWaypoints.length - 1);
-
-			originName = LOCATION_NAMES[origin];
-			destinationName = LOCATION_NAMES[destination];
-			originPoint = locationWaypoints[origin];
-			destinationPoint = locationWaypoints[destination];
-			chosen = true;
-			
-			/**
-			 * prevents spawning a plane in waypoint both:
-			 * if any plane is currently going towards it 
-			 * if any plane is less than 250 from it
-			 */
+		String destinationName;
+		String originName = "";
+		Waypoint originPoint;
+		Waypoint destinationPoint;
 	
-			//for (Aircraft aircrft : aircraftInAirspace) {
-			//	check if any plane is currently going towards the exit point/chosen originPoint
-			//		chosen = false;
-		    // check if any plane is less than 250 (distance) from the chosen originPoint
-			//		chosen = false;
+		/**
+		 * Chooses two waypoints rendomly and then checks if they satisfy the rules, if not, it tries until it finds good ones. 
+		 **/
+	
+		java.util.ArrayList<Waypoint> available_origins = getAvailableEntryPoints();
+		
+		if (available_origins.isEmpty()) {
+			if ((airport.aircraft_hangar.size() == airport.getHangarSize())) {
+				return null;
+			} else {
+				originPoint = airport;
+				originName = airport.name;
 			}
+		} else {
+			originPoint = available_origins.get(RandomNumber.randInclusiveInt(0, available_origins.size()-1));
+			for (int i = 0; i < locationWaypoints.length; i++) {
+				if (locationWaypoints[i].equals(originPoint)) {
+					originName = LOCATION_NAMES[i];
+					break;
+				}
+			}
+		}
+		
+		// Work out destination
+		int destination = RandomNumber.randInclusiveInt(0, locationWaypoints.length - 1);
+		destinationName = LOCATION_NAMES[destination];
+		destinationPoint = locationWaypoints[destination];
+		
+		while (LOCATION_NAMES[destination] == originName) {
+			destination = RandomNumber.randInclusiveInt(0, locationWaypoints.length - 1);
+			destinationName = LOCATION_NAMES[destination];
+			destinationPoint = locationWaypoints[destination];
+		}
+			
 		
 		// Name
 		String name = "";

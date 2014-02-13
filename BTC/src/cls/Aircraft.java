@@ -881,5 +881,11 @@ public class Aircraft {
 		
 		return dist;
 	}
+
+	public boolean isCloseToEntry(Vector position) {
+		double x = this.position().x() - position.x();
+		double y = this.position().y() - position.y();
+		return ((x * x + y * y) <= (200 * 200));
+	}
 	
 }
