@@ -636,7 +636,6 @@ public class Demo extends Scene {
 				Aircraft a2 = createAircraft();
 				gameOver(a1, a2);
 			break;
-			
 		}
 	}
 	
