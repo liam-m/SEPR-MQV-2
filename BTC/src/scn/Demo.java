@@ -590,7 +590,7 @@ public class Demo extends Scene {
 					selectedAircraft = clickedAircraft;
 					altimeter.show(selectedAircraft);
 				}
-			} else if (waypointInFlightplanClicked(x, y, selectedAircraft)) {
+			} else if (waypointInFlightplanClicked(x, y, selectedAircraft) && !selectedAircraft.isManuallyControlled()) {
 				selectedWaypoint = findClickedWaypoint(x, y); // Would like to rename to clickedWaypoint
 				if (selectedWaypoint != null) {
 					waypointClicked = true; // Flag to mouseReleased
@@ -668,13 +668,16 @@ public class Demo extends Scene {
 		airport.mouseReleased(key, x, y);
 		airport_control_box.mouseReleased(key, x, y);
 		altimeter.mouseReleased(key, x, y);
+		
 		if (key == input.MOUSE_LEFT) {
 			if (manualOverridePressed(x, y)) {
 				manualOverrideButton.act();
 			} else if (waypointClicked && selectedAircraft != null) {
 				Waypoint newWaypoint = findClickedWaypoint(x, y);
-				selectedAircraft.alterPath(selectedPathpoint, newWaypoint);
-				ordersBox.addOrder(">>> WOO");
+				if (newWaypoint != null) {
+					selectedAircraft.alterPath(selectedPathpoint, newWaypoint);
+					ordersBox.addOrder(">>> WOO");
+				}
 				selectedPathpoint = -1;
 			}
 			selectedWaypoint = null; // Fine to set to null now as will have been dealt with
