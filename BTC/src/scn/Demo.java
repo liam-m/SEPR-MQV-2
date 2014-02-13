@@ -354,24 +354,24 @@ public class Demo extends Scene {
 		airport.update(this);
 		if (selectedAircraft != null) {
 			if (selectedAircraft.isManuallyControlled()) {
-				if (input.isKeyDown(input.KEY_S) || input.isKeyDown(input.KEY_DOWN)) {
+				if (input.keyPressed(new int[]{input.KEY_S, input.KEY_DOWN})) {
 					selectedAircraft.setAltitudeState(Aircraft.ALTITUDE_FALL);
-				} else if (input.isKeyDown(input.KEY_W)|| input.isKeyDown(input.KEY_UP))
+				} else if (input.keyPressed(new int[]{input.KEY_W, input.KEY_UP})) {
 					selectedAircraft.setAltitudeState(Aircraft.ALTITUDE_CLIMB);
-				if (input.isKeyDown(input.KEY_LEFT) || input.isKeyDown(input.KEY_A)) {
+				} else if (input.keyPressed(new int[]{input.KEY_LEFT, input.KEY_A})) {
 					selectedAircraft.turnLeft(time_difference);
-				} else if (input.isKeyDown(input.KEY_RIGHT) || input.isKeyDown(input.KEY_D)) 
+				} else if (input.keyPressed(new int[]{input.KEY_RIGHT, input.KEY_D})) {
 					selectedAircraft.turnRight(time_difference);
-			} else if (input.isKeyDown(input.KEY_S) || input.isKeyDown(input.KEY_DOWN) || input.isKeyDown(input.KEY_W) || 
-					input.isKeyDown(input.KEY_UP) || input.isKeyDown(input.KEY_LEFT) || input.isKeyDown(input.KEY_A) || 
-					input.isKeyDown(input.KEY_RIGHT) || input.isKeyDown(input.KEY_D))  {
+				}
+			} else if (input.keyPressed(new int[]{input.KEY_S, input.KEY_DOWN, input.KEY_W, input.KEY_UP, 
+						input.KEY_LEFT, input.KEY_A, input.KEY_RIGHT, input.KEY_D})) {
 				toggleManualControl();
 			}
 			
 			if (selectedAircraft.isOutOfBounds()) {
 				ordersBox.addOrder(">>> " + selectedAircraft.getName() + " out of bounds, returning to route");
 				deselectAircraft();
-			}
+			}	
 		}
 		
 		flightGenerationTimeElapsed += time_difference;

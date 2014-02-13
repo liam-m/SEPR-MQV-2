@@ -124,6 +124,20 @@ public abstract class input {
 		return window.height() - Mouse.getY();
 	}
 	
+	/**
+	 * 
+	 * @param keys - an array of keys to check
+	 * @return true if one of the keys is pressed, false otherwise
+	 */
+	public static boolean keyPressed(int[] keys) {
+		for (int key : keys) {
+			if (isKeyDown(key)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	/*
 	 * Static Mouse Constants
 	 */
