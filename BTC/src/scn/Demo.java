@@ -207,9 +207,13 @@ public class Demo extends Scene {
 	 */
 	private lib.ButtonText manualOverrideButton;
 	/**
-	 * Tracks if manual heading compass of a manually controller aircraft has been clicked
+	 * Tracks if manual heading compass of a manually controlled aircraft has been clicked
 	 */
 	private boolean compassClicked;
+	/**
+	 * Tracks if waypoint of a manually controlled aircraft has been clicked
+	 */
+	private boolean waypointClicked;
 	/**
 	 * An altimeter to display aircraft altitidue, heading, etc.
 	 */
@@ -516,12 +520,80 @@ public class Demo extends Scene {
 		
 		return;
 	}
+	
+	private boolean compassClicked() {
+		if (selectedAircraft != null) {
+			double dx = selectedAircraft.position().x() - input.mouseX();
+			double dy = selectedAircraft.position().y() - input.mouseY();
+			int r = Aircraft.COMPASS_RADIUS;
+			return selectedAircraft.isManuallyControlled() && dx*dx + dy*dy < r*r;
+		}
+		return false;
+	}
+	
+	private boolean aircraftClicked(int x, int y) {
+		for (Aircraft a : aircraftInAirspace) {
+			if (a.isMouseOver(x-16, y-48)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private Aircraft findClickedAircraft(int x, int y) {
+		for (Aircraft a : aircraftInAirspace) {
+			if (a.isMouseOver(x-16, y-48)) {
+				return a;
+			}
+		}
+		return null;
+	}
+	
+	private boolean waypointInFlightplanClicked(int x, int y, Aircraft a) {
+		if (a != null) {
+			for (Waypoint w : airspaceWaypoints) {
+				if (w.isMouseOver(x-16, y-48) && a.flightPathContains(w) > -1) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	private Waypoint findClickedWaypoint(int x, int y) {
+		for (Waypoint w : airspaceWaypoints) {
+			if (w.isMouseOver(x-16, y-48)) {
+				return w;
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Handle mouse input
 	 */
 	@Override
 	public void mousePressed(int key, int x, int y) {
+		airport_control_box.mousePressed(key, x, y);
+		altimeter.mousePressed(key, x, y);
+		if (key == input.MOUSE_LEFT) {
+			if (compassClicked()) {
+				compassClicked = true; // Flag to mouseReleased
+			} else if (aircraftClicked(x, y)) {
+				Aircraft clickedAircraft = findClickedAircraft(x, y);
+				if (clickedAircraft == selectedAircraft) {
+					toggleManualControl();
+				} else {
+					deselectAircraft();
+					selectedAircraft = clickedAircraft;
+				}
+			} else if (waypointInFlightplanClicked(x, y, selectedAircraft)) {
+				waypointClicked = true; // Flag to mouseReleased
+				Waypoint clickedWaypoint = findClickedWaypoint(x, y); // Should be defined outside class
+				selectedPathpoint = selectedAircraft.flightPathContains(clickedWaypoint);
+			}
+		}
+		/*
 		// Pass the click through to other objects
 		airport_control_box.mousePressed(key, x, y);
 		airport.mousePressed(key, x, y);
@@ -565,6 +637,7 @@ public class Demo extends Scene {
 			
 		}
 		else if (key == input.MOUSE_RIGHT) deselectAircraft();
+		*/
 	}
 
 	@Override
