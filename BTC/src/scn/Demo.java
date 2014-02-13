@@ -337,7 +337,7 @@ public class Demo extends Scene {
 		selectedPathpoint = -1;
 		
 		manualOverrideButton = new lib.ButtonText(" Take Control", manual, (window.width() - 128) / 2, 32, 128, 64, 8, 4);
-		altimeter = new cls.Altimeter(ALTIMETER_X, ALTIMETER_Y, ALTIMETER_W, ALTIMETER_H);
+		altimeter = new cls.Altimeter(ALTIMETER_X, ALTIMETER_Y, ALTIMETER_W, ALTIMETER_H, ordersBox);
 		airport_control_box = new AirportControlBox(AIRPORT_CONTROL_X, AIRPORT_CONTROL_Y, AIRPORT_CONTROL_W, AIRPORT_CONTROL_H, airport);
 		deselectAircraft();
 		

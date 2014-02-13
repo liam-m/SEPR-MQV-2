@@ -22,18 +22,22 @@ public class Altimeter implements EventHandler {
 	
 	private double positionX, positionY, width, height;
 	
+	private cls.OrdersBox ordersBox;
+	
 	/**
 	 * Constructor for the altimeter
 	 * @param x the x coord to draw at
 	 * @param y the y coord to draw at
 	 * @param w the width of the altimeter
 	 * @param h the height of the altimeter
+	 * @param ob the orders box
 	 */
-	public Altimeter(double x, double y, double w, double h) {
+	public Altimeter(double x, double y, double w, double h, cls.OrdersBox ob) {
 		positionX = x;
 		positionY = y;
 		width = w;
 		height = h;
+		this.ordersBox = ob;
 		hide();
 	}
 	
@@ -84,10 +88,17 @@ public class Altimeter implements EventHandler {
 	public void mouseReleased(int key, int mx, int my) {
 		if (!isVisible) return;
 		if (key == input.MOUSE_LEFT) {
+			boolean changed = false;
 			if (mouseOverTopButton(mx, my)) {
 				currentAircraft.setAltitudeState(Aircraft.ALTITUDE_CLIMB);
+				changed = true;
 			} else if (mouseOverBottomButton(mx, my)) {
 				currentAircraft.setAltitudeState(Aircraft.ALTITUDE_FALL);
+				changed = true;
+			}
+			if (changed) {
+				ordersBox.addOrder(">>> " + currentAircraft.getName() + ", please adjust your altitude.");
+				ordersBox.addOrder("<<< Roger that. Altering altitude now.");
 			}
 		}
 	}
