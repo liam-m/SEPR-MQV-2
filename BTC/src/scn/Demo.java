@@ -126,7 +126,7 @@ public class Demo extends Scene {
 	 * The interval in seconds to generate flights after
 	 */
 	private int getFlightGenerationInterval() {
-		return (60 /getMaxAircraft());
+		return (30 / getMaxAircraft());
 	}
 	
 	private cls.AirportControlBox airport_control_box;
@@ -141,10 +141,12 @@ public class Demo extends Scene {
 	 * @return maximum number of planes
 	 */
 	private int getMaxAircraft() {
-		if (multiplier == 1) 
+		if (score.getMultiplier() == 1) 
 			return 3;
+		if (score.getMultiplier() == 3) 
+			return 5;
 		else
-			return multiplier;
+			return score.getMultiplier();
 	}
 	/**
 	 * The current control altitude of the ACTO

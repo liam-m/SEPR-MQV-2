@@ -472,7 +472,7 @@ public class Aircraft {
 	 * Calls {@link isMouseOver()} using {@link input.mouseX()} and {@link input.mouseY()} as the arguments.
 	 * @return true, if the mouse is close enough to this plane. False, otherwise.
 	 */
-	public boolean isMouseOver() { return isMouseOver(input.mouseX(), input.mouseY()); }
+	public boolean isMouseOver() { return isMouseOver(input.mouseX() - 16, input.mouseY() - 48); }
 	
 	/**
 	 * Updates the plane's position and bearing, the stage of its route, and whether it has finished its flight.
@@ -778,7 +778,7 @@ public class Aircraft {
 				return i;
 			} else if (plane != this && isWithin(plane, separationRule)) {
 				planesTooNear.add(plane);
-				score.setMeterFill(-2); // Punishment for breaching separation rules (applies to all aircraft involved - usually 2)
+				score.setMeterFill(-1); // Punishment for breaching separation rules (applies to all aircraft involved - usually 2)
 				if (collisionWarningSoundFlag == false) {
 					collisionWarningSoundFlag = true;
 					WARNING_SOUND.play();
