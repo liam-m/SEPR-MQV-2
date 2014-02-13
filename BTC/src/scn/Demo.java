@@ -676,7 +676,8 @@ public class Demo extends Scene {
 				Waypoint newWaypoint = findClickedWaypoint(x, y);
 				if (newWaypoint != null) {
 					selectedAircraft.alterPath(selectedPathpoint, newWaypoint);
-					ordersBox.addOrder(">>> WOO");
+					ordersBox.addOrder(">>> " + selectedAircraft.getName() + " please alter your course.");
+					ordersBox.addOrder("<<< Roger that. Altering course now.");
 				}
 				selectedPathpoint = -1;
 			}
