@@ -55,6 +55,7 @@ public abstract class window {
 	public static void setSize(int width, int height) {
 		try {
 			Display.setDisplayMode(new DisplayMode(width, height));
+			Display.setLocation(192, 10);
 			_width = width;
 			_height = height;
 		} catch (LWJGLException e) {
