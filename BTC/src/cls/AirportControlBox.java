@@ -65,12 +65,15 @@ public class AirportControlBox implements EventHandler{
 	 */
 	private void drawLabels() {	
 		// Take off Button
+		int opacity = (airport.is_active || airport.aircraft_hangar.size() == 0) ? 128 : 256;
+		graphics.setColour(0, 128, 0, opacity);
 		double y =  (window.height() - height / number_of_divisions) - (window.height() - (positionY + height));
 		if (!airport.is_active) {
 			graphics.print("TAKE OFF", positionX + ((width - 70)/2), y + 12); // positioning values can be altered as seen fit
 		} else {
 			graphics.print("AIRPORT BUSY", positionX + ((width - 100)/2), y + 12); // positioning values can be altered as seen fit
 		}
+		graphics.setColour(0, 128, 0);
 		
 		//Airport Hangar
 		double y_position = (y + 12);
@@ -116,7 +119,7 @@ public class AirportControlBox implements EventHandler{
 			
 	@Override
 	public void mousePressed(int key, int x, int y) {
-		if (key == input.MOUSE_LEFT && isMouseOverButton(x, y)) {
+		if (key == input.MOUSE_LEFT && isMouseOverButton(x, y) && airport.aircraft_hangar.size() > 0) {
 			clicked = true;
 		}
 	}

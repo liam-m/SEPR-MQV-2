@@ -110,13 +110,11 @@ public class Airport extends Waypoint implements EventHandler {
 
 	@Override
 	public void keyPressed(int key) {
-		
-		
+				
 	}
 
 	@Override
 	public void keyReleased(int key) {
-		
 		
 	}
 	
