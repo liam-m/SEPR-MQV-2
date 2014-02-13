@@ -32,6 +32,8 @@ public abstract class graphics {
 
 		protected abstract void printCentred(double x, double y, double width, String text, double size);
 		
+		protected abstract void printRight(double x, double y, double width, String text, double size);
+		
 	}
 	
 	/**
@@ -134,7 +136,42 @@ public abstract class graphics {
 			glDisable(GL_TEXTURE_2D);
 		}
 
-	}
+		/**
+		 * Hacked above method that prints to the right of the x and y coordinates.
+		 */
+		protected void printRight(double x, double y, double width, String text, double size) {
+			y = window.height() - y;
+			double w = image.height();
+			double h = -image.height();
+			double qw = w / image.width();
+			double qh = 1;
+			x += (width - (w * text.length() * size));
+		
+			glEnable(GL_TEXTURE_2D);
+			image.texture.bind();
+			glPushMatrix();
+			glTranslated(x, y, 0);
+			glScaled(size, size, 1);
+			glBegin(GL_QUADS);
+			for (int i = 0; i < text.length(); i ++) {
+				double qx = glyphs.indexOf(text.charAt(i)) * w / image.width();
+				glTexCoord2d(qx, 0);
+				glVertex2d(w * i, 0);
+				glTexCoord2d(qx + qw, 0);
+				glVertex2d(w * (i+1), 0);
+				glTexCoord2d(qx + qw, qh);
+				glVertex2d(w * (i+1), h);
+				glTexCoord2d(qx, qh);
+				glVertex2d(w * i, h);
+			}
+			glEnd();
+			glPopMatrix();
+			glDisable(GL_TEXTURE_2D);
+		}
+
+}
+
+
 	
 	/**
 	 * <h1>jog.graphics.SystemFont</h1>
@@ -192,6 +229,20 @@ public abstract class graphics {
 			glPopMatrix();
 		}
 		
+		/**
+		 * Hacked above method that prints to the right of the x and y coordinates.
+		 */
+		public void printRight(double x, double y, double width, String text, double size) {
+			y = y - window.height();
+			x += (width - _font.getWidth(text));
+			
+			glPushMatrix();
+			glScaled(1, -1, 0);
+			_font.drawString((int)x, (int)y, text);
+			glPopMatrix();
+		}
+		
+	
 	}
 	
 	/**
@@ -697,6 +748,19 @@ public abstract class graphics {
 	static public void printCentred(String text, double x, double y, double size, double width) {
 		if (currentFont == null) currentFont = newSystemFont("Times New Roman");
 		currentFont.printCentred(x, y, width, text, size);
+	}
+	
+	/**
+	 * Prints to the right of x/y coordinates.
+	 * @param text is the String to print.
+	 * @param x coordinate to print from.
+	 * @param y coordinate to print from.
+	 * @param size scales the text.
+	 * @param width is redundant.
+	 */
+	static public void printRight(String text, double x, double y, double size, double width) {
+		if (currentFont == null) currentFont = newSystemFont("Times New Roman");
+		currentFont.printRight(x, y, width, text, size);
 	}
 	
 	/**

@@ -10,14 +10,17 @@ import scn.Demo;
 import cls.Aircraft;
 import cls.Waypoint;
 import cls.Vector;
+import cls.Score;
 
 public class AircraftTest {	
 	Aircraft testAircraft;
+	Score testScore;
 	
 	@Before
 	public void setUp() {
 		Waypoint[] waypointList = new Waypoint[]{new Waypoint(0, 0, true), new Waypoint(100, 100, true), new Waypoint(25, 75, false), new Waypoint(75, 25, false), new Waypoint(50,50, false)};
 		testAircraft = new Aircraft("testAircraft", "Berlin", "Dublin", new Waypoint(100,100, true), new Waypoint(0,0, true), null, 10.0, waypointList, 1);
+		testScore = new Score();
 	}
 	
 	// Test get functions
@@ -105,53 +108,37 @@ public class AircraftTest {
 		testDemo.aircraftList().add(testAircraft);
 		Aircraft plane = testDemo.aircraftList().get(0);
 
-		assertTrue(testDemo.getTotalScore() == 0);
-		assertTrue(testDemo.multiplier == 1);
-		assertTrue(testDemo.getMultiplierVariable() == 0);
-		assertTrue(plane.getBaseScore() == 200);
-		assertTrue(plane.getPlaneBonusToMultiplier() == 2);
+		assertTrue(testScore.getTotalScore() == 0);
+		assertTrue(testScore.getMultiplier() == 1);
+		assertTrue(testScore.getMultiplierLevel() == 1);
+		assertTrue(plane.getBaseScore() == 150);
 
 		// Simulating Demo class' update from here (calling that function would otherwise interfere with testing):
 
-		testDemo.increaseMultiplierVariable(plane.getPlaneBonusToMultiplier());
-		testDemo.increaseTotalScore(testDemo.multiplier * plane.getBaseScore());
+		testScore.increaseTotalScore(testScore.getMultiplier() * plane.getBaseScore());
 
-		assertTrue(testDemo.getTotalScore() == 200);
-		assertTrue(testDemo.multiplier == 1);
-		assertTrue(testDemo.getMultiplierVariable() == 2);	
+		assertTrue(testScore.getTotalScore() == 150);
 	}
 
 	// Testing multiplier 
 	@Test
 	public void testScoreMultiplier() {
 		Demo testDemo = new Demo(1);
-		int multVar = testDemo.getMultiplierVariable();
+		testDemo.initializeAircraftArray();
+		testDemo.aircraftList().add(testAircraft);
+		Aircraft plane = testDemo.aircraftList().get(0);
+		
+		assertTrue(testScore.getMultiplierLevel() == 1);
+		assertTrue(testScore.getMultiplier() == 1);
+		assertTrue(testScore.getMeterFill() == 0);
+		
+		testScore.setMeterFill(256);
+		
+		assertTrue(testScore.getMultiplierLevel() == 2);
+		assertTrue(testScore.getMultiplier() == 3);
+		assertTrue(testScore.getMeterFill() == 1);
 
-		assertTrue(testDemo.multiplier == 1);
-		for (int i = 0; i < 132; i++) {
-
-			if (multVar >= 0 && multVar < 10) 
-				assertTrue(testDemo.multiplier == 1);
-
-			if (multVar >= 10 && multVar < 40) 
-				assertTrue(testDemo.multiplier == 3);
-
-			if (multVar >= 40 && multVar < 80) 
-				assertTrue(testDemo.multiplier == 5);
-
-			if (multVar >= 80 && multVar < 130) 
-				assertTrue(testDemo.multiplier == 7); 
-
-			if (multVar >= 130) 
-				assertTrue(testDemo.multiplier == 10);
-
-			testDemo.increaseMultiplierVariable(1);
-			multVar = testDemo.getMultiplierVariable();
-		}
-
-		assertTrue(testDemo.multiplier == 10);
-		testDemo.resetMultiplier();
-		assertTrue(testDemo.multiplier == 1);
+		
 	}
 
 	// Testing totalDistanceInFlightPlan 

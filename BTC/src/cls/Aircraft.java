@@ -152,22 +152,6 @@ public class Aircraft {
 	public static final int ALTITUDE_LEVEL = 0;
 	
 	/**
-	 * This method returns multiplier bonus to reward players for fast and efficient management of planes
-	 * @param optimalTime - Ideal time, not really possible to achieve.  
-	 * @param timeTaken - Total time a plane spent in the airspace. 
-	 * @return 2 for very efficient, alternatively 1.5 
-	 */
-	public static double efficiencyBonus(double optimalTime, double timeTaken) {
-		if ((optimalTime/ timeTaken) > 0.9)
-			return 2;
-		if ((optimalTime/ timeTaken) > 0.75)
-			return 1.5;
-		if ((optimalTime/ timeTaken) > 0.6)
-			return 1.25;
-		return 1;
-	}
-	
-	/**
 	 * Flags whether the collision warning sound has been played before.
 	 * If set, plane will not play warning again until it the separation violation involving it ends
 	 */
@@ -185,11 +169,12 @@ public class Aircraft {
 	 *leaves the airspace.
 	 */
 	private int baseScore;
+	private int individualScore;
 	
 	/**
 	 * This variable increases the multiplierVariable when a plane successfully leaves the airspace.
 	 */
-	private int planeBonusToMultiplier; 
+	private int additionToMultiplier = 1; 
 	
 	/**
 	 * Used to get a base score per plane outside of Aircraft class.
@@ -200,19 +185,49 @@ public class Aircraft {
 	}
 	
 	/**
+	 * Gets the score for a specific aircraft.
+	 */
+	public int getScore() {
+		return individualScore;
+	}
+	
+	/**
+	 * Sets the score for a specific aircraft.
+	 */
+	public void setScore(int score) {
+		individualScore = score;
+	}
+	
+	/**
 	 * Used to get a planeBonusToMultiplier outside of Aircraft class.
 	 * @return planeBonusToMultiplier
 	*/
-	public int getPlaneBonusToMultiplier() {
-		return planeBonusToMultiplier;
+	public int getAdditionToMultiplier() {
+		return additionToMultiplier;
 	}
 	
 	/**
 	 * Used to set planeBonusToMultiplier outside of Aircraft class.
 	 * @param number
 	 */
-	public void setPlaneBonusToMultiplier(int number) {
-		planeBonusToMultiplier = number;
+	public void setAdditionToMultiplier(int multiplierLevel) {
+		switch (multiplierLevel) {
+		case 1:
+			additionToMultiplier = 64;
+			break;
+		case 2:
+			additionToMultiplier = 32;
+			break;
+		case 3:
+			additionToMultiplier = 32;
+			break;
+		case 4:
+			additionToMultiplier = 16;
+			break;
+		case 5:
+			additionToMultiplier = 8;
+			break;
+		}
 	}
 	
 	/**
@@ -265,8 +280,7 @@ public class Aircraft {
 				separationRule = 64;
 				turnSpeed = Math.PI / 4;
 				altitudeChangeSpeed = 400;
-				baseScore = 100;
-				planeBonusToMultiplier = 1;
+				baseScore = 60;
 				optimalTime = totalDistanceInFlightPlan()/speed;
 			break;
 			
@@ -275,8 +289,7 @@ public class Aircraft {
 				velocity = velocity.scaleBy(2);
 				turnSpeed = Math.PI / 3;
 				altitudeChangeSpeed = 200;
-				baseScore = 200;
-				planeBonusToMultiplier = 2;
+				baseScore = 150;
 				optimalTime = totalDistanceInFlightPlan()/(speed * 2);
 			break;
 			
@@ -287,8 +300,7 @@ public class Aircraft {
 				// this helps keep the aircraft on track.
 				turnSpeed = Math.PI / 2;
 				altitudeChangeSpeed = 100;
-				baseScore = 300;
-				planeBonusToMultiplier = 3;
+				baseScore = 240;
 				optimalTime = totalDistanceInFlightPlan()/(speed * 3);
 			break;
 			
@@ -757,7 +769,7 @@ public class Aircraft {
 	 * @param scene the game scene object.
 	 * @return 0 if no collisions, 1 if separation violation, 2 if crash
 	 */
-	public int updateCollisions(double time_difference, ArrayList<Aircraft> aircraftList) {
+	public int updateCollisions(double time_difference, ArrayList<Aircraft> aircraftList, Score score) {
 		planesTooNear.clear();
 		for (int i = 0; i < aircraftList.size(); i ++) {
 			Aircraft plane = aircraftList.get(i);
@@ -766,10 +778,10 @@ public class Aircraft {
 				return i;
 			} else if (plane != this && isWithin(plane, separationRule)) {
 				planesTooNear.add(plane);
+				score.setMeterFill(-2); // Punishment for breaching separation rules (applies to all aircraft involved - usually 2)
 				if (collisionWarningSoundFlag == false) {
 					collisionWarningSoundFlag = true;
 					WARNING_SOUND.play();
-					plane.setPlaneBonusToMultiplier(-3); // Punishment for breaching separation rules (applies to all aircraft involved - usually 2)
 				}
 			}
 		}
