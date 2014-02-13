@@ -69,9 +69,9 @@ public class AirportControlBox implements EventHandler{
 		graphics.setColour(0, 128, 0, opacity);
 		double y =  (window.height() - height / number_of_divisions) - (window.height() - (positionY + height));
 		if (!airport.is_active) {
-			graphics.print("TAKE OFF", positionX + ((width - 70)/2), y + 12); // positioning values can be altered as seen fit
+			graphics.print("TAKE OFF", positionX + ((width - 70)/2), y + 9); // positioning values can be altered as seen fit
 		} else {
-			graphics.print("AIRPORT BUSY", positionX + ((width - 100)/2), y + 12); // positioning values can be altered as seen fit
+			graphics.print("AIRPORT BUSY", positionX + ((width - 100)/2), y + 9); // positioning values can be altered as seen fit
 		}
 		graphics.setColour(0, 128, 0);
 		
@@ -82,16 +82,16 @@ public class AirportControlBox implements EventHandler{
 			y_position -= (height / number_of_divisions);
 			
 			graphics.setColour(0, 128, 0);
-			graphics.print(airport.aircraft_hangar.get(i).getName(), positionX + ((width - 70)/2), y_position);
+			graphics.print(airport.aircraft_hangar.get(i).getName(), positionX + ((width - 70)/2), y_position - 3);
 			
 			percentage_complete = barProgress(airport.time_entered.get(i));
 			
 			if (percentage_complete == 1) {
 				graphics.setColour(128, 0, 0);
-				graphics.line(positionX, y_position + 10, positionX + (width * percentage_complete), y_position + 10);
+				graphics.line(positionX, y_position + 12, positionX + (width * percentage_complete), y_position + 12);
 			} else {
 				graphics.setColour(128, 128, 0);
-				graphics.line(positionX, y_position + 10, positionX + (width * percentage_complete), y_position + 10);
+				graphics.line(positionX, y_position + 12, positionX + (width * percentage_complete), y_position + 12);
 			}
 			
 		}
