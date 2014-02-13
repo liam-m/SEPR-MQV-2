@@ -40,11 +40,7 @@ public class Airport extends Waypoint implements EventHandler {
 		graphics.draw(airport, x_location-airport.width()/2, y_location-airport.height()/2);
 		if (should_draw_landing_radius) {
 			graphics.setColour(0, 128, 0, 128);
-			if (clicked) {
-				graphics.circle(true, x_location, y_location, landing_radius);
-			} else {
-				graphics.circle(false, x_location, y_location, landing_radius);
-			}	
+			graphics.circle(clicked, x_location, y_location, landing_radius, 32); // Filled if clicked, else not filled	
 		}
 	}
 	
