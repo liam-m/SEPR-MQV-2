@@ -299,7 +299,7 @@ public class Demo extends Scene {
 		timeElapsed += time_difference;
 		
 		if (airport.getLongestTimeInHangar(timeElapsed) > 5) {
-			score.decreaseMultiplierVariable(2);
+			score.setMeterFill(-1);
 			if (!beenPunished) {
 				ordersBox.addOrder(">>> Plane waiting to take off, multiplier decreasing");
 				beenPunished = true;
@@ -312,14 +312,15 @@ public class Demo extends Scene {
 		for (Aircraft aircraft : aircraftInAirspace) {
 			aircraft.update(time_difference);
 			if (aircraft.isFinished()) {
-				score.increaseMultiplierVariable(aircraft.getAdditionToMultiplier());
+				aircraft.setAdditionToMultiplier(score.getMultiplierLevel());
+				score.setMeterFill(aircraft.getAdditionToMultiplier());
 				aircraft.setScore(score.calculateAircraftScore(aircraft));
-				score.increaseTotalScore (score.multiplier * aircraft.getScore());
+				score.increaseTotalScore(score.getMultiplier() * aircraft.getScore());
 				
 				//recentlyDepartedAircraft.add(plane);
 				
 				System.out.println("Optimal time :" + aircraft.getOptimalTime() + "; Actual time spent: " + (System.currentTimeMillis()/1000 - aircraft.getTimeOfCreation())); // For debugging
-				System.out.println("Total score: " + score.getTotalScore() + "; Multiplier: " + score.multiplier + "; multiplierVariable: " + score.getMultiplierVariable() + "\n "); // For debugging
+				System.out.println("Total score: " + score.getTotalScore() + "; Multiplier: " + score.getMultiplier() + "; multiplierVariable: " + score.getMultiplierLevel() + "\n "); // For debugging
 				if (aircraft.getAdditionToMultiplier() < 0)
 					ordersBox.addOrder("<<< The plane has breached separation rules on its path, your multiplier may be reduced ");
 				
@@ -378,7 +379,7 @@ public class Demo extends Scene {
 	 */
 	private void checkCollisions(double time_difference) {
 		for (Aircraft plane : aircraftInAirspace) {
-			int collisionState = plane.updateCollisions(time_difference, aircraftList());
+			int collisionState = plane.updateCollisions(time_difference, aircraftList(), score);
 			if (collisionState >= 0) {
 				gameOver(plane, aircraftList().get(collisionState));
 				return;

@@ -109,52 +109,36 @@ public class AircraftTest {
 		Aircraft plane = testDemo.aircraftList().get(0);
 
 		assertTrue(testScore.getTotalScore() == 0);
-		assertTrue(testScore.multiplier == 1);
-		assertTrue(testScore.getMultiplierVariable() == 0);
+		assertTrue(testScore.getMultiplier() == 1);
+		assertTrue(testScore.getMultiplierLevel() == 1);
 		assertTrue(plane.getBaseScore() == 150);
-		assertTrue(plane.getAdditionToMultiplier() == 2);
 
 		// Simulating Demo class' update from here (calling that function would otherwise interfere with testing):
 
-		testScore.increaseMultiplierVariable(plane.getAdditionToMultiplier());
-		testScore.increaseTotalScore(testScore.multiplier * plane.getBaseScore());
+		testScore.increaseTotalScore(testScore.getMultiplier() * plane.getBaseScore());
 
 		assertTrue(testScore.getTotalScore() == 150);
-		assertTrue(testScore.multiplier == 1);
-		assertTrue(testScore.getMultiplierVariable() == 2);	
 	}
 
 	// Testing multiplier 
 	@Test
 	public void testScoreMultiplier() {
 		Demo testDemo = new Demo(1);
-		int multVar = testScore.getMultiplierVariable();
+		testDemo.initializeAircraftArray();
+		testDemo.aircraftList().add(testAircraft);
+		Aircraft plane = testDemo.aircraftList().get(0);
+		
+		assertTrue(testScore.getMultiplierLevel() == 1);
+		assertTrue(testScore.getMultiplier() == 1);
+		assertTrue(testScore.getMeterFill() == 0);
+		
+		testScore.setMeterFill(256);
+		
+		assertTrue(testScore.getMultiplierLevel() == 2);
+		assertTrue(testScore.getMultiplier() == 3);
+		assertTrue(testScore.getMeterFill() == 1);
 
-		assertTrue(testScore.multiplier == 1);
-		for (int i = 0; i < 132; i++) {
-
-			if (multVar >= 0 && multVar < 10) 
-				assertTrue(testScore.multiplier == 1);
-
-			if (multVar >= 10 && multVar < 40) 
-				assertTrue(testScore.multiplier == 3);
-
-			if (multVar >= 40 && multVar < 80) 
-				assertTrue(testScore.multiplier == 5);
-
-			if (multVar >= 80 && multVar < 130) 
-				assertTrue(testScore.multiplier == 7); 
-
-			if (multVar >= 130) 
-				assertTrue(testScore.multiplier == 10);
-
-			testScore.increaseMultiplierVariable(1);
-			multVar = testScore.getMultiplierVariable();
-		}
-
-		assertTrue(testScore.multiplier == 10);
-		testScore.resetMultiplier();
-		assertTrue(testScore.multiplier == 1);
+		
 	}
 
 	// Testing totalDistanceInFlightPlan 

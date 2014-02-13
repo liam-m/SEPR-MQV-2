@@ -210,8 +210,24 @@ public class Aircraft {
 	 * Used to set planeBonusToMultiplier outside of Aircraft class.
 	 * @param number
 	 */
-	public void setAdditionToMultiplier(int number) {
-		additionToMultiplier = number;
+	public void setAdditionToMultiplier(int multiplierLevel) {
+		switch (multiplierLevel) {
+		case 1:
+			additionToMultiplier = 64;
+			break;
+		case 2:
+			additionToMultiplier = 32;
+			break;
+		case 3:
+			additionToMultiplier = 32;
+			break;
+		case 4:
+			additionToMultiplier = 16;
+			break;
+		case 5:
+			additionToMultiplier = 8;
+			break;
+		}
 	}
 	
 	/**
@@ -760,7 +776,7 @@ public class Aircraft {
 	 * @param scene the game scene object.
 	 * @return 0 if no collisions, 1 if separation violation, 2 if crash
 	 */
-	public int updateCollisions(double time_difference, ArrayList<Aircraft> aircraftList) {
+	public int updateCollisions(double time_difference, ArrayList<Aircraft> aircraftList, Score score) {
 		planesTooNear.clear();
 		for (int i = 0; i < aircraftList.size(); i ++) {
 			Aircraft plane = aircraftList.get(i);
@@ -769,10 +785,10 @@ public class Aircraft {
 				return i;
 			} else if (plane != this && isWithin(plane, separationRule)) {
 				planesTooNear.add(plane);
+				score.setMeterFill(-2); // Punishment for breaching separation rules (applies to all aircraft involved - usually 2)
 				if (collisionWarningSoundFlag == false) {
 					collisionWarningSoundFlag = true;
 					WARNING_SOUND.play();
-					plane.setAdditionToMultiplier(-2); // Punishment for breaching separation rules (applies to all aircraft involved - usually 2)
 				}
 			}
 		}
