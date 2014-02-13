@@ -217,10 +217,14 @@ public class Demo extends Scene {
 	/**
 	 * The interval in seconds to generate flights after
 	 */
+	private int getFlightGenerationInterval() {
+		return (60 /getMaxAircraft());
+	}
+	
 	private cls.AirportControlBox airport_control_box;
-	private  double flightGenerationInterval = 60 /getMaxAircraft();
+	
 	/**
-	 * The time eleapsed since the last flight was generated
+	 * The time elapsed since the last flight was generated
 	 */
 	private double flightGenerationTimeElapsed = 6;
 	
@@ -450,8 +454,8 @@ public class Demo extends Scene {
 		}
 		
 		flightGenerationTimeElapsed += time_difference;
-		if(flightGenerationTimeElapsed >= flightGenerationInterval){
-			flightGenerationTimeElapsed -= flightGenerationInterval;
+		if(flightGenerationTimeElapsed >= getFlightGenerationInterval()){
+			flightGenerationTimeElapsed -= getFlightGenerationInterval();
 			if (aircraftInAirspace.size() < getMaxAircraft()){
 				generateFlight();
 			}
