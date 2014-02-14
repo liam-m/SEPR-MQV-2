@@ -601,6 +601,7 @@ public class Aircraft {
 		}
 		double x, y;
 		if (isManuallyControlled && input.isMouseDown(input.MOUSE_RIGHT)) {
+			// Draw new bearing
 			graphics.setColour(0, 128, 0, 128);
 			double r = Math.atan2(input.mouseY() - position.y(), input.mouseX() - position.x());
 			x = 16 + xpos + (COMPASS_RADIUS * Math.cos(r));
@@ -614,6 +615,7 @@ public class Aircraft {
 		}
 		x = 16 + xpos + (COMPASS_RADIUS * Math.cos(getBearing()));
 		y = 48 + ypos + (COMPASS_RADIUS * Math.sin(getBearing()));
+		// Draw current bearing
 		graphics.line(xpos + 16, ypos + 48, x, y);
 		graphics.line(xpos + 15, ypos + 48, x, y);
 		graphics.line(xpos + 16, ypos + 47, x, y);

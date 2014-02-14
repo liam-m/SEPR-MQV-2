@@ -439,8 +439,8 @@ public class Demo extends Scene {
 	
 	private boolean compassClicked() {
 		if (selectedAircraft != null) {
-			double dx = selectedAircraft.position().x() - input.mouseX();
-			double dy = selectedAircraft.position().y() - input.mouseY();
+			double dx = selectedAircraft.position().x() - input.mouseX() + 16;
+			double dy = selectedAircraft.position().y() - input.mouseY() + 48;
 			int r = Aircraft.COMPASS_RADIUS;
 			return selectedAircraft.isManuallyControlled() && dx*dx + dy*dy < r*r;
 		}
@@ -512,13 +512,10 @@ public class Demo extends Scene {
 					waypointClicked = true; // Flag to mouseReleased
 					selectedPathpoint = selectedAircraft.flightPathContains(clickedWaypoint);					
 				}
-			} else if (airportClicked(x, y)) {
-				airport.mousePressed(key, x, y); // Only cares about left click for now
-				for (Aircraft a : aircraftInAirspace) {
-					if (a.is_waiting_to_land && a.currentTarget.equals(airport.position())) {
-						a.land();
-						break;
-					}
+			} else if (airportClicked(x, y) && selectedAircraft != null) {
+				if (selectedAircraft.is_waiting_to_land && selectedAircraft.currentTarget.equals(airport.position())) {
+					airport.mousePressed(key, x, y); // Only cares about left click for now
+					selectedAircraft.land();
 				}
 			}
 		} else if (key == input.MOUSE_RIGHT) {
@@ -555,8 +552,8 @@ public class Demo extends Scene {
 			clickedWaypoint = null; // Fine to set to null now as will have been dealt with
 		} else if (key == input.MOUSE_RIGHT) {
 			if (compassClicked && selectedAircraft != null) {
-				double dx = input.mouseX() - selectedAircraft.position().x();
-				double dy = input.mouseY() - selectedAircraft.position().y();
+				double dx = input.mouseX() - selectedAircraft.position().x() + 16;
+				double dy = input.mouseY() - selectedAircraft.position().y() + 48;
 				double newBearing = Math.atan2(dy, dx);
 				selectedAircraft.setBearing(newBearing);
 			}
