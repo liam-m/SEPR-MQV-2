@@ -483,7 +483,7 @@ public class Aircraft {
 	public void update(double time_difference) {
 		if (hasFinished) return;
 		
-		if (is_landing) {
+		if (is_landing && position.z() > 100) {
 			position.setZ(position.z()-2529*time_difference);
 		} else {
 			switch (altitudeState) {
