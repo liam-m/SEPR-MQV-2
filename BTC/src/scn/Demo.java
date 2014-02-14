@@ -442,7 +442,7 @@ public class Demo extends Scene {
 			double dx = selectedAircraft.position().x() - input.mouseX() + 16;
 			double dy = selectedAircraft.position().y() - input.mouseY() + 48;
 			int r = Aircraft.COMPASS_RADIUS;
-			return selectedAircraft.isManuallyControlled() && dx*dx + dy*dy < r*r;
+			return  dx*dx + dy*dy < r*r;
 		}
 		return false;
 	}
@@ -519,10 +519,21 @@ public class Demo extends Scene {
 				}
 			}
 		} else if (key == input.MOUSE_RIGHT) {
-			if (compassClicked()) {
-				compassClicked = true; // Flag to mouseReleased
-			} else {
-				deselectAircraft();
+			if (selectedAircraft != null) {
+				if (compassClicked()) {
+					compassClicked = true; // Flag to mouseReleased
+					if (!selectedAircraft.isManuallyControlled())
+						toggleManualControl();
+				} else {
+					if (selectedAircraft.isManuallyControlled()) {
+						toggleManualControl();
+					} else {
+						deselectAircraft();					
+					}
+				}
+			} else if (aircraftClicked(x, y)) {
+				selectedAircraft = findClickedAircraft(x, y);
+				mousePressed(key, x, y); ; // Re-run, selected aircraft is now not null so it will go into above branch
 			}
 		}
 	}
