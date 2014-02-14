@@ -499,13 +499,10 @@ public class Demo extends Scene {
 		if (key == input.MOUSE_LEFT) {
 			if (aircraftClicked(x, y)) {
 				Aircraft clickedAircraft = findClickedAircraft(x, y);
-				if (clickedAircraft == selectedAircraft) {
-					toggleManualControl();
-				} else {
-					deselectAircraft();
-					selectedAircraft = clickedAircraft;
-					altimeter.show(selectedAircraft);
-				}
+				deselectAircraft();
+				selectedAircraft = clickedAircraft;
+				altimeter.show(selectedAircraft);
+				
 			} else if (waypointInFlightplanClicked(x, y, selectedAircraft) && !selectedAircraft.isManuallyControlled()) {
 				clickedWaypoint = findClickedWaypoint(x, y);
 				if (clickedWaypoint != null) {
