@@ -519,6 +519,9 @@ public class Demo extends Scene {
 				}
 			}
 		} else if (key == input.MOUSE_RIGHT) {
+			if (aircraftClicked(x, y) && selectedAircraft == null) {
+				selectedAircraft = findClickedAircraft(x, y);
+			}
 			if (selectedAircraft != null) {
 				if (compassClicked()) {
 					compassClicked = true; // Flag to mouseReleased
@@ -531,9 +534,6 @@ public class Demo extends Scene {
 						deselectAircraft();					
 					}
 				}
-			} else if (aircraftClicked(x, y)) {
-				selectedAircraft = findClickedAircraft(x, y);
-				mousePressed(key, x, y); ; // Re-run, selected aircraft is now not null so it will go into above branch
 			}
 		}
 	}
