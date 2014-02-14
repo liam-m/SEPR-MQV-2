@@ -474,6 +474,8 @@ public class Aircraft {
 	 */
 	public boolean isMouseOver() { return isMouseOver(input.mouseX() - 16, input.mouseY() - 48); }
 	
+	private boolean is_landing = false;
+	
 	/**
 	 * Updates the plane's position and bearing, the stage of its route, and whether it has finished its flight.
 	 * @param time_difference
@@ -481,15 +483,19 @@ public class Aircraft {
 	public void update(double time_difference) {
 		if (hasFinished) return;
 		
-		switch (altitudeState) {
-		case -1:
-			fall();
-			break;
-		case 0:
-			break;
-		case 1:
-			climb();
-			break;
+		if (is_landing) {
+			position.setZ(position.z()-2529*time_difference);
+		} else {
+			switch (altitudeState) {
+			case -1:
+				fall();
+				break;
+			case 0:
+				break;
+			case 1:
+				climb();
+				break;
+			}
 		}
 		
 		// Update position
@@ -865,6 +871,7 @@ public class Aircraft {
 	
 	public void land() {
 		is_waiting_to_land = false;
+		is_landing = true;
 		Demo.airport.is_active = true;
 	}
 	
