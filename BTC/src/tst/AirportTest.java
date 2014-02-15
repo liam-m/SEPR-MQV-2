@@ -21,13 +21,7 @@ public class AirportTest {
 		test_aircraft = new Aircraft("testAircraft", "Berlin", "Dublin", new Waypoint(100,100, true), new Waypoint(0,0, true), null, 10.0, waypointList, 1);			
 	}
 	
-	@Test
-	public void testIsWithinRadius() {
-		Vector position_in_radius = new Vector(0, 0, 0);
-		Vector position_out_of_radius = new Vector(640, 480, 0);
-		assertTrue("1st position is in radius", test_airport.isWithinRadius(position_in_radius));
-		assertFalse("2nd position is not in the radius", test_airport.isWithinRadius(position_out_of_radius));
-	}
+	// TODO write tests for new methods (isMouseOver...)
 	
 	@Test
 	public void testAddToHangar() {
