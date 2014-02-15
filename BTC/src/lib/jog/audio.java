@@ -178,17 +178,35 @@ public abstract class audio {
 			return _volume;
 		}
 	}
-	//#What?
+	/**
+	 * Constructor for a music source.
+	 * @param filepath The path to the audio file.
+	 * @param stream Whether to load the music as it's playing.
+	 * @param loop Whether to loop the music.
+	 * @return Returns the music source created
+	 */
+	 //#Check I assume this what it does 
 	public static Music newMusic(String filepath, boolean stream, boolean loop) {
 		return new Music(filepath, stream, loop);
 	}
-	//#What?
+	//Does the same as the above but forces streaming and looping
 	public static Music newMusic(String filepath) { return newMusic(filepath, true, true); }
-	//#What?
+	/**
+	 * Creates a sound effect
+	 * @param filepath The path to the audio file.
+	 * @return Returns the new Sound Effect created
+	 */
 	public static Sound newSoundEffect(String filepath) {
 		return new Sound(filepath);
 	}
-	//#What?
+	/**
+	 * Constructor for new audio
+	 * @param filepath The path to the audio file.
+	 * @param stream Whether to load the music as it's playing.
+	 * @return Returns the music source created
+	 * @throws IOException
+	 */
+	//#Check - Why is IOException thrown
 	public static Audio newAudio(String filepath, boolean stream) throws IOException {
 		if (stream) { 
 			return AudioLoader.getStreamingAudio("OGG", ResourceLoader.getResource(filepath));
@@ -196,11 +214,17 @@ public abstract class audio {
 			return AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream(filepath));
 		}
 	}
-	//#What?
+	/**
+	 * 
+	 */
+	//#Check - What does update() do?
 	public static void update() {
 		SoundStore.get().poll(0);
 	}
-	//#What?
+	/**
+	 * Destroys the OpenAL instance originally created by LWJGL
+	 */
+	//#Check
 	public static void dispose() {
 		AL.destroy();
 	}
