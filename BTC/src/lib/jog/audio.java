@@ -33,9 +33,9 @@ public abstract class audio {
 		
 		/**
 		 * Constructor for a music source.
-		 * @param filepath the path to the audio file.
-		 * @param stream whether to load the music as it's playing.
-		 * @param looping whether to loop the music.
+		 * @param filepath The path to the audio file.
+		 * @param stream Whether to load the music as it's playing.
+		 * @param looping Whether to loop the music.
 		 */
 		private Music(String filepath, boolean stream, boolean looping) {
 			_looping = looping;
@@ -82,7 +82,7 @@ public abstract class audio {
 		}
 		
 		/**
-		 * Unpauses playback of the music.
+		 * Resumes playback of the music.
 		 */
 		public void resume() {
 			_source.playAsMusic(_pitch, _volume, _looping);
@@ -91,7 +91,7 @@ public abstract class audio {
 		}
 
 		/**
-		 * Gets how far in, in seconds, the playback is of the music source. 
+		 * Returns the current playback postion in seconds 
 		 * @return seconds into the music.
 		 */
 		public float tell() {
@@ -99,16 +99,16 @@ public abstract class audio {
 		}
 		
 		/**
-		 * Sets the positions of the playback through the music source.
-		 * @param position the location through the music.
+		 * Sets the position of the playback through the music source
+		 * @param position the position through the music.
 		 */
 		public void seek(float position) {
 			_source.setPosition(position);
 		}
 		
 		/**
-		 * Sets the volume for the music to be played at.
-		 * @param volume the volume at which to play the music.
+		 * Sets the volume for the music to be played at
+		 * @param volume Volume at which to play the music.
 		 */
 		public void setVolume(float volume) {
 			float position = tell();
@@ -171,23 +171,24 @@ public abstract class audio {
 		}
 		
 		/**
-		 * Gets the current volume the music is being played at.
+		 * Gets the current volume 
 		 * @return the current volume.
 		 */
 		public float getVolume() {
 			return _volume;
 		}
 	}
-	
+	//#What?
 	public static Music newMusic(String filepath, boolean stream, boolean loop) {
 		return new Music(filepath, stream, loop);
 	}
+	//#What?
 	public static Music newMusic(String filepath) { return newMusic(filepath, true, true); }
-	
+	//#What?
 	public static Sound newSoundEffect(String filepath) {
 		return new Sound(filepath);
 	}
-	
+	//#What?
 	public static Audio newAudio(String filepath, boolean stream) throws IOException {
 		if (stream) { 
 			return AudioLoader.getStreamingAudio("OGG", ResourceLoader.getResource(filepath));
@@ -195,11 +196,11 @@ public abstract class audio {
 			return AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream(filepath));
 		}
 	}
-	
+	//#What?
 	public static void update() {
 		SoundStore.get().poll(0);
 	}
-	
+	//#What?
 	public static void dispose() {
 		AL.destroy();
 	}
