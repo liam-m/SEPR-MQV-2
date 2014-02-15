@@ -101,7 +101,7 @@ public class Airport extends Waypoint implements EventHandler {
 
 	}
 	
-	private boolean isMouseInRect (int test_x, int test_y, int x, int y, int width, int height) {
+	public boolean isMouseInRect (int test_x, int test_y, int x, int y, int width, int height) {
 		return x <= test_x && test_x <= x + width && y <= test_y && test_y <= y + height;
 	}
 	
