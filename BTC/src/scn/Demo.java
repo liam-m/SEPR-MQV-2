@@ -301,7 +301,8 @@ public class Demo extends Scene {
 	public void update(double time_difference) {
 		timeElapsed += time_difference;
 		score.update();
-		
+		graphics.setColour(0, 128, 0, 128);
+		graphics.print("HI", 264, 203, 20);
 		if (airport.getLongestTimeInHangar(timeElapsed) > 5) {
 			score.increaseMeterFill(-1);
 			if (!shownAircraftWaitingMessage) {
@@ -320,9 +321,9 @@ public class Demo extends Scene {
 				score.increaseMeterFill(aircraft.getAdditionToMultiplier());
 				aircraft.setScore(score.calculateAircraftScore(aircraft));
 				score.increaseTotalScore(score.getMultiplier() * aircraft.getScore());
-				aircraft.setTimeOfDepartion(System.currentTimeMillis());
+				aircraft.setTimeOfDeparture(System.currentTimeMillis());
 				recentlyDepartedAircraft.add(aircraft);
-				drawPlaneScoreLabels();
+		
 				
 				System.out.println("Optimal time :" + aircraft.getOptimalTime() + "; Actual time spent: " + (System.currentTimeMillis()/1000 - aircraft.getTimeOfCreation())); // For debugging
 				System.out.println("Total score: " + score.getTotalScore() + "; Multiplier: " + score.getMultiplier() + "; multiplierLevel: " + score.getMultiplierLevel() + "\n "); // For debugging
@@ -634,6 +635,7 @@ public class Demo extends Scene {
 		
 		graphics.setColour(0, 128, 0);
 		drawAdditional();
+		drawPlaneScoreLabels();
 	}
 	
 	/**
@@ -710,23 +712,39 @@ public class Demo extends Scene {
 		}
 	}
 	
+	/**
+	 * Draws points scored for a plane when it successfully leaves the airspace. The points the
+	 * plane scored are displayed just above the plane.
+	 */
 	private void drawPlaneScoreLabels() {
-		for (Aircraft plane : recentlyDepartedAircraft) {
-			if (plane != null) {
-				double currentTime = System.currentTimeMillis(); 
-				double departionTime = plane.getTimeOfDepartion();
-				double timeDifference = currentTime - departionTime;
-				if (timeDifference > 2000) {
-					recentlyDepartedAircraft.remove(plane);
+		Aircraft aircraftToRemove = null;
+		int displayedFor = 2000; // How long the label will be displayed for
+		if (recentlyDepartedAircraft.size() != 0) {
+			for (Aircraft plane : recentlyDepartedAircraft) {
+				if (plane != null) {
+					double currentTime = System.currentTimeMillis(); // Current (system) time
+					double departureTime = plane.getTimeOfDeparture(); // Time when the plane successfully left airspace 
+					double leftAirspaceFor = currentTime - departureTime; // How long since the plane left airspace
+					if (leftAirspaceFor > displayedFor) {
+						aircraftToRemove = plane;
+					}
+					else {
+						int alphaOfPlane =  (int)((displayedFor - leftAirspaceFor)/displayedFor * 255); // Transparency of the label, 255 is opaque
+						String planeScoreValue = String.valueOf(plane.getScore() * score.getMultiplier());
+						// Drawing the score
+						int planeXCoord = (int) plane.getRoute()[plane.getRoute().length -1].position().x();
+						int planeYCoord = (int) plane.getRoute()[plane.getRoute().length -1].position().y();
+						graphics.setColour(255, 255, 255, alphaOfPlane);
+						graphics.print(planeScoreValue, planeXCoord, planeYCoord, 2);
+					}
 				}
-				else {
-					double alphaOfPlane =  (2000 - timeDifference);
-					int planeScoreValue = plane.getScore() * score.getMultiplier();
-					// DO THE DRAWING SOMEHOW
-				}
-			}
-		}  
+			} 
+			if (aircraftToRemove != null)
+				recentlyDepartedAircraft.remove(aircraftToRemove);
+		}
+		
 	}
+		
 	
 	/**
 	 * draw a readout of the time the game has been played for & aircraft in the sky.
