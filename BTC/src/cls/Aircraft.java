@@ -910,11 +910,11 @@ public class Aircraft {
 		return dist;
 	}
 	
-/**
- * Checks if an aircraft is close to an its parameter (entry point). 
- * @param position of a waypoint
- * @return True it if it close
- */
+	/**
+	 * Checks if an aircraft is close to an its parameter (entry point). 
+	 * @param position of a waypoint
+	 * @return True it if it close
+	 */
 	public boolean isCloseToEntry(Vector position) {
 		double x = this.position().x() - position.x();
 		double y = this.position().y() - position.y();
