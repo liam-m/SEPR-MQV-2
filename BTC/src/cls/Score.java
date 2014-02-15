@@ -94,8 +94,8 @@ public class Score {
 	private boolean meter_draining = false;
 	
 	/**
-	 * Used to get multiplierVariable outside of Demo class.
-	 * @return multiplierVariable
+	 * Used to get multiplierLevel variable outside of Demo class.
+	 * @return multiplierLevel variable that is used to increase main multiplier for score.
 	 */	
 	public int getMultiplierLevel() {
 		return multiplierLevel;
