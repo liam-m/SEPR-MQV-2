@@ -729,13 +729,13 @@ public class Demo extends Scene {
 						aircraftToRemove = plane;
 					}
 					else {
-						int alphaOfPlane =  (int)((displayedFor - leftAirspaceFor)/displayedFor * 255); // Transparency of the label, 255 is opaque
+						int scoreTextAlpha =  (int)((displayedFor - leftAirspaceFor)/displayedFor * 255); // Transparency of the label, 255 is opaque
 						String planeScoreValue = String.valueOf(plane.getScore() * score.getMultiplier());
 						// Drawing the score
-						int planeXCoord = (int) plane.getRoute()[plane.getRoute().length -1].position().x();
-						int planeYCoord = (int) plane.getRoute()[plane.getRoute().length -1].position().y();
-						graphics.setColour(255, 255, 255, alphaOfPlane);
-						graphics.print(planeScoreValue, planeXCoord, planeYCoord, 2);
+						int scoreTextX = (int) plane.getRoute()[plane.getRoute().length -1].position().x();
+						int scoreTextY = (int) plane.getRoute()[plane.getRoute().length -1].position().y();
+						graphics.setColour(255, 255, 255, scoreTextAlpha);
+						graphics.print(planeScoreValue, scoreTextX, scoreTextY, 2);
 					}
 				}
 			} 
