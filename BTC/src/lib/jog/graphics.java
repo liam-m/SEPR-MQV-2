@@ -59,10 +59,10 @@ public abstract class graphics {
 		
 		/**
 		 * Prints the text to the display.
-		 * @param x the x coordinate for the text to be drawn to.
-		 * @param y the y coordinate for the text to be drawn to.
-		 * @param text the text to be drawn.
-		 * @param size the size of the drawn text.
+		 * @param x The x coordinate for the text to be drawn to.
+		 * @param y The y coordinate for the text to be drawn to.
+		 * @param text The text to be drawn.
+		 * @param size The size of the drawn text.
 		 */
 		@Override
 		protected void print(double x, double y, String text, double size) {
@@ -97,11 +97,11 @@ public abstract class graphics {
 		
 		/**
 		 * Prints the text to the display centred within specified boundaries.
-		 * @param x the x coordinate for the text to be drawn to.
-		 * @param y the y coordinate for the text to be drawn to.
-		 * @param width the width the text should be centred around.
-		 * @param text the text to be drawn.
-		 * @param size the size of the drawn text.
+		 * @param x The x coordinate for the text to be drawn to.
+		 * @param y The y coordinate for the text to be drawn to.
+		 * @param width The width the text should be centred around.
+		 * @param text The text to be drawn.
+		 * @param size The size of the drawn text.
 		 */
 		@Override
 		protected void printCentred(double x, double y, double width, String text, double size) {
@@ -158,11 +158,10 @@ public abstract class graphics {
 		
 		/**
 		 * Prints the text to the display.
-		 * @param x the x coordinate for the text to be drawn to.
-		 * @param y the y coordinate for the text to be drawn to.
-		 * @param text the text to be drawn.
-		 * @param size the size of the drawn text.
-		 */
+		 * @param x The x coordinate for the text to be drawn to.
+		 * @param y The y coordinate for the text to be drawn to.
+		 * @param text The text to be drawn.
+ 		 */
 		@Override
 		protected void print(double x, double y, String text, double size) {
 			y = y - window.height();
@@ -175,11 +174,11 @@ public abstract class graphics {
 
 		/**
 		 * Prints the text to the display centred within specified boundaries.
-		 * @param x the x coordinate for the text to be drawn to.
-		 * @param y the y coordinate for the text to be drawn to.
-		 * @param width the width the text should be centred around.
-		 * @param text the text to be drawn.
-		 * @param size the size of the drawn text.
+		 * @param x The x coordinate for the text to be drawn to.
+		 * @param y The y coordinate for the text to be drawn to.
+		 * @param width The width the text should be centred around.
+		 * @param text The text to be drawn.
+		 * @param size The size of the drawn text.
 		 */
 		@Override
 		public void printCentred(double x, double y, double width, String text, double size) {
