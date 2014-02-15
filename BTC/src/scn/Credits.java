@@ -28,14 +28,14 @@ public class Credits extends Scene {
 
 	/**
 	 * Constructor
-	 * @param main the main containing the scene
+	 * @param main The main containing the scene
 	 */
 	public Credits(Main main) {
 		super(main);
 	}
 	
 	/**
-	 * INPUT HANDLERS
+	 * Input handlers
 	 */
 	@Override
 	public void mousePressed(int key, int x, int y) {}
@@ -48,7 +48,7 @@ public class Credits extends Scene {
 
 	@Override
 	/**
-	 * exit to the title screen if escape is pressed
+	 * Exit to the title screen if escape is pressed
 	 */
 	public void keyReleased(int key) {
 		if (key == input.KEY_ESCAPE) {
@@ -57,7 +57,7 @@ public class Credits extends Scene {
 	}
 	
 	/**
-	 * Init musis, and the credits text to be offscreen
+	 * Initiate music, and the credits text to be offscreen
 	 */
 	@Override
 	public void start() {
@@ -69,8 +69,8 @@ public class Credits extends Scene {
 
 	@Override
 	/**
-	 * update the credits's scroll position
-	 * hurry the credits movement if certain keys pressed
+	 * Update the credits's scroll position
+	 * Speed up the credits movement if keys are pressed
 	 */
 	public void update(double time_difference) {
 		boolean hurried = input.isKeyDown(input.KEY_SPACE) || input.isMouseDown(input.MOUSE_LEFT);
@@ -81,7 +81,7 @@ public class Credits extends Scene {
 
 	@Override
 	/**
-	 * print the credits based on the current scroll position
+	 * Print the credits based on the current scroll position
 	 */
 	public void draw() {
 		int gap = 64;
@@ -119,7 +119,7 @@ public class Credits extends Scene {
 		graphics.printCentred("Team MQV:", 0, currentHeight, 2, window.width());
 		currentHeight += gap;
 		
-		graphics.printCentred("Adam Aljidy", 0, currentHeight, 2, window.width()/3);
+		graphics.printCentred("Adam Al-jidy", 0, currentHeight, 2, window.width()/3);
 		graphics.printCentred("Jakub Brezonak", window.width()/3, currentHeight, 2, window.width()/3);
 		graphics.printCentred("Jack Chapman", 2 * window.width()/3, currentHeight, 2, window.width()/3);
 		currentHeight += gap;
@@ -160,9 +160,7 @@ public class Credits extends Scene {
 	}
 
 	@Override
-	public void playSound(Sound sound) {
-		// TODO Auto-generated method stub
-		
+	public void playSound(Sound sound) {		
 	}
 
 }
