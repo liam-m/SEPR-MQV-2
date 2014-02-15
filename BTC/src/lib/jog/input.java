@@ -16,7 +16,7 @@ public abstract class input {
 	public interface EventHandler {
 		
 		/**
-		 * Called when a mouse button has been depressed.
+		 * Called when a mouse button is pressed.
 		 * @param key the button being pressed.
 		 * @param x the horizontal position of the mouse.
 		 * @param y the vertical position of the mouse.
@@ -24,7 +24,7 @@ public abstract class input {
 		public void mousePressed(int key, int x, int y);
 		
 		/**
-		 * Called when a mouse button has been released.
+		 * Called when a mouse button is released.
 		 * @param key the button being released.
 		 * @param x the horizontal position of the mouse.
 		 * @param y the vertical position of the mouse.
@@ -32,7 +32,7 @@ public abstract class input {
 		public void mouseReleased(int key, int x, int y);
 		
 		/**
-		 * Called when a keyboard key has been depressed.
+		 * Called when a keyboard key is pressed.
 		 * @param key the key being pressed.
 		 */
 		public void keyPressed(int key);
@@ -46,8 +46,8 @@ public abstract class input {
 	}
 
 	/**
-	 * Updates the input buffer, collecting keyboard and mouse events
-	 * @param handler
+	 * Updates the input buffer, collecting keyboard and mouse events.
+	 * @param handler The handler which encapsulates input events.
 	 */
 	public static void update(EventHandler handler) {
 		while (Mouse.next()) {
@@ -77,7 +77,7 @@ public abstract class input {
 	}
 	
 	/**
-	 * Accesses whether the state of the specified key on the keyboard.
+	 * Returns the state of the specified key.
 	 * @param key the integer representation of the keyboard key being pressed
 	 * @return whether the key is currently depressed.
 	 */
@@ -86,7 +86,7 @@ public abstract class input {
 	}
 	
 	/**
-	 * Accesses whether the state of the specified button on the mouse.
+	 * Returns the state of the specified mouse button.
 	 * @param button the integer representation of the mouse button being pressed
 	 * @return whether the button is currently depressed.
 	 */
@@ -124,18 +124,15 @@ public abstract class input {
 		return window.height() - Mouse.getY();
 	}
 	
-	/*
-	 * Static Mouse Constants
-	 */
+	
+	//Static Mouse Constants
 	public final static int MOUSE_LEFT = 0;
 	public final static int MOUSE_RIGHT = 1;
 	public final static int MOUSE_MIDDLE = 2;
 	public final static int MOUSE_WHEEL_UP = 3;
 	public final static int MOUSE_WHEEL_DOWN = 4;
 	
-	/*
-	 * Static Keyboard Constants
-	 */
+	//Static Keyboard Constants
 	public final static int KEY_A = Keyboard.KEY_A;
 	public final static int KEY_B = Keyboard.KEY_B;
 	public final static int KEY_C = Keyboard.KEY_C;
