@@ -106,6 +106,8 @@ public class AirportControlBox implements EventHandler{
 		double time_elapsed = Demo.getTime() - time_entered;
 		if (time_elapsed > 5) {
 			return 1;
+		} else if (time_elapsed < 0) {
+			return 0;
 		} else {
 			return time_elapsed/5;
 		}

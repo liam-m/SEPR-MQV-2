@@ -487,8 +487,12 @@ public class Demo extends Scene {
 		return null;
 	}
 	
-	private boolean airportClicked(int x, int y) {
-		return airport.isWithinRadius(new Vector(x,y,0)) && !airport.is_active;
+	private boolean isArrivalsClicked(int x, int y) {
+		return airport.isMouseOverArrivals(new Vector(x,y,0)) && !airport.is_active;
+	}
+	
+	private boolean isDeparturesClicked(int x, int y) {
+		return airport.isMouseOverDepartures(new Vector(x,y,0)) && !airport.is_active;
 	}
 
 	/**
@@ -511,10 +515,15 @@ public class Demo extends Scene {
 					waypointClicked = true; // Flag to mouseReleased
 					selectedPathpoint = selectedAircraft.flightPathContains(clickedWaypoint);					
 				}
-			} else if (airportClicked(x, y) && selectedAircraft != null) {
+			} else if (isArrivalsClicked(x, y) && selectedAircraft != null) {
 				if (selectedAircraft.is_waiting_to_land && selectedAircraft.currentTarget.equals(airport.position())) {
-					airport.mousePressed(key, x, y); // Only cares about left click for now
+					airport.mousePressed(key, x, y);
 					selectedAircraft.land();
+				}
+			} else if (isDeparturesClicked(x, y)) {
+				if (airport.aircraft_hangar.size() > 0) {
+					airport.mousePressed(key, x, y);
+					airport.signalTakeOff();
 				}
 			}
 		} else if (key == input.MOUSE_RIGHT) {
@@ -618,6 +627,7 @@ public class Demo extends Scene {
 		graphics.setViewport(16, 48, window.width() - 32, window.height() - 176);
 		graphics.setColour(255, 255, 255, 32);
 		graphics.draw(background, 0, 0);
+		airport.draw();
 		drawMap();		
 		graphics.setViewport();
 		
@@ -627,7 +637,7 @@ public class Demo extends Scene {
 			selectedAircraft.drawCompass();
 		}
 		
-		airport.draw();		
+				
 		ordersBox.draw();
 		altimeter.draw();
 		airport_control_box.draw();
@@ -833,7 +843,7 @@ public class Demo extends Scene {
 		Waypoint destinationPoint;
 	
 		/**
-		 * Chooses two waypoints rendomly and then checks if they satisfy the rules, if not, it tries until it finds good ones. 
+		 * Chooses two waypoints randomly and then checks if they satisfy the rules, if not, it tries until it finds good ones. 
 		 **/
 	
 		java.util.ArrayList<Waypoint> available_origins = getAvailableEntryPoints();
