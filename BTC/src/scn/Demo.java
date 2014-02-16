@@ -67,7 +67,6 @@ public class Demo extends Scene {
 		Demo.difficulty = difficulty;
 	}
 	
-	// Scoring bit
 	private cls.Score score; 
 	
 	private boolean shownAircraftWaitingMessage = false;
@@ -237,6 +236,7 @@ public class Demo extends Scene {
 		music.play();
 		ordersBox = new cls.OrdersBox(ORDERSBOX_X, ORDERSBOX_Y, ORDERSBOX_W, ORDERSBOX_H, 6);
 		aircraftInAirspace = new java.util.ArrayList<Aircraft>();
+		recentlyDepartedAircraft = new java.util.ArrayList<Aircraft>();
 		aircraftImage = graphics.newImage("gfx" + File.separator + "plane.png");
 		lib.ButtonText.Action manual = new lib.ButtonText.Action() {
 			@Override
@@ -320,11 +320,12 @@ public class Demo extends Scene {
 				score.increaseMeterFill(aircraft.getAdditionToMultiplier());
 				aircraft.setScore(score.calculateAircraftScore(aircraft));
 				score.increaseTotalScore(score.getMultiplier() * aircraft.getScore());
-				
-				//recentlyDepartedAircraft.add(plane);
+				aircraft.setTimeOfDepartion(System.currentTimeMillis());
+				recentlyDepartedAircraft.add(aircraft);
+				drawPlaneScoreLabels();
 				
 				System.out.println("Optimal time :" + aircraft.getOptimalTime() + "; Actual time spent: " + (System.currentTimeMillis()/1000 - aircraft.getTimeOfCreation())); // For debugging
-				System.out.println("Total score: " + score.getTotalScore() + "; Multiplier: " + score.getMultiplier() + "; multiplierVariable: " + score.getMultiplierLevel() + "\n "); // For debugging
+				System.out.println("Total score: " + score.getTotalScore() + "; Multiplier: " + score.getMultiplier() + "; multiplierLevel: " + score.getMultiplierLevel() + "\n "); // For debugging
 				if (aircraft.getAdditionToMultiplier() < 0)
 					ordersBox.addOrder("<<< The plane has breached separation rules on its path, your multiplier may be reduced ");
 				
@@ -499,13 +500,10 @@ public class Demo extends Scene {
 		if (key == input.MOUSE_LEFT) {
 			if (aircraftClicked(x, y)) {
 				Aircraft clickedAircraft = findClickedAircraft(x, y);
-				if (clickedAircraft == selectedAircraft) {
-					toggleManualControl();
-				} else {
-					deselectAircraft();
-					selectedAircraft = clickedAircraft;
-					altimeter.show(selectedAircraft);
-				}
+				deselectAircraft();
+				selectedAircraft = clickedAircraft;
+				altimeter.show(selectedAircraft);
+				
 			} else if (waypointInFlightplanClicked(x, y, selectedAircraft) && !selectedAircraft.isManuallyControlled()) {
 				clickedWaypoint = findClickedWaypoint(x, y);
 				if (clickedWaypoint != null) {
@@ -519,6 +517,9 @@ public class Demo extends Scene {
 				}
 			}
 		} else if (key == input.MOUSE_RIGHT) {
+			if (aircraftClicked(x, y) && selectedAircraft == null) {
+				selectedAircraft = findClickedAircraft(x, y);
+			}
 			if (selectedAircraft != null) {
 				if (compassClicked()) {
 					compassClicked = true; // Flag to mouseReleased
@@ -531,9 +532,6 @@ public class Demo extends Scene {
 						deselectAircraft();					
 					}
 				}
-			} else if (aircraftClicked(x, y)) {
-				selectedAircraft = findClickedAircraft(x, y);
-				mousePressed(key, x, y); ; // Re-run, selected aircraft is now not null so it will go into above branch
 			}
 		}
 	}
@@ -712,14 +710,23 @@ public class Demo extends Scene {
 		}
 	}
 	
-	/*private void drawPlaneScoreLabels() {
-		for (int i = 0; i<n.length(); i++) {
-			Array[i] = currentDepartedAircraft
-			currentDepartedAircraft.alpha -= 1
-			if (currentDepartedAircraft.alpha > 16) graphics.print(0, 128, 0, currentDepartedAircraft.alpha);
-			else Array.remove(i);
+	private void drawPlaneScoreLabels() {
+		for (Aircraft plane : recentlyDepartedAircraft) {
+			if (plane != null) {
+				double currentTime = System.currentTimeMillis(); 
+				double departionTime = plane.getTimeOfDepartion();
+				double timeDifference = currentTime - departionTime;
+				if (timeDifference > 2000) {
+					recentlyDepartedAircraft.remove(plane);
+				}
+				else {
+					double alphaOfPlane =  (2000 - timeDifference);
+					int planeScoreValue = plane.getScore() * score.getMultiplier();
+					// DO THE DRAWING SOMEHOW
+				}
+			}
 		}  
-	}*/
+	}
 	
 	/**
 	 * draw a readout of the time the game has been played for & aircraft in the sky.

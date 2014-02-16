@@ -132,6 +132,27 @@ public class Aircraft {
 	public double getTimeOfCreation() {
 		return timeOfCreation;
 	}
+	
+	/**
+	 * Used when calculating when a label representing the score a particular plane scored should disappear
+	 */
+	private double timeOfDepartion;
+	/**
+	 * Used to get (system) time when an aircraft successfully departed.
+	 * @return Time when aircraft departed.
+	 */
+	public double getTimeOfDepartion() {
+		return timeOfDepartion;
+	}
+	
+	/**
+	 * Used outside of Aircraft class to assign a (system) time to a plane that successfully left airspace
+	 * @param departureTime (system time when a plane departed)
+	 */
+	public void setTimeOfDepartion(double departureTime) {
+		 timeOfDepartion = departureTime;
+	}
+	
 	/**
 	 * Optimal time a plane needs to reach its exit point 
 	 */
@@ -910,11 +931,11 @@ public class Aircraft {
 		return dist;
 	}
 	
-/**
- * Checks if an aircraft is close to an its parameter (entry point). 
- * @param position of a waypoint
- * @return True it if it close
- */
+	/**
+	 * Checks if an aircraft is close to an its parameter (entry point). 
+	 * @param position of a waypoint
+	 * @return True it if it close
+	 */
 	public boolean isCloseToEntry(Vector position) {
 		double x = this.position().x() - position.x();
 		double y = this.position().y() - position.y();

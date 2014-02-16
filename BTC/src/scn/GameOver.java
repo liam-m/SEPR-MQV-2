@@ -82,7 +82,7 @@ public class GameOver extends Scene {
 		textBox.addText("British Bearways is facing heavy legal pressure from the family and loved-ones of the dead and an investigation into the incident will be performed.");
 		textBox.newline();
 		textBox.delay(0.8);
-		textBox.addText("The inquery into your incompetance will lead to humanity discovering your true bear nature.");
+		textBox.addText("The inquiry into your incompetence will lead to humanity discovering your true bear nature.");
 		textBox.newline();
 		textBox.delay(0.8);
 		textBox.addText("Your guilt for the deaths you caused, and your failure to pass as a human, will gnaw at you and you will have to revert to your drinking problem to attempt to cope.");
