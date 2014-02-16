@@ -15,6 +15,7 @@ public class ButtonText {
 	private Action action;
 	private boolean available;
 	
+	//#What is ox/oy
 	public ButtonText(String text, Action action, int x, int y, int w, int h, int ox, int oy) {
 		this.text = text;
 		this.action = action;
@@ -52,20 +53,32 @@ public class ButtonText {
 	public boolean isMouseOver() { 
 		return isMouseOver(input.mouseX(), input.mouseY()); 
 	}
-	
+	/**
+	 * Sets the string of text used
+	 * @param newText - The string to be used
+	 */
+	//#Needed?
 	public void setText(String newText) {
 		text = newText;
 	}
 	
+	/**
+	 * Sets the button text to available - Changing the color to the one specified in ButtonText()
+	 * @param available - value of the availability, either True or False
+	 */
 	public void setAvailability(boolean available) {
 		this.available = available;
 	}
 	
+	//#Da Faq?
 	public void act() {
 		if (!available) return;
 		action.action();
 	}
-	
+	/**
+	 * Draws the button text which reacts to mouse interactions 
+	 */
+	//#Needed?
 	public void draw() {
 		if (!available) {
 			graphics.setColour(colourUnavailable);
