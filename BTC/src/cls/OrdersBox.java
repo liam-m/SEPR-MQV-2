@@ -1,9 +1,8 @@
 package cls;
 
 /**
- * Class for a visual representation of orders given
- * to aircraft. It has word wrap enabled and prints out
- * orders character by character in a retro style.
+ * Class for a visual representation of orders given to aircraft.
+ * It has word wrap enabled and prints out orders character by character in a retro style.
  * @author Huw Taylor
  */
 public class OrdersBox extends lib.TextBox {
