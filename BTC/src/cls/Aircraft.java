@@ -26,7 +26,7 @@ public class Aircraft {
 	private Vector position;
 	private Vector velocity;
 	private boolean isManuallyControlled;
-	private String flightName;
+	private String flightName; //Unique and generated randomly
 	public Vector currentTarget; //The position the plane is currently flying towards (if not manually controlled).
 	private double manualBearingTarget;
 	private String originName; //The name of the location the plane is flying from. //#Needed?
