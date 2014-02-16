@@ -500,6 +500,7 @@ public class Demo extends Scene {
 	 */
 	@Override
 	public void mousePressed(int key, int x, int y) {
+		airport.mousePressed(key, x, y);
 		airport_control_box.mousePressed(key, x, y);
 		altimeter.mousePressed(key, x, y);
 		if (key == input.MOUSE_LEFT) {
@@ -517,12 +518,10 @@ public class Demo extends Scene {
 				}
 			} else if (isArrivalsClicked(x, y) && selectedAircraft != null) {
 				if (selectedAircraft.is_waiting_to_land && selectedAircraft.currentTarget.equals(airport.position())) {
-					airport.mousePressed(key, x, y);
 					selectedAircraft.land();
 				}
 			} else if (isDeparturesClicked(x, y)) {
 				if (airport.aircraft_hangar.size() > 0) {
-					airport.mousePressed(key, x, y);
 					airport.signalTakeOff();
 				}
 			}
