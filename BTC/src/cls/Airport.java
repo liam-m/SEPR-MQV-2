@@ -35,7 +35,7 @@ public class Airport extends Waypoint implements EventHandler {
 	}
 	
 	@Override
-	public void drawAirportIcon() { 
+	public void draw() { 
 		graphics.Image airport = graphics.newImage("gfx" + File.separator + "Airport.png");
 		graphics.draw(airport, x_location-airport.width()/2, y_location-airport.height()/2);
 		if (should_draw_landing_radius) {

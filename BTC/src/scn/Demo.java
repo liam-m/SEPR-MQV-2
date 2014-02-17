@@ -657,7 +657,7 @@ public class Demo extends Scene {
 			selectedAircraft.drawCompass();
 		}
 		
-		airport.drawAirportIcon();		
+		airport.draw();		
 		ordersBox.draw();
 		altimeter.draw();
 		airport_control_box.draw();
@@ -674,7 +674,7 @@ public class Demo extends Scene {
 	private void drawMap() {
 		for (Waypoint waypoint : airspaceWaypoints) {
 			if (!waypoint.equals(airport)) { // Skip the airport
-				waypoint.drawAirportIcon();
+				waypoint.draw();
 			}
 		}
 		graphics.setColour(255, 255, 255);

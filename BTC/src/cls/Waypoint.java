@@ -87,7 +87,7 @@ public class Waypoint {
 		graphics.circle(true, x-WAYPOINT_ICON_RADIUS/2, y-WAYPOINT_ICON_RADIUS/2, WAYPOINT_ICON_RADIUS - 2);
 	}
 
-	public void drawAirportIcon() {//#What does this do?
+	public void draw() {
 		draw(waypoint_location .getX(), waypoint_location .getY());
 	}
 	
