@@ -29,6 +29,8 @@ public class GameOver extends Scene {
 	 */
 	private int deaths;
 	
+	private int score; //passed in when game is over;
+	
 	/**
 	 * The position of the crash - the vector midpoint of the positions of the two crashed planes
 	 */
@@ -55,13 +57,14 @@ public class GameOver extends Scene {
 	 * @param plane1 one of the planes involved in the crash
 	 * @param plane2 the second plane involved in the crash
 	 */
-	public GameOver(Main main, Aircraft plane1, Aircraft plane2) {
+	public GameOver(Main main, Aircraft plane1, Aircraft plane2, int score) {
 		super(main);
 		crashedPlane1 = plane1;
 		crashedPlane2 = plane2;
 		crash = new Vector(plane1.position().x(), plane1.position().y(), 0);
 		int framesAcross = 8;
 		int framesDown = 4;
+		this.score = score;
 		explosion = graphics.newImage("gfx" + File.separator + "explosionFrames.png");
 		Vector midPoint = crashedPlane1.position().add(crashedPlane2.position()).scaleBy(0.5);
 		Vector explosionPos = midPoint.sub( new Vector(explosion.width()/(framesAcross*2), explosion.height()/(framesDown*2), 0) );
@@ -76,7 +79,7 @@ public class GameOver extends Scene {
 		playSound(audio.newSoundEffect("sfx" + File.separator + "crash.ogg"));
 		deaths = (int)( Math.random() * 500) + 300;
 		timer = 0;
-		textBox = new lib.TextBox(64, 96, window.width() - 128, window.height() - 96, 32);
+		textBox = new lib.TextBox(64, 126, window.width() - 128, window.height() - 96, 32);
 		textBox.addText(String.valueOf(deaths) + " people died in the crash.");
 		textBox.delay(0.4);
 		textBox.addText("British Bearways is facing heavy legal pressure from the family and loved-ones of the dead and an investigation into the incident will be performed.");
@@ -146,6 +149,7 @@ public class GameOver extends Scene {
 		graphics.setColour(0, 128, 0);
 		graphics.printCentred(crashedPlane1.getName() + 
 				" crashed into " + crashedPlane2.getName() + ".", 0, 32, 2, window.width());
+		graphics.printCentred("Total score: " + String.valueOf(score), 0, 64, 2, window.width());
 		if (explosionAnim.hasFinished()) {
 			textBox.draw();
 		} else {

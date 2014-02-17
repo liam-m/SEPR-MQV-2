@@ -420,7 +420,7 @@ public class Demo extends Scene {
 		airport.clear();
 		playSound(audio.newSoundEffect("sfx" + File.separator + "crash.ogg"));
 		main.closeScene();
-		main.setScene(new GameOver(main, plane1, plane2));
+		main.setScene(new GameOver(main, plane1, plane2, score.getTotalScore()));
 	}
 	
 	/**
