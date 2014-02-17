@@ -9,7 +9,7 @@ public abstract class Scene implements lib.jog.input.EventHandler {
 
 	/**
 	 * Top level Constructor for a scene
-	 * @param main the main class holding the scene, I.E. the running instance of the game
+	 * @param main the main class holding the scene, i.e. the running instance of the game
 	 */
 	protected Scene(btc.Main main) {
 		this.main = main; 
