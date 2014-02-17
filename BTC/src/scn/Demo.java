@@ -223,6 +223,7 @@ public class Demo extends Scene {
 	public Demo(Main main, int difficulty) {
 		super(main);
 		Demo.difficulty = difficulty;
+		airport.loadImage();
 	}
 	
 	@Override
@@ -500,10 +501,20 @@ public class Demo extends Scene {
 	 */
 	@Override
 	public void mousePressed(int key, int x, int y) {
-		airport.mousePressed(key, x, y);
 		airport_control_box.mousePressed(key, x, y);
 		altimeter.mousePressed(key, x, y);
 		if (key == input.MOUSE_LEFT) {
+			if (isArrivalsClicked(x, y) && selectedAircraft != null) {
+				if (selectedAircraft.is_waiting_to_land && selectedAircraft.currentTarget.equals(airport.position())) {
+					airport.mousePressed(key, x, y);
+					selectedAircraft.land();
+				}
+			} else if (isDeparturesClicked(x, y)) {
+				if (airport.aircraft_hangar.size() > 0) {
+					airport.mousePressed(key, x, y);
+					airport.signalTakeOff();
+				}
+			}
 			if (aircraftClicked(x, y)) {
 				Aircraft clickedAircraft = findClickedAircraft(x, y);
 				deselectAircraft();
@@ -516,15 +527,7 @@ public class Demo extends Scene {
 					waypointClicked = true; // Flag to mouseReleased
 					selectedPathpoint = selectedAircraft.flightPathContains(clickedWaypoint);					
 				}
-			} else if (isArrivalsClicked(x, y) && selectedAircraft != null) {
-				if (selectedAircraft.is_waiting_to_land && selectedAircraft.currentTarget.equals(airport.position())) {
-					selectedAircraft.land();
-				}
-			} else if (isDeparturesClicked(x, y)) {
-				if (airport.aircraft_hangar.size() > 0) {
-					airport.signalTakeOff();
-				}
-			}
+			} 
 		} else if (key == input.MOUSE_RIGHT) {
 			if (aircraftClicked(x, y) && selectedAircraft == null) {
 				selectedAircraft = findClickedAircraft(x, y);
@@ -746,6 +749,10 @@ public class Demo extends Scene {
 						int scoreTextX = (int) plane.getRoute()[plane.getRoute().length -1].position().x();
 						int scoreTextY = (int) plane.getRoute()[plane.getRoute().length -1].position().y();
 						graphics.setColour(255, 255, 255, scoreTextAlpha);
+						if (scoreTextX < 40) scoreTextX += 50;
+						if (scoreTextY < 40) scoreTextY += 50;
+						if (scoreTextX > 1000) scoreTextX -= 50;
+						if (scoreTextY > 1000) scoreTextY -= 50;
 						graphics.print(planeScoreValue, scoreTextX, scoreTextY, 2);
 					}
 				}
