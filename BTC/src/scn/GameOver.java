@@ -151,7 +151,7 @@ public class GameOver extends Scene {
 			crashedPlane1.draw((int) crashedPlane1.position().getZ());
 			crashedPlane2.draw((int) crashedPlane1.position().getZ());
 			Vector midPoint = crash.add(crashedPlane2.position()).scaleBy(0.5);
-			double radius = 20; //radius of explosion
+			double radius = 20; // Radius of explosion
 			graphics.setColour(128,0,0);
 			graphics.circle(false, midPoint.getX(), midPoint.getY(), radius);
 			explosionAnim.draw();
