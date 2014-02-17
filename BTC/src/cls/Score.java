@@ -263,7 +263,10 @@ public class Score {
 		if (target_meter_fill != meter_fill) {
 			if (target_meter_fill > meter_fill) {
 				meter_draining = false;
-				meter_fill++;
+				if (target_meter_fill - meter_fill > multiplier)
+					meter_fill += multiplier+1; // Added 1 so it's not a multiple of 10 so will affect the least significant digit
+				else
+					meter_fill = target_meter_fill;
 			} else {
 				meter_draining = true;
 				if (meter_fill - target_meter_fill > 2)
