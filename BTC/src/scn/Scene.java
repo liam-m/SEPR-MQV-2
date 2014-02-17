@@ -18,7 +18,7 @@ public abstract class Scene implements lib.jog.input.EventHandler {
 	// Additional constructor for testing purposes
 
 	/**
-	 * This constructor should only be used for unit testing. Its purpose is to allow an instance
+	 * This constructor should only be used for unit testing. Its purpose is to allow an instance 
 	 * of demo class to be created without an instance of Main class (effectively launching the game)
 	 */
 
