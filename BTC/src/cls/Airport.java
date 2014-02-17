@@ -33,7 +33,7 @@ public class Airport extends Waypoint implements EventHandler {
 	
 	public String name = "Mosbear Aiport";
 	
-	private graphics.Image airport = graphics.newImage("gfx" + File.separator + "Airport.png");
+	private graphics.Image airport;
 	
 	public java.util.ArrayList<Aircraft> aircraft_waiting_to_land = new java.util.ArrayList<Aircraft>();
 	/**
@@ -46,6 +46,10 @@ public class Airport extends Waypoint implements EventHandler {
 	
 	public Airport() { 
 		super(x_location, y_location, true);
+	}
+	
+	public void loadImage() {
+		airport = graphics.newImage("gfx" + File.separator + "Airport.png");
 	}
 	
 	@Override
