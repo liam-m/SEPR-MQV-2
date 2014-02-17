@@ -35,7 +35,7 @@ public class Airport extends Waypoint implements EventHandler {
 	}
 	
 	@Override
-	public void draw() { 
+	public void drawAirportIcon() { 
 		graphics.Image airport = graphics.newImage("gfx" + File.separator + "Airport.png");
 		graphics.draw(airport, x_location-airport.width()/2, y_location-airport.height()/2);
 		if (should_draw_landing_radius) {
@@ -53,8 +53,8 @@ public class Airport extends Waypoint implements EventHandler {
 	}
 	
 	public boolean isWithinRadius(Vector position) {
-		double x = x_location - position.x();
-		double y = y_location - position.y();
+		double x = x_location - position.getX();
+		double y = y_location - position.getY();
 		return (x*x + y*y < landing_radius*landing_radius);
 	}
 	
@@ -85,7 +85,7 @@ public class Airport extends Waypoint implements EventHandler {
 	public void update(Demo demo) {
 		should_draw_landing_radius = false;
 		for (Aircraft aircraft : Demo.aircraftInAirspace) {
-			if (this.isWithinRadius(aircraft.position()) && aircraft.currentTarget.equals(this.position())) {
+			if (this.isWithinRadius(aircraft.position()) && aircraft.currentTarget.equals(this.getWaypointLocation())) {
 				should_draw_landing_radius = true;
 			}
 		}	

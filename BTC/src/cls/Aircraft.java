@@ -159,21 +159,21 @@ public class Aircraft {
 		timeOfCreation = System.currentTimeMillis()/1000; // System time when aircraft was created in seconds.
 		
 		route = findGreedyRoute(originPoint, destinationPoint, sceneWaypoints);// Find route
-		destination = destinationPoint.position();// Place on spawn waypoint //#What does that mean? poor wording
-		position = originPoint.position(); 
+		destination = destinationPoint.getWaypointLocation();// Place on spawn waypoint //#What does that mean? poor wording
+		position = originPoint.getWaypointLocation(); 
 		
 		int altitudeOffset = RandomNumber.randInclusiveInt(0, 1) == 0 ? 28000 : 30000;
 		position = position.add(new Vector(0, 0, altitudeOffset));
 		
 		// Calculate initial velocity (direction)
-		currentTarget = route[0].position();
-		double x = currentTarget.x() - position.x();
-		double y = currentTarget.y() - position.y();
+		currentTarget = route[0].getWaypointLocation();
+		double x = currentTarget.getX() - position.getX();
+		double y = currentTarget.getY() - position.getY();
 		velocity = new Vector(x, y, 0).normalise().scaleBy(speed);
 		
 		isManuallyControlled = false;
 		hasFinished = false;
-		is_waiting_to_land = destination.equals(Demo.airport.position());
+		is_waiting_to_land = destination.equals(Demo.airport.getWaypointLocation());
 		currentRouteStage = 0;
 		currentlyTurningBy = 0;
 		manualBearingTarget = Double.NaN; 
@@ -256,7 +256,7 @@ public class Aircraft {
 		if (isManuallyControlled) {
 			return (manualBearingTarget == Double.NaN) ? getBearing() : manualBearingTarget;
 		} else {
-			return Math.atan2(currentTarget.y() - position.y(), currentTarget.x() - position.x());
+			return Math.atan2(currentTarget.getY() - position.getY(), currentTarget.getX() - position.getX());
 		}
 	}
 	
@@ -266,13 +266,13 @@ public class Aircraft {
 	 * @return true, if the plane is out of the airspace. False, otherwise.
 	 */
 	public boolean isOutOfBounds() {
-		double x = position.x();
-		double y = position.y();
+		double x = position.getX();
+		double y = position.getY();
 		return (x < RADIUS || x > window.width() + RADIUS - 32 || y < RADIUS || y > window.height() + RADIUS - 176);
 	}
 
 	public double getBearing() {
-		return Math.atan2(velocity.y(), velocity.x());
+		return Math.atan2(velocity.getY(), velocity.getX());
 	}
 	
 	public double getSpeed() {
@@ -280,8 +280,8 @@ public class Aircraft {
 	}
 	
 	public boolean isAt(Vector point) {
-		double dy = point.y() - position.y();
-		double dx = point.x() - position.x();
+		double dy = point.getY() - position.getY();
+		double dx = point.getX() - position.getX();
 		return dy*dy + dx*dx < 4*4;
 	}
 	
@@ -311,14 +311,14 @@ public class Aircraft {
 		route[routeStage] = newWaypoint;
 		if (!isManuallyControlled) resetBearing();
 		if (routeStage == currentRouteStage) {
-			currentTarget = newWaypoint.position();
+			currentTarget = newWaypoint.getWaypointLocation();
 			turnTowardsTarget(0);
 		}
 	}
 	
 	public boolean isMouseOver(int mx, int my) {
-		double dx = position.x() - mx;
-		double dy = position.y() - my;
+		double dx = position.getX() - mx;
+		double dy = position.getY() - my;
 		return dx*dx + dy*dy < MOUSE_LENIANCY*MOUSE_LENIANCY;
 	}
 	/**
@@ -356,14 +356,14 @@ public class Aircraft {
 			if (currentTarget.equals(destination)) { // At destination
 				if (!is_waiting_to_land) { // Ready to land
 					hasFinished = true;
-					if (destination.equals(Demo.airport.position())) { // Landed at airport
+					if (destination.equals(Demo.airport.getWaypointLocation())) { // Landed at airport
 						Demo.airport.is_active = false;
 					}	
 				}
 			} else { // At target but not destination
 				currentRouteStage++;
 				 // Next target is the destination if you're at the end of the plan, otherwise it's the next waypoint
-				currentTarget = currentRouteStage >= route.length ? destination : route[currentRouteStage].position();
+				currentTarget = currentRouteStage >= route.length ? destination : route[currentRouteStage].getWaypointLocation();
 			}
 		}
 
@@ -391,9 +391,9 @@ public class Aircraft {
 		currentlyTurningBy = angle;
 		double cosA = Math.cos(angle);
 		double sinA = Math.sin(angle);
-		double x = velocity.x();
-		double y = velocity.y();
-		velocity = new Vector(x*cosA - y*sinA, y*cosA + x*sinA, velocity.z());
+		double x = velocity.getX();
+		double y = velocity.getY();
+		velocity = new Vector(x*cosA - y*sinA, y*cosA + x*sinA, velocity.getZ());
 	}
 
 	private void turnTowardsTarget(double time_difference) {
@@ -415,12 +415,12 @@ public class Aircraft {
 	 * Draws the plane and any warning circles if necessary. 
 	 */
 	public void draw(int controlAltitude) {
-		double alpha = 255/((Math.abs(position.z() - controlAltitude) + 1000)/1000);
-		double scale = 2*(position.z()/30000);
+		double alpha = 255/((Math.abs(position.getZ() - controlAltitude) + 1000)/1000);
+		double scale = 2*(position.getZ()/30000);
 		graphics.setColour(128, 128, 128, alpha);
-		graphics.draw(image, scale, position.x()-image.width()/2, position.y()-image.height()/2, getBearing(), 8, 8);
+		graphics.draw(image, scale, position.getX()-image.width()/2, position.getY()-image.height()/2, getBearing(), 8, 8);
 		graphics.setColour(128, 128, 128, alpha/2.5);
-		graphics.print(String.format("%.0f", position.z()) + "£", position.x()+8, position.y()-8);
+		graphics.print(String.format("%.0f", position.getZ()) + "£", position.getX()+8, position.getY()-8);
 		drawWarningCircles();
 	}
 	
@@ -429,8 +429,8 @@ public class Aircraft {
 	 */
 	public void drawCompass() {
 		graphics.setColour(0, 128, 0);
-		Double xpos = position.x()-image.width()/2; // Centre position of aircraft
-		Double ypos = position.y()-image.height()/2;
+		Double xpos = position.getX()-image.width()/2; // Centre position of aircraft
+		Double ypos = position.getY()-image.height()/2;
 		graphics.circle(false, xpos + 16, ypos + 48, COMPASS_RADIUS, 30);
 		for (int i = 0; i < 360; i += 60) {
 			double r = Math.toRadians(i - 90);
@@ -443,7 +443,7 @@ public class Aircraft {
 		double x, y;
 		if (isManuallyControlled && input.isMouseDown(input.MOUSE_LEFT)) {
 			graphics.setColour(0, 128, 0, 128);
-			double r = Math.atan2(input.mouseY() - position.y(), input.mouseX() - position.x());
+			double r = Math.atan2(input.mouseY() - position.getY(), input.mouseX() - position.getX());
 			x = 16 + xpos + (COMPASS_RADIUS * Math.cos(r));
 			y = 48 + ypos + (COMPASS_RADIUS * Math.sin(r));
 			graphics.line(xpos + 16, ypos + 48, x, y);
@@ -471,7 +471,7 @@ public class Aircraft {
 			Vector midPoint = position.add(plane.position).scaleBy(0.5);
 			double radius = position.sub(midPoint).magnitude() * 2;
 			graphics.setColour(128, 0, 0);
-			graphics.circle(false, midPoint.x(), midPoint.y(), radius);
+			graphics.circle(false, midPoint.getX(), midPoint.getY(), radius);
 		}	
 	}
 
@@ -486,15 +486,15 @@ public class Aircraft {
 		}
 		
 		if (currentTarget != destination) {
-			graphics.line(position.x()-image.width()/2, position.y()-image.height()/2, route[currentRouteStage].position().x(), route[currentRouteStage].position().y());
+			graphics.line(position.getX()-image.width()/2, position.getY()-image.height()/2, route[currentRouteStage].getWaypointLocation().getX(), route[currentRouteStage].getWaypointLocation().getY());
 		}
 		for (int i = currentRouteStage; i < route.length-1; i++) {
-			graphics.line(route[i].position().x(), route[i].position().y(), route[i+1].position().x(), route[i+1].position().y());	
+			graphics.line(route[i].getWaypointLocation().getX(), route[i].getWaypointLocation().getY(), route[i+1].getWaypointLocation().getX(), route[i+1].getWaypointLocation().getY());	
 		}
 		if (currentTarget == destination) {
-			graphics.line(position.x()-image.width()/2, position.y()-image.height()/2, destination.x(), destination.y());
+			graphics.line(position.getX()-image.width()/2, position.getY()-image.height()/2, destination.getX(), destination.getY());
 		} else {
-			graphics.line(route[route.length-1].position().x(), route[route.length-1].position().y(), destination.x(), destination.y());
+			graphics.line(route[route.length-1].getWaypointLocation().getX(), route[route.length-1].getWaypointLocation().getY(), destination.getX(), destination.getY());
 		}
 	}
 	
@@ -506,19 +506,19 @@ public class Aircraft {
 	public void drawModifiedPath(int modified, double mouseX, double mouseY) {
 		graphics.setColour(0, 128, 128, 128);
 		if (currentRouteStage > modified-1) {
-			graphics.line(position().x(), position().y(), mouseX, mouseY);
+			graphics.line(position().getX(), position().getY(), mouseX, mouseY);
 		} else {
-			graphics.line(route[modified-1].position().x(), route[modified-1].position().y(), mouseX, mouseY);
+			graphics.line(route[modified-1].getWaypointLocation().getX(), route[modified-1].getWaypointLocation().getY(), mouseX, mouseY);
 		}
 		if (currentTarget == destination) {
-			graphics.line(mouseX, mouseY, destination.x(), destination.y());
+			graphics.line(mouseX, mouseY, destination.getX(), destination.getY());
 		} else {
 			int index = modified + 1;
 			if (index == route.length) { // Modifying final waypoint in route
 				// Line drawn to final waypoint
-				graphics.line(mouseX, mouseY, destination.x(), destination.y());
+				graphics.line(mouseX, mouseY, destination.getX(), destination.getY());
 			} else {
-				graphics.line(mouseX, mouseY, route[index].position().x(), route[index].position().y());
+				graphics.line(mouseX, mouseY, route[index].getWaypointLocation().getX(), route[index].getWaypointLocation().getY());
 			}
 		}
 	}
@@ -554,7 +554,7 @@ public class Aircraft {
 					// Check we have not already selected the waypoint
 					// If we have, skip evaluating the point
 					// This protects the aircraft from getting stuck looping between points
-					if (routePoints.position().equals(point.position())) {
+					if (routePoints.getWaypointLocation().equals(point.getWaypointLocation())) {
 						skip = true; //flag to skip
 						break; // no need to check rest of list, already found a match.
 					}
@@ -562,8 +562,8 @@ public class Aircraft {
 				// Do not consider the waypoint we are currently at or the origin
 				// Do not consider offscreen waypoints which are not the destination
 				// Also skip if flagged as a previously selected waypoint
-				if (skip | point.position().equals(currentPos.position()) | point.position().equals(origin.position())
-						| (point.isEntryOrExit() && !(point.position().equals(destination.position())))) {
+				if (skip | point.getWaypointLocation().equals(currentPos.getWaypointLocation()) | point.getWaypointLocation().equals(origin.getWaypointLocation())
+						| (point.isEntryOrExit() && !(point.getWaypointLocation().equals(destination.getWaypointLocation())))) {
 					skip = false; //reset flag
 					continue;
 				}  else  {
@@ -581,7 +581,7 @@ public class Aircraft {
 			// The cheapest waypoint must have been found
 			assert cheapest != null : "The cheapest waypoint was not found";
 
-			if (cheapest.position().equals(destination.position())) {
+			if (cheapest.getWaypointLocation().equals(destination.getWaypointLocation())) {
 				/* Route has reached destination 
 				 * Break out of while loop*/
 				atDestination = true;
@@ -639,9 +639,9 @@ public class Aircraft {
 	 * @return true, if the aircraft is within the distance. False, otherwise.
 	 */
 	private boolean isWithin(Aircraft aircraft, int distance) {
-		double dx = aircraft.position().x() - position.x();
-		double dy = aircraft.position().y() - position.y();
-		double dz = aircraft.position().z() - position.z();
+		double dx = aircraft.position().getX() - position.getX();
+		double dy = aircraft.position().getY() - position.getY();
+		double dz = aircraft.position().getZ() - position.getZ();
 		return dx*dx + dy*dy + dz*dz < distance*distance;
 	}
 
@@ -661,29 +661,29 @@ public class Aircraft {
 
 	private void resetBearing() {
 		if (currentRouteStage < route.length) {
-			currentTarget = route[currentRouteStage].position();
+			currentTarget = route[currentRouteStage].getWaypointLocation();
 		}
 		turnTowardsTarget(0);
 	}
 	
 
 	public void climb() {
-		if (position.z() < 30000 && altitudeState == ALTITUDE_CLIMB)
+		if (position.getZ() < 30000 && altitudeState == ALTITUDE_CLIMB)
 			changeAltitude(altitudeChangeSpeed);
-		if (position.z() >= 30000) {
+		if (position.getZ() >= 30000) {
 			changeAltitude(0);
 			altitudeState = ALTITUDE_LEVEL;
-			position = new Vector(position.x(), position.y(), 30000);
+			position = new Vector(position.getX(), position.getY(), 30000);
 		}
 	}
 	
 	public void fall() {
-		if (position.z() > 28000 && altitudeState == ALTITUDE_FALL)
+		if (position.getZ() > 28000 && altitudeState == ALTITUDE_FALL)
 			changeAltitude(-altitudeChangeSpeed);
-		if (position.z() <= 28000) {
+		if (position.getZ() <= 28000) {
 			changeAltitude(0);
 			altitudeState = ALTITUDE_LEVEL;
-			position = new Vector(position.x(), position.y(), 28000);
+			position = new Vector(position.getX(), position.getY(), 28000);
 		}
 	}
 	

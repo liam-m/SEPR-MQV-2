@@ -40,8 +40,8 @@ public class Waypoint {
 	 * @return whether the mouse is considered over the waypoint.
 	 */
 	public boolean isMouseOver(int mx, int my) {
-		double dx = waypoint_location .x() - mx;
-		double dy = waypoint_location .y() - my;
+		double dx = waypoint_location .getX() - mx;
+		double dy = waypoint_location .getY() - my;
 		return dx*dx + dy*dy < MOUSE_LENIANCY*MOUSE_LENIANCY;
 	}
 	
@@ -87,8 +87,8 @@ public class Waypoint {
 		graphics.circle(true, x-WAYPOINT_ICON_RADIUS/2, y-WAYPOINT_ICON_RADIUS/2, WAYPOINT_ICON_RADIUS - 2);
 	}
 
-	public void draw() {//#What does this do?
-		draw(waypoint_location .x(), waypoint_location .y());
+	public void drawAirportIcon() {//#What does this do?
+		draw(waypoint_location .getX(), waypoint_location .getY());
 	}
 	
 }

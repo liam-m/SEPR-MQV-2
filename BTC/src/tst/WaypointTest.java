@@ -14,8 +14,8 @@ public class WaypointTest {
 	@Test
 	public void testGetPosition() {
 		Waypoint testWaypoint = new Waypoint(10,10, false);
-		Vector resultVector = testWaypoint.position();
-		assertTrue("Position = (10, 10, 0)", (10 == resultVector.x()) && (10 == resultVector.y()) && (0 == resultVector.z()));
+		Vector resultVector = testWaypoint.getWaypointLocation();
+		assertTrue("Position = (10, 10, 0)", (10 == resultVector.getX()) && (10 == resultVector.getY()) && (0 == resultVector.getZ()));
 	}
 	
 	// Test isEntryOrExit function
