@@ -492,6 +492,14 @@ public class Aircraft {
 	}
 
 	private boolean is_landing = false;
+	
+	public boolean isAtDestination() {
+		if (destination.equals(Demo.airport.position())) {
+			return Demo.airport.isWithinDepartures(position);
+		} else {
+			return isAt(destination);
+		}
+	}
 
 	/**
 	 * Updates the plane's position and bearing, the stage of its route, and whether it has finished its flight.
@@ -521,19 +529,18 @@ public class Aircraft {
 		currentlyTurningBy = 0;
 
 		// Update target
-		if (isAt(currentTarget)) {
-			if (currentTarget.equals(destination)) { // At destination
-				if (!is_waiting_to_land) { // Ready to land
-					hasFinished = true;
-					if (destination.equals(Demo.airport.position())) { // Landed at airport
-						Demo.airport.is_active = false;
-					}
+		
+		if (currentTarget.equals(destination) && isAtDestination()) { // At finishing point
+			if (!is_waiting_to_land) { // Ready to land
+				hasFinished = true;
+				if (destination.equals(Demo.airport.position())) { // Landed at airport
+					Demo.airport.is_active = false;
 				}
-			} else { // At target but not destination
-				currentRouteStage++;
-				// Next target is the destination if you're at the end of the plan, otherwise it's the next waypoint
-				currentTarget = currentRouteStage >= route.length ? destination: route[currentRouteStage].position();
 			}
+		} else if (isAt(currentTarget)) {
+			currentRouteStage++;
+			// Next target is the destination if you're at the end of the plan, otherwise it's the next waypoint
+			currentTarget = currentRouteStage >= route.length ? destination : route[currentRouteStage].position();
 		}
 
 		// Update bearing
