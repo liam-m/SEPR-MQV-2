@@ -125,14 +125,14 @@ public abstract class input {
 	}
 	
 	
-	//Static Mouse Constants
+	// Static Mouse Constants
 	public final static int MOUSE_LEFT = 0;
 	public final static int MOUSE_RIGHT = 1;
 	public final static int MOUSE_MIDDLE = 2;
 	public final static int MOUSE_WHEEL_UP = 3;
 	public final static int MOUSE_WHEEL_DOWN = 4;
 	
-	//Static Keyboard Constants
+	// Static Keyboard Constants
 	public final static int KEY_A = Keyboard.KEY_A;
 	public final static int KEY_B = Keyboard.KEY_B;
 	public final static int KEY_C = Keyboard.KEY_C;
