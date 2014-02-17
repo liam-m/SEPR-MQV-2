@@ -19,18 +19,18 @@ import lib.jog.window;
 public class Aircraft {
 
 	public final static int RADIUS = 16; // The physical size of the plane in pixels. This determines crashes.
-	public final static int MOUSE_LENIANCY = 32;  //How far away (in pixels) the mouse can be from the plane but still select it.
-	public final static int COMPASS_RADIUS = 64; //How large to draw the bearing circle.
-	public static int separationRule = 64; //How much the plane can turn per second - in radians.
+	public final static int MOUSE_LENIANCY = 32;  // How far away (in pixels) the mouse can be from the plane but still select it.
+	public final static int COMPASS_RADIUS = 64; // How large to draw the bearing circle.
+	public static int separationRule = 64; // How much the plane can turn per second - in radians.
 	private double turnSpeed;
 	private Vector position;
 	private Vector velocity;
 	private boolean isManuallyControlled;
-	private String flightName; //Unique and generated randomly
-	public Vector currentTarget; //The position the plane is currently flying towards (if not manually controlled).
+	private String flightName; // Unique and generated randomly
+	public Vector currentTarget; // The position the plane is currently flying towards (if not manually controlled).
 	private double manualBearingTarget;
-	private String originName; //The name of the location the plane is flying from. //#Needed?
-	private String destinationName;//The name of the location the plane is flying to. //#Needed?
+	private String originName; // The name of the location the plane is flying from. //#Needed?
+	private String destinationName;// The name of the location the plane is flying to. //#Needed?
 	private Waypoint[] route;
 	
 	/**
@@ -43,17 +43,17 @@ public class Aircraft {
 
 	private int currentRouteStage;
 	public Vector destination;
-	private graphics.Image image; //The plane image
-	private boolean hasFinished; //If destination is airport, must be given a land command bnefore it returns True //#Should this be non-inline?
-	public boolean is_waiting_to_land;//If the destination is the airport, True until land() is called. //#Should this be non-inline?
-	private double currentlyTurningBy;//In radians
+	private graphics.Image image; // The plane image
+	private boolean hasFinished; // If destination is airport, must be given a land command bnefore it returns True //#Should this be non-inline?
+	public boolean is_waiting_to_land;// If the destination is the airport, True until land() is called. //#Should this be non-inline?
+	private double currentlyTurningBy;// In radians
 	/**
 	 * Holds a list of planes currently in violation of separation rules with this plane
 	 */
 	private java.util.ArrayList<Aircraft> planesTooNear = new java.util.ArrayList<Aircraft>();
-	private int altitudeState;//Whether the plane is climbing or falling
-	private int altitudeChangeSpeed = 300;//The speed to climb or fall by. Default 300 for easy mode
-	private double timeOfCreation;//Used to calculate how long an aircraft spent in the airspace
+	private int altitudeState;// Whether the plane is climbing or falling
+	private int altitudeChangeSpeed = 300;// The speed to climb or fall by. Default 300 for easy mode
+	private double timeOfCreation;// Used to calculate how long an aircraft spent in the airspace
 	/**
 	 * Used to get (system) time when an aircraft was created.
 	 * @return Time when aircraft was created.
@@ -102,7 +102,7 @@ public class Aircraft {
 	 */
 	private boolean collisionWarningSoundFlag = false;
 	
-	private final static audio.Sound WARNING_SOUND = audio.newSoundEffect("sfx" + File.separator + "beep.ogg");//Used during separation violation 
+	private final static audio.Sound WARNING_SOUND = audio.newSoundEffect("sfx" + File.separator + "beep.ogg");// Used during separation violation 
 	
 	/**
 	 * Each plane has its own base score that user improves their score by when a plane successfully
@@ -205,8 +205,7 @@ public class Aircraft {
 			case Demo.DIFFICULTY_HARD:
 				separationRule = 128;
 				velocity = velocity.scaleBy(3);
-				// At high velocities, the aircraft is allowed to turn faster
-				// this helps keep the aircraft on track.
+				// At high velocities, the aircraft is allowed to turn faster - this helps keep the aircraft on track.
 				turnSpeed = Math.PI / 2;
 				altitudeChangeSpeed = 100;
 				baseScore = 300;
@@ -236,7 +235,7 @@ public class Aircraft {
 		return destinationName;
 	}
 	
-	public boolean isFinished() { //Returns whether the plane has reached its destination
+	public boolean isFinished() { // Returns whether the plane has reached its destination
 		return hasFinished;
 	}
 	
@@ -555,8 +554,8 @@ public class Aircraft {
 					// If we have, skip evaluating the point
 					// This protects the aircraft from getting stuck looping between points
 					if (routePoints.getWaypointLocation().equals(point.getWaypointLocation())) {
-						skip = true; //flag to skip
-						break; // no need to check rest of list, already found a match.
+						skip = true; // Flag to skip
+						break; // No need to check rest of list, already found a match.
 					}
 				}
 				// Do not consider the waypoint we are currently at or the origin
@@ -564,7 +563,7 @@ public class Aircraft {
 				// Also skip if flagged as a previously selected waypoint
 				if (skip | point.getWaypointLocation().equals(currentPos.getWaypointLocation()) | point.getWaypointLocation().equals(origin.getWaypointLocation())
 						| (point.isEntryOrExit() && !(point.getWaypointLocation().equals(destination.getWaypointLocation())))) {
-					skip = false; //reset flag
+					skip = false; // Reset flag
 					continue;
 				}  else  {
 					/* Get cost of visiting waypoint
@@ -704,7 +703,7 @@ public class Aircraft {
 	
 	
 	public void setAltitudeState(int state) {
-		this.altitudeState = state;//Either climbing or falling
+		this.altitudeState = state;// Either climbing or falling
 	}
 
 	/**
