@@ -749,6 +749,10 @@ public class Demo extends Scene {
 						int scoreTextX = (int) plane.getRoute()[plane.getRoute().length -1].position().x();
 						int scoreTextY = (int) plane.getRoute()[plane.getRoute().length -1].position().y();
 						graphics.setColour(255, 255, 255, scoreTextAlpha);
+						if (scoreTextX < 40) scoreTextX += 50;
+						if (scoreTextY < 40) scoreTextY += 50;
+						if (scoreTextX > 1000) scoreTextX -= 50;
+						if (scoreTextY > 1000) scoreTextY -= 50;
 						graphics.print(planeScoreValue, scoreTextX, scoreTextY, 2);
 					}
 				}
