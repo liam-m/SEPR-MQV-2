@@ -505,7 +505,7 @@ public class Aircraft {
 	 * @return true, if the mouse is close enough to this plane. False, otherwise.
 	 */
 	public boolean isMouseOver() {
-		return isMouseOver(input.mouseX() - 16, input.mouseY() - 48);
+		return isMouseOver(input.mouseX() - Demo.airspace_view_offset_x, input.mouseY() - Demo.airspace_view_offset_y);
 	}
 
 	private boolean is_landing = false;
@@ -639,11 +639,11 @@ public class Aircraft {
 		Double xpos = position.x() - image.width() / 2; // Centre position of
 														// aircraft
 		Double ypos = position.y() - image.height() / 2;
-		graphics.circle(false, xpos + 16, ypos + 48, COMPASS_RADIUS, 30);
+		graphics.circle(false, xpos + Demo.airspace_view_offset_x, ypos + Demo.airspace_view_offset_y, COMPASS_RADIUS, 30);
 		for (int i = 0; i < 360; i += 60) {
 			double r = Math.toRadians(i - 90);
-			double x = xpos + 16 + (1.1 * COMPASS_RADIUS * Math.cos(r));
-			double y = ypos + 46 + (1.1 * COMPASS_RADIUS * Math.sin(r));
+			double x = xpos + Demo.airspace_view_offset_x + (1.1 * COMPASS_RADIUS * Math.cos(r));
+			double y = ypos + Demo.airspace_view_offset_y - 2 + (1.1 * COMPASS_RADIUS * Math.sin(r));
 			if (i > 170)
 				x -= 24;
 			if (i == 180)
@@ -656,23 +656,23 @@ public class Aircraft {
 			graphics.setColour(0, 128, 0, 128);
 			double r = Math.atan2(input.mouseY() - position.y(), input.mouseX()
 					- position.x());
-			x = 16 + xpos + (COMPASS_RADIUS * Math.cos(r));
-			y = 48 + ypos + (COMPASS_RADIUS * Math.sin(r));
-			graphics.line(xpos + 16, ypos + 48, x, y);
-			graphics.line(xpos + 15, ypos + 48, x, y);
-			graphics.line(xpos + 16, ypos + 47, x, y);
-			graphics.line(xpos + 17, ypos + 48, x, y);
-			graphics.line(xpos + 17, ypos + 49, x, y);
+			x = Demo.airspace_view_offset_x + xpos + (COMPASS_RADIUS * Math.cos(r));
+			y = Demo.airspace_view_offset_y + ypos + (COMPASS_RADIUS * Math.sin(r));
+			graphics.line(xpos + Demo.airspace_view_offset_x, ypos + Demo.airspace_view_offset_y, x, y);
+			graphics.line(xpos + Demo.airspace_view_offset_x - 1, ypos + Demo.airspace_view_offset_y, x, y);
+			graphics.line(xpos + Demo.airspace_view_offset_x, ypos + Demo.airspace_view_offset_y - 1, x, y);
+			graphics.line(xpos + Demo.airspace_view_offset_x + 1, ypos + Demo.airspace_view_offset_y, x, y);
+			graphics.line(xpos + Demo.airspace_view_offset_x + 1, ypos + Demo.airspace_view_offset_y + 1, x, y);
 			graphics.setColour(0, 128, 0, 16);
 		}
-		x = 16 + xpos + (COMPASS_RADIUS * Math.cos(getBearing()));
-		y = 48 + ypos + (COMPASS_RADIUS * Math.sin(getBearing()));
+		x = Demo.airspace_view_offset_x + xpos + (COMPASS_RADIUS * Math.cos(getBearing()));
+		y = Demo.airspace_view_offset_y + ypos + (COMPASS_RADIUS * Math.sin(getBearing()));
 		// Draw current bearing
-		graphics.line(xpos + 16, ypos + 48, x, y);
-		graphics.line(xpos + 15, ypos + 48, x, y);
-		graphics.line(xpos + 16, ypos + 47, x, y);
-		graphics.line(xpos + 17, ypos + 48, x, y);
-		graphics.line(xpos + 17, ypos + 49, x, y);
+		graphics.line(xpos + Demo.airspace_view_offset_x, ypos + Demo.airspace_view_offset_y, x, y);
+		graphics.line(xpos + Demo.airspace_view_offset_x - 1, ypos + Demo.airspace_view_offset_y, x, y);
+		graphics.line(xpos + Demo.airspace_view_offset_x, ypos + Demo.airspace_view_offset_y - 1, x, y);
+		graphics.line(xpos + Demo.airspace_view_offset_x + 1, ypos + Demo.airspace_view_offset_y, x, y);
+		graphics.line(xpos + Demo.airspace_view_offset_x + 1, ypos + Demo.airspace_view_offset_y + 1, x, y);
 
 	}
 

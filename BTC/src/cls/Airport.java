@@ -88,7 +88,7 @@ public class Airport extends Waypoint implements EventHandler {
 	 * @return true if mouse is within the rectangle that defines the arrivals portion of the airport
 	 */
 	public boolean isMouseOverArrivals(Vector position) {
-		return isMouseInRect((int)position.x(), (int)position.y(),(int)(arrivals_x_location-airport.width()/2)+16, (int)(arrivals_y_location-airport.height()/2)+48, (int)arrivals_width, (int)arrivals_height);
+		return isMouseInRect((int)position.x(), (int)position.y(),(int)(arrivals_x_location-airport.width()/2) + Demo.airspace_view_offset_x, (int)(arrivals_y_location-airport.height()/2) + Demo.airspace_view_offset_y, (int)arrivals_width, (int)arrivals_height);
 	}
 	
 	/**
@@ -97,7 +97,7 @@ public class Airport extends Waypoint implements EventHandler {
 	 * @return true if mouse is within the rectangle that defines the departures portion of the airport
 	 */
 	public boolean isMouseOverDepartures(Vector position) {
-		return isMouseInRect((int)position.x(), (int)position.y(), (int)(departures_x_location-airport.width()/2) +16, (int)(departures_y_location-airport.height()/2) +48, (int)departures_width, (int)departures_height);
+		return isMouseInRect((int)position.x(), (int)position.y(), (int)(departures_x_location-airport.width()/2) + Demo.airspace_view_offset_x, (int)(departures_y_location-airport.height()/2) + Demo.airspace_view_offset_y, (int)departures_width, (int)departures_height);
 
 	}
 	

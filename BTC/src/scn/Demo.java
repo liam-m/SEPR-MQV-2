@@ -233,7 +233,7 @@ public class Demo extends Scene {
 	public void start() {
 		background = graphics.newImage("gfx" + File.separator + "map.png");
 		music = audio.newMusic("sfx" + File.separator + "whispers_hello.ogg");
-		music.play();
+		//music.play();
 		ordersBox = new cls.OrdersBox(ORDERSBOX_X, ORDERSBOX_Y, ORDERSBOX_W, ORDERSBOX_H, 6);
 		aircraftInAirspace = new java.util.ArrayList<Aircraft>();
 		recentlyDepartedAircraft = new java.util.ArrayList<Aircraft>();
@@ -441,8 +441,8 @@ public class Demo extends Scene {
 	
 	private boolean compassClicked() {
 		if (selectedAircraft != null) {
-			double dx = selectedAircraft.position().x() - input.mouseX() + 16;
-			double dy = selectedAircraft.position().y() - input.mouseY() + 48;
+			double dx = selectedAircraft.position().x() - input.mouseX() + airspace_view_offset_x;
+			double dy = selectedAircraft.position().y() - input.mouseY() + airspace_view_offset_y;
 			int r = Aircraft.COMPASS_RADIUS;
 			return  dx*dx + dy*dy < r*r;
 		}
@@ -451,7 +451,7 @@ public class Demo extends Scene {
 	
 	private boolean aircraftClicked(int x, int y) {
 		for (Aircraft a : aircraftInAirspace) {
-			if (a.isMouseOver(x-16, y-48)) {
+			if (a.isMouseOver(x-airspace_view_offset_x, y-airspace_view_offset_y)) {
 				return true;
 			}
 		}
@@ -460,7 +460,7 @@ public class Demo extends Scene {
 	
 	private Aircraft findClickedAircraft(int x, int y) {
 		for (Aircraft a : aircraftInAirspace) {
-			if (a.isMouseOver(x-16, y-48)) {
+			if (a.isMouseOver(x-airspace_view_offset_x, y-airspace_view_offset_y)) {
 				return a;
 			}
 		}
@@ -470,7 +470,7 @@ public class Demo extends Scene {
 	private boolean waypointInFlightplanClicked(int x, int y, Aircraft a) {
 		if (a != null) {
 			for (Waypoint w : airspaceWaypoints) {
-				if (w.isMouseOver(x-16, y-48) && a.flightPathContains(w) > -1) {
+				if (w.isMouseOver(x-airspace_view_offset_x, y-airspace_view_offset_y) && a.flightPathContains(w) > -1) {
 					return true;
 				}
 			}
@@ -480,7 +480,7 @@ public class Demo extends Scene {
 	
 	private Waypoint findClickedWaypoint(int x, int y) {
 		for (Waypoint w : airspaceWaypoints) {
-			if (w.isMouseOver(x-16, y-48)) {
+			if (w.isMouseOver(x-airspace_view_offset_x, y-airspace_view_offset_y)) {
 				return w;
 			}
 		}
@@ -546,7 +546,7 @@ public class Demo extends Scene {
 	}
 	
 	private boolean manualOverridePressed(int x, int y) {
-		return manualOverrideButton.isMouseOver(x, y);
+		return manualOverrideButton.isMouseOver(x - airspace_view_offset_x, y - airspace_view_offset_y);
 	}
 
 	@Override
@@ -570,8 +570,8 @@ public class Demo extends Scene {
 			clickedWaypoint = null; // Fine to set to null now as will have been dealt with
 		} else if (key == input.MOUSE_RIGHT) {
 			if (compassClicked && selectedAircraft != null) {
-				double dx = input.mouseX() - selectedAircraft.position().x() + 16;
-				double dy = input.mouseY() - selectedAircraft.position().y() + 48;
+				double dx = input.mouseX() - selectedAircraft.position().x() + airspace_view_offset_x;
+				double dy = input.mouseY() - selectedAircraft.position().y() + airspace_view_offset_y;
 				double newBearing = Math.atan2(dy, dx);
 				selectedAircraft.setBearing(newBearing);
 			}
@@ -615,28 +615,30 @@ public class Demo extends Scene {
 		}
 	}
 	
+	// Due to the way the airspace elements are drawn (graphics.setviewport) these variables are needed to manually adjust mouse listeners and elements
+	// drawn outside the airspace so that they align with the airspace elements. These variables can be used to adjust the size of the airspace view.
+	public static int airspace_view_offset_x = 16;
+	public static int airspace_view_offset_y = 48;
 	/**
 	 * Draw the scene GUI and all drawables within it, e.g. aircraft and waypoints
 	 */
 	@Override
 	public void draw() {
 		graphics.setColour(0, 128, 0);
-		graphics.rectangle(false, 16, 48, window.width() - 32, window.height() - 176);
+		graphics.rectangle(false, airspace_view_offset_x, airspace_view_offset_y, window.width() - 32, window.height() - 176);
 		
-		graphics.setViewport(16, 48, window.width() - 32, window.height() - 176);
+		graphics.setViewport(airspace_view_offset_x, airspace_view_offset_y, window.width() - 32, window.height() - 176);
 		graphics.setColour(255, 255, 255, 32);
 		graphics.draw(background, 0, 0);
 		airport.draw();
-		drawMap();		
+		drawMap();	
 		graphics.setViewport();
-		
-		score.draw();
 		
 		if (selectedAircraft != null && selectedAircraft.isManuallyControlled()) {
 			selectedAircraft.drawCompass();
 		}
 		
-				
+		score.draw();
 		ordersBox.draw();
 		altimeter.draw();
 		airport_control_box.draw();
@@ -682,15 +684,15 @@ public class Demo extends Scene {
 		}
 		
 		if (clickedWaypoint != null && selectedAircraft.isManuallyControlled() == false) {
-			selectedAircraft.drawModifiedPath(selectedPathpoint, input.mouseX() - 16, input.mouseY() - 48);
+			selectedAircraft.drawModifiedPath(selectedPathpoint, input.mouseX() - airspace_view_offset_x, input.mouseY() - airspace_view_offset_y);
 		}
 		
 		graphics.setViewport();
 		graphics.setColour(0, 128, 0);
-		graphics.print(LOCATION_NAMES[0], locationWaypoints[0].position().x() + 25, locationWaypoints[0].position().y() + 42);
-		graphics.print(LOCATION_NAMES[1], locationWaypoints[1].position().x() + 25, locationWaypoints[1].position().y() + 42);
-		graphics.print(LOCATION_NAMES[2], locationWaypoints[2].position().x() - 125, locationWaypoints[2].position().y() + 42);
-		graphics.print(LOCATION_NAMES[3], locationWaypoints[3].position().x() - 75, locationWaypoints[3].position().y() + 42);
+		graphics.print(LOCATION_NAMES[0], locationWaypoints[0].position().x() + airspace_view_offset_x + 9, locationWaypoints[0].position().y() + airspace_view_offset_y - 6);
+		graphics.print(LOCATION_NAMES[1], locationWaypoints[1].position().x() + airspace_view_offset_x + 9, locationWaypoints[1].position().y() + airspace_view_offset_y - 6);
+		graphics.print(LOCATION_NAMES[2], locationWaypoints[2].position().x() + airspace_view_offset_x - 141, locationWaypoints[2].position().y() + airspace_view_offset_y - 6);
+		graphics.print(LOCATION_NAMES[3], locationWaypoints[3].position().x() + airspace_view_offset_x - 91, locationWaypoints[3].position().y() + airspace_view_offset_y - 6);
 
 	}
 	
