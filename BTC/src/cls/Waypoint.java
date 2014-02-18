@@ -29,7 +29,7 @@ public class Waypoint {
 		entryOrExit = inputEntryOrExit;
 	}
 	
-	public Vector getWaypointLocation() {
+	public Vector getLocation() {
 		return waypoint_location ;
 	}
 	
@@ -59,7 +59,7 @@ public class Waypoint {
 	 * @return the distance(cost) between the two waypoints
 	 */
 	public double getCost(Waypoint fromPoint) {
-		return waypoint_location .sub(fromPoint.getWaypointLocation()).magnitude();
+		return waypoint_location .sub(fromPoint.getLocation()).magnitude();
 	}
 	
 	/**

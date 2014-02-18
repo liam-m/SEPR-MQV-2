@@ -136,7 +136,8 @@ public abstract class input {
 		}
 		return false;
 	}
-	// Static Mouse Constants	public final static int MOUSE_LEFT = 0;
+	// Static Mouse Constants	
+	public final static int MOUSE_LEFT = 0;
 	public final static int MOUSE_RIGHT = 1;
 	public final static int MOUSE_MIDDLE = 2;
 	public final static int MOUSE_WHEEL_UP = 3;

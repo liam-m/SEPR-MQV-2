@@ -193,21 +193,21 @@ public class Aircraft {
 		timeOfCreation = System.currentTimeMillis() / 1000; // System time when aircraft was created in seconds.
 													
 		route = findGreedyRoute(originPoint, destinationPoint, sceneWaypoints);// Find route
-		destination = destinationPoint.getWaypointLocation();// Place on spawn waypoint //#What does that mean? poor wording
-		position = originPoint.getWaypointLocation(); 
+		destination = destinationPoint.getLocation();// Place on spawn waypoint //#What does that mean? poor wording
+		position = originPoint.getLocation(); 
 		
 		int altitudeOffset = RandomNumber.randInclusiveInt(0, 1) == 0 ? 28000 : 30000;
 		position = position.add(new Vector(0, 0, altitudeOffset));
 
 		// Calculate initial velocity (direction)
-		currentTarget = route[0].getWaypointLocation();
+		currentTarget = route[0].getLocation();
 		double x = currentTarget.getX() - position.getX();
 		double y = currentTarget.getY() - position.getY();
 		velocity = new Vector(x, y, 0).normalise().scaleBy(speed);
 
 		isManuallyControlled = false;
 		hasFinished = false;
-		is_waiting_to_land = destination.equals(Demo.airport.getWaypointLocation());
+		is_waiting_to_land = destination.equals(Demo.airport.getLocation());
 		currentRouteStage = 0;
 		currentlyTurningBy = 0;
 		manualBearingTarget = Double.NaN;
@@ -241,7 +241,7 @@ public class Aircraft {
 				turnSpeed = Math.PI / 2;
 				altitudeChangeSpeed = 100;
 				baseScore = 300;
-				planeBonusToMultiplier = 3;
+				additionToMultiplier = 3;
 				optimalTime = totalDistanceInFlightPlan() / (speed * 3);
 			break;
 
@@ -343,7 +343,7 @@ public class Aircraft {
 			if (!isManuallyControlled)
 				resetBearing();
 			if (routeStage == currentRouteStage) {
-				currentTarget = newWaypoint.getWaypointLocation();
+				currentTarget = newWaypoint.getLocation();
 				turnTowardsTarget(0);
 			}
 		}
@@ -371,8 +371,8 @@ public class Aircraft {
 	 */
 	public void update(double time_difference) {
 		if (hasFinished) return;
-		if (is_landing && position.z() > 100) {
-			position.setZ(position.z() - 2529 * time_difference);
+		if (is_landing && position.getZ() > 100) {
+			position.setZ(position.getZ() - 2529 * time_difference);
 		} else {
 			switch (altitudeState) {
 			case -1:
@@ -398,14 +398,14 @@ public class Aircraft {
 			if (currentTarget.equals(destination)) { // At destination
 				if (!is_waiting_to_land) { // Ready to land
 					hasFinished = true;
-					if (destination.equals(Demo.airport.getWaypointLocation())) { // Landed at airport
+					if (destination.equals(Demo.airport.getLocation())) { // Landed at airport
 						Demo.airport.is_active = false;
 					}
 				}
 			} else { // At target but not destination
 				currentRouteStage++;
 				 // Next target is the destination if you're at the end of the plan, otherwise it's the next waypoint
-				currentTarget = currentRouteStage >= route.length ? destination : route[currentRouteStage].getWaypointLocation();
+				currentTarget = currentRouteStage >= route.length ? destination : route[currentRouteStage].getLocation();
 			}
 		}
 
@@ -531,15 +531,15 @@ public class Aircraft {
 		}
 
 		if (currentTarget != destination) {
-			graphics.line(position.getX()-image.width()/2, position.getY()-image.height()/2, route[currentRouteStage].getWaypointLocation().getX(), route[currentRouteStage].getWaypointLocation().getY());
+			graphics.line(position.getX()-image.width()/2, position.getY()-image.height()/2, route[currentRouteStage].getLocation().getX(), route[currentRouteStage].getLocation().getY());
 		}
 		for (int i = currentRouteStage; i < route.length-1; i++) {
-			graphics.line(route[i].getWaypointLocation().getX(), route[i].getWaypointLocation().getY(), route[i+1].getWaypointLocation().getX(), route[i+1].getWaypointLocation().getY());	
+			graphics.line(route[i].getLocation().getX(), route[i].getLocation().getY(), route[i+1].getLocation().getX(), route[i+1].getLocation().getY());	
 		}
 		if (currentTarget == destination) {
 			graphics.line(position.getX()-image.width()/2, position.getY()-image.height()/2, destination.getX(), destination.getY());
 		} else {
-			graphics.line(route[route.length-1].getWaypointLocation().getX(), route[route.length-1].getWaypointLocation().getY(), destination.getX(), destination.getY());
+			graphics.line(route[route.length-1].getLocation().getX(), route[route.length-1].getLocation().getY(), destination.getX(), destination.getY());
 		}
 	}
 
@@ -553,7 +553,7 @@ public class Aircraft {
 		if (currentRouteStage > modified - 1) {
 			graphics.line(position().getX(), position().getY(), mouseX, mouseY);
 		} else {
-			graphics.line(route[modified-1].getWaypointLocation().getX(), route[modified-1].getWaypointLocation().getY(), mouseX, mouseY);
+			graphics.line(route[modified-1].getLocation().getX(), route[modified-1].getLocation().getY(), mouseX, mouseY);
 		}
 		if (currentTarget == destination) {
 			graphics.line(mouseX, mouseY, destination.getX(), destination.getY());
@@ -563,7 +563,7 @@ public class Aircraft {
 				// Line drawn to final waypoint
 				graphics.line(mouseX, mouseY, destination.getX(), destination.getY());
 			} else {
-				graphics.line(mouseX, mouseY, route[index].getWaypointLocation().getX(), route[index].getWaypointLocation().getY());
+				graphics.line(mouseX, mouseY, route[index].getLocation().getX(), route[index].getLocation().getY());
 			}
 		}
 	}
@@ -600,7 +600,7 @@ public class Aircraft {
 					// Check we have not already selected the waypoint
 					// If we have, skip evaluating the point
 					// This protects the aircraft from getting stuck looping between points
-					if (routePoints.getWaypointLocation().equals(point.getWaypointLocation())) {
+					if (routePoints.getLocation().equals(point.getLocation())) {
 						skip = true; // Flag to skip
 						break; // No need to check rest of list, already found a match.
 					}
@@ -608,8 +608,8 @@ public class Aircraft {
 				// Do not consider the waypoint we are currently at or the origin
 				// Do not consider offscreen waypoints which are not the destination
 				// Also skip if flagged as a previously selected waypoint
-				if (skip | point.getWaypointLocation().equals(currentPos.getWaypointLocation()) | point.getWaypointLocation().equals(origin.getWaypointLocation())
-						| (point.isEntryOrExit() && !(point.getWaypointLocation().equals(destination.getWaypointLocation())))) {
+				if (skip | point.getLocation().equals(currentPos.getLocation()) | point.getLocation().equals(origin.getLocation())
+						| (point.isEntryOrExit() && !(point.getLocation().equals(destination.getLocation())))) {
 					skip = false; // Reset flag
 					continue;
 				} else {
@@ -629,7 +629,7 @@ public class Aircraft {
 			// The cheapest waypoint must have been found
 			assert cheapest != null : "The cheapest waypoint was not found";
 
-			if (cheapest.getWaypointLocation().equals(destination.getWaypointLocation())) {
+			if (cheapest.getLocation().equals(destination.getLocation())) {
 				/*
 				 * Route has reached destination, break out of while loop
 				 */
@@ -709,7 +709,7 @@ public class Aircraft {
 
 	private void resetBearing() {
 		if (currentRouteStage < route.length & route[currentRouteStage] != null) {
-			currentTarget = route[currentRouteStage].getWaypointLocation();
+			currentTarget = route[currentRouteStage].getLocation();
 		}
 		turnTowardsTarget(0);
 	}
@@ -776,8 +776,8 @@ public class Aircraft {
 	 * @return True it if it close
 	 */
 	public boolean isCloseToEntry(Vector position) {
-		double x = this.position().x() - position.x();
-		double y = this.position().y() - position.y();
+		double x = this.position().getX() - position.getX();
+		double y = this.position().getY() - position.getY();
 		return ((x * x + y * y) <= (200 * 200));
 	}
 

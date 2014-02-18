@@ -94,7 +94,7 @@ public class Airport extends Waypoint implements EventHandler {
 	 * @return true if mouse is within the rectangle that defines the arrivals portion of the airport
 	 */
 	public boolean isMouseOverArrivals(Vector position) {
-		return isMouseInRect((int)position.x(), (int)position.y(),(int)(arrivals_x_location-airport.width()/2) + Demo.airspace_view_offset_x, (int)(arrivals_y_location-airport.height()/2) + Demo.airspace_view_offset_y, (int)arrivals_width, (int)arrivals_height);
+		return isMouseInRect((int)position.getX(), (int)position.getY(),(int)(arrivals_x_location-airport.width()/2) + Demo.airspace_view_offset_x, (int)(arrivals_y_location-airport.height()/2) + Demo.airspace_view_offset_y, (int)arrivals_width, (int)arrivals_height);
 	}
 	
 	/**
@@ -103,7 +103,7 @@ public class Airport extends Waypoint implements EventHandler {
 	 * @return true if mouse is within the rectangle that defines the departures portion of the airport
 	 */
 	public boolean isMouseOverDepartures(Vector position) {
-		return isMouseInRect((int)position.x(), (int)position.y(), (int)(departures_x_location-airport.width()/2) + Demo.airspace_view_offset_x, (int)(departures_y_location-airport.height()/2) + Demo.airspace_view_offset_y, (int)departures_width, (int)departures_height);
+		return isMouseInRect((int)position.getX(), (int)position.getY(), (int)(departures_x_location-airport.width()/2) + Demo.airspace_view_offset_x, (int)(departures_y_location-airport.height()/2) + Demo.airspace_view_offset_y, (int)departures_width, (int)departures_height);
 
 	}
 	
@@ -138,7 +138,7 @@ public class Airport extends Waypoint implements EventHandler {
 	public void update(Demo demo) {
 		aircraft_waiting_to_land.clear();
 		for (Aircraft a : demo.aircraftList()) {
-			if (a.currentTarget.equals(this.position())) {
+			if (a.currentTarget.equals(this.getLocation())) {
 				aircraft_waiting_to_land.add(a);
 			}
 		}

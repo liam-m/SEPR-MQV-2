@@ -442,8 +442,8 @@ public class Demo extends Scene {
 	
 	private boolean compassClicked() {
 		if (selectedAircraft != null) {
-			double dx = selectedAircraft.position().x() - input.mouseX() + airspace_view_offset_x;
-			double dy = selectedAircraft.position().y() - input.mouseY() + airspace_view_offset_y;
+			double dx = selectedAircraft.position().getX() - input.mouseX() + airspace_view_offset_x;
+			double dy = selectedAircraft.position().getY() - input.mouseY() + airspace_view_offset_y;
 			int r = Aircraft.COMPASS_RADIUS;
 			return  dx*dx + dy*dy < r*r;
 		}
@@ -505,7 +505,7 @@ public class Demo extends Scene {
 		altimeter.mousePressed(key, x, y);
 		if (key == input.MOUSE_LEFT) {
 			if (isArrivalsClicked(x, y) && selectedAircraft != null) {
-				if (selectedAircraft.is_waiting_to_land && selectedAircraft.currentTarget.equals(airport.position())) {
+				if (selectedAircraft.is_waiting_to_land && selectedAircraft.currentTarget.equals(airport.getLocation())) {
 					airport.mousePressed(key, x, y);
 					selectedAircraft.land();
 				}
@@ -573,8 +573,8 @@ public class Demo extends Scene {
 			clickedWaypoint = null; // Fine to set to null now as will have been dealt with
 		} else if (key == input.MOUSE_RIGHT) {
 			if (compassClicked && selectedAircraft != null) {
-				double dx = input.mouseX() - selectedAircraft.position().x() + airspace_view_offset_x;
-				double dy = input.mouseY() - selectedAircraft.position().y() + airspace_view_offset_y;
+				double dx = input.mouseX() - selectedAircraft.position().getX() + airspace_view_offset_x;
+				double dy = input.mouseY() - selectedAircraft.position().getY() + airspace_view_offset_y;
 				double newBearing = Math.atan2(dy, dx);
 				selectedAircraft.setBearing(newBearing);
 			}
@@ -692,10 +692,10 @@ public class Demo extends Scene {
 		
 		graphics.setViewport();
 		graphics.setColour(0, 128, 0);
-		graphics.print(LOCATION_NAMES[0], locationWaypoints[0].getWaypointLocation().getX() + airspace_view_offset_x + 9, locationWaypoints[0].getWaypointLocation().getY() + airspace_view_offset_y - 6);
-		graphics.print(LOCATION_NAMES[1], locationWaypoints[1].getWaypointLocation().getX() + airspace_view_offset_x + 9, locationWaypoints[1].getWaypointLocation().getY() + airspace_view_offset_y - 6);
-		graphics.print(LOCATION_NAMES[2], locationWaypoints[2].getWaypointLocation().getX() + airspace_view_offset_x - 141, locationWaypoints[2].getWaypointLocation().getY() + airspace_view_offset_y - 6);
-		graphics.print(LOCATION_NAMES[3], locationWaypoints[3].getWaypointLocation().getX() + airspace_view_offset_x - 91, locationWaypoints[3].getWaypointLocation().getY() + airspace_view_offset_y - 6);
+		graphics.print(LOCATION_NAMES[0], locationWaypoints[0].getLocation().getX() + airspace_view_offset_x + 9, locationWaypoints[0].getLocation().getY() + airspace_view_offset_y - 6);
+		graphics.print(LOCATION_NAMES[1], locationWaypoints[1].getLocation().getX() + airspace_view_offset_x + 9, locationWaypoints[1].getLocation().getY() + airspace_view_offset_y - 6);
+		graphics.print(LOCATION_NAMES[2], locationWaypoints[2].getLocation().getX() + airspace_view_offset_x - 141, locationWaypoints[2].getLocation().getY() + airspace_view_offset_y - 6);
+		graphics.print(LOCATION_NAMES[3], locationWaypoints[3].getLocation().getX() + airspace_view_offset_x - 91, locationWaypoints[3].getLocation().getY() + airspace_view_offset_y - 6);
 
 	}
 	
@@ -746,8 +746,8 @@ public class Demo extends Scene {
 						int scoreTextAlpha =  (int)((displayedFor - leftAirspaceFor)/displayedFor * 255); // Transparency of the label, 255 is opaque
 						String planeScoreValue = String.valueOf(plane.getScore() * score.getMultiplier());
 						// Drawing the score
-						int scoreTextX = (int) plane.getRoute()[plane.getRoute().length -1].position().x();
-						int scoreTextY = (int) plane.getRoute()[plane.getRoute().length -1].position().y();
+						int scoreTextX = (int) plane.getRoute()[plane.getRoute().length -1].getLocation().getX();
+						int scoreTextY = (int) plane.getRoute()[plane.getRoute().length -1].getLocation().getY();
 						graphics.setColour(255, 255, 255, scoreTextAlpha);
 						if (scoreTextX < 40) scoreTextX += 50;
 						if (scoreTextY < 40) scoreTextY += 50;
@@ -826,7 +826,7 @@ public class Demo extends Scene {
 			for (Aircraft aircraft : aircraftInAirspace) {
 				// Check if any plane is currently going towards the exit point/chosen originPoint
 				// Check if any plane is less than what is defined as too close from the chosen originPoint
-				if (aircraft.currentTarget.equals(entry_point.position()) || aircraft.isCloseToEntry(entry_point.position()))   {
+				if (aircraft.currentTarget.equals(entry_point.getLocation()) || aircraft.isCloseToEntry(entry_point.getLocation()))   {
 					is_available = false;
 				}	
 			}

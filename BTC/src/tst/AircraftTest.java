@@ -212,10 +212,11 @@ public class AircraftTest {
 	public void isCloseToEntry() {
 		Waypoint[] waypointList = new Waypoint[]{new Waypoint(0, 0, true), new Waypoint(100, 100, true), new Waypoint(25, 75, false), new Waypoint(675, 125, false), new Waypoint(530,520, false)};
 		testAircraft = new Aircraft("testAircraft", "Berlin", "Dublin", new Waypoint(100,100, true), new Waypoint(0,0, true), null, 10.0, waypointList, 1);
-		assertTrue(testAircraft.isCloseToEntry(waypointList[0].position()));			assertTrue(testAircraft.isCloseToEntry(waypointList[1].position()));
-		assertTrue(testAircraft.isCloseToEntry(waypointList[2].position()));
-		assertFalse(testAircraft.isCloseToEntry(waypointList[3].position()));
-		assertFalse(testAircraft.isCloseToEntry(waypointList[4].position()));
+		assertTrue(testAircraft.isCloseToEntry(waypointList[0].getLocation()));			
+		assertTrue(testAircraft.isCloseToEntry(waypointList[1].getLocation()));
+		assertTrue(testAircraft.isCloseToEntry(waypointList[2].getLocation()));
+		assertFalse(testAircraft.isCloseToEntry(waypointList[3].getLocation()));
+		assertFalse(testAircraft.isCloseToEntry(waypointList[4].getLocation()));
 	}
 
 

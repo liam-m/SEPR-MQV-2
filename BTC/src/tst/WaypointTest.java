@@ -14,7 +14,7 @@ public class WaypointTest {
 	@Test
 	public void testGetPosition() {
 		Waypoint testWaypoint = new Waypoint(10,10, false);
-		Vector resultVector = testWaypoint.getWaypointLocation();
+		Vector resultVector = testWaypoint.getLocation();
 		assertTrue("Position = (10, 10, 0)", (10 == resultVector.getX()) && (10 == resultVector.getY()) && (0 == resultVector.getZ()));
 	}
 	
