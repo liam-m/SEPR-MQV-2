@@ -692,10 +692,10 @@ public class Demo extends Scene {
 		
 		graphics.setViewport();
 		graphics.setColour(0, 128, 0);
-		graphics.print(LOCATION_NAMES[0], locationWaypoints[0].position().x() + airspace_view_offset_x + 9, locationWaypoints[0].position().y() + airspace_view_offset_y - 6);
-		graphics.print(LOCATION_NAMES[1], locationWaypoints[1].position().x() + airspace_view_offset_x + 9, locationWaypoints[1].position().y() + airspace_view_offset_y - 6);
-		graphics.print(LOCATION_NAMES[2], locationWaypoints[2].position().x() + airspace_view_offset_x - 141, locationWaypoints[2].position().y() + airspace_view_offset_y - 6);
-		graphics.print(LOCATION_NAMES[3], locationWaypoints[3].position().x() + airspace_view_offset_x - 91, locationWaypoints[3].position().y() + airspace_view_offset_y - 6);
+		graphics.print(LOCATION_NAMES[0], locationWaypoints[0].getWaypointLocation().getX() + airspace_view_offset_x + 9, locationWaypoints[0].getWaypointLocation().getY() + airspace_view_offset_y - 6);
+		graphics.print(LOCATION_NAMES[1], locationWaypoints[1].getWaypointLocation().getX() + airspace_view_offset_x + 9, locationWaypoints[1].getWaypointLocation().getY() + airspace_view_offset_y - 6);
+		graphics.print(LOCATION_NAMES[2], locationWaypoints[2].getWaypointLocation().getX() + airspace_view_offset_x - 141, locationWaypoints[2].getWaypointLocation().getY() + airspace_view_offset_y - 6);
+		graphics.print(LOCATION_NAMES[3], locationWaypoints[3].getWaypointLocation().getX() + airspace_view_offset_x - 91, locationWaypoints[3].getWaypointLocation().getY() + airspace_view_offset_y - 6);
 
 	}
 	
@@ -709,7 +709,7 @@ public class Demo extends Scene {
 			graphics.setViewport(PLANE_INFO_X, PLANE_INFO_Y, PLANE_INFO_W, PLANE_INFO_H);
 			graphics.printCentred(selectedAircraft.getName(), 0, 5, 2, PLANE_INFO_W);
 			// Altitude
-			String altitude = String.format("%.0f", selectedAircraft.position().z()) + "£";
+			String altitude = String.format("%.0f", selectedAircraft.position().getZ()) + "£";
 			graphics.print("Altitude:", 10, 40);
 			graphics.print(altitude, PLANE_INFO_W - 10 - altitude.length()*8, 40);
 			// Speed

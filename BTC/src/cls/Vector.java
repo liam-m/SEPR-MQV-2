@@ -19,25 +19,16 @@ public class Vector {
 		this.z = z;
 	}
 	
-	/**
-	 * Getter for X
-	 * @return X
-	 */
-	public double x() {
+
+	public double getX() {
 		return x;
 	}
-	/**
-	 * Getter for Y
-	 * @return Y
-	 */
-	public double y() {
+
+	public double getY() {
 		return y;
 	}
-	/**
-	 * Getter for Z
-	 * @return Z
-	 */
-	public double z() {
+	
+	public double getZ() {
 		return z;
 	}
 	
@@ -53,7 +44,7 @@ public class Vector {
 			return false;
 		} else {
 			Vector v = (Vector) o;
-			return (x == v.x()) && (y == v.y()) && (z == v.z());
+			return (x == v.getX()) && (y == v.getY()) && (z == v.getZ());
 		}
 	}
 	
@@ -92,7 +83,7 @@ public class Vector {
 	 * @return the sum of the vectors
 	 */
 	public Vector add(Vector v) {
-		return new Vector(x + v.x(), y + v.y(), z + v.z());
+		return new Vector(x + v.getX(), y + v.getY(), z + v.getZ());
 	}
 	
 	/**
@@ -101,7 +92,7 @@ public class Vector {
 	 * @return the result of the subtractions
 	 */
 	public Vector sub(Vector v) {
-		return new Vector(x - v.x(), y - v.y(), z - v.z());
+		return new Vector(x - v.getX(), y - v.getY(), z - v.getZ());
 	}
 	
 	/**

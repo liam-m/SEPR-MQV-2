@@ -9,7 +9,6 @@ import btc.Main;
 
 public class DifficultySelect extends Scene {
 	
-	//Position of things to draw in the window
 	private final int EASY_BUTTON_X = window.width()/4;
 	private final int EASY_BUTTON_Y = 2*window.height()/3;
 	private final int EASY_BUTTON_W = 128;
@@ -25,25 +24,25 @@ public class DifficultySelect extends Scene {
 	private final int HARD_BUTTON_W = EASY_BUTTON_W;
 	private final int HARD_BUTTON_H = EASY_BUTTON_H;
 	
-	//list of buttons
+	
 	private lib.ButtonText[] buttons;
-	//text box to write flavour text about the game setting into
+	//text box for flavour text
 	private lib.TextBox textBox;
 	private static final String placeName = "Moscow";
 	
 	//To allow the difficulty selection to work with multiple potential game scenes, e.g. separate Demo and a Full Game
-	private int sceneToCreate;
+	private int scene;
 	//static ints for clarity of reading. Implement more to allow more game scenes.
 	public final static int CREATE_DEMO = 0;
 
 	/**
 	 * Constructor
 	 * @param main the main containing the scene
-	 * @param sceneToCreate the scene to create after a difficulty has been selected, e.g. Demo
+	 * @param scene the scene to create e.g. Demo
 	 */
-	protected DifficultySelect(Main main, int sceneToCreate) {
+	protected DifficultySelect(Main main, int scene) {
 		super(main);
-		this.sceneToCreate = sceneToCreate;
+		this.scene = scene;
 	}
 
 	@Override
@@ -83,7 +82,7 @@ public class DifficultySelect extends Scene {
 		lib.ButtonText.Action easy = new lib.ButtonText.Action() {
 			@Override
 			public void action() {
-				switch (sceneToCreate){
+				switch (scene){
 				case DifficultySelect.CREATE_DEMO:
 					main.setScene(new Demo(main, Demo.DIFFICULTY_EASY));
 					break;
@@ -95,7 +94,7 @@ public class DifficultySelect extends Scene {
 		lib.ButtonText.Action medium = new lib.ButtonText.Action() {
 			@Override
 			public void action() {
-				switch (sceneToCreate){
+				switch (scene){
 				case DifficultySelect.CREATE_DEMO:
 					main.setScene(new Demo(main, Demo.DIFFICULTY_MEDIUM));
 					break;
@@ -107,7 +106,7 @@ public class DifficultySelect extends Scene {
 		lib.ButtonText.Action hard = new lib.ButtonText.Action() {
 			@Override
 			public void action() {
-				switch (sceneToCreate){
+				switch (scene){
 				case DifficultySelect.CREATE_DEMO:
 					main.setScene(new Demo(main, Demo.DIFFICULTY_HARD));
 					break;
@@ -160,9 +159,7 @@ public class DifficultySelect extends Scene {
 	public void close() {}
 
 	@Override
-	public void playSound(Sound sound) {
-		// TODO Auto-generated method stub
-		
+	public void playSound(Sound sound) {		
 	}
 
 }

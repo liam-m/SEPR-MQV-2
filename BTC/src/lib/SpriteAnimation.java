@@ -80,7 +80,7 @@ public class SpriteAnimation {
 	}
 	
 	/**
-	 * updates the timer and changes the frame if necessary
+	 * Updates the timer and changes the frame if necessary
 	 * @param time_difference time in seconds since last update
 	 */
 	public void update(double time_difference) {
@@ -102,7 +102,7 @@ public class SpriteAnimation {
 	}
 	
 	/**
-	 * draws the animation
+	 * Draws the animation
 	 */
 	public void draw() {
 		if (hasFinished) return;

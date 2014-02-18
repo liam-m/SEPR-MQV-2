@@ -6,7 +6,7 @@ public abstract class RandomNumber {
 
 	/**
 	 * Generates a random integer between min and max, in the range [min, max]
-	 * This method is inclusive of min AND max.
+	 * This method is inclusive of min and max.
 	 * @param min the lower boundary (included) for the random integer
 	 * @param max the upper boundary (included) for the random integer
 	 * @return a random integer

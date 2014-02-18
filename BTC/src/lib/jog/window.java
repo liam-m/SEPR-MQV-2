@@ -120,7 +120,7 @@ public abstract class window {
 	}
 	
 	/**
-	 * 
+	 * Loads the icon for the window.
 	 * @param filename filename of the icon.
 	 * @param size the width (and height) of the icon
 	 * @return a ByteBuffer containing the icon's data
@@ -144,7 +144,7 @@ public abstract class window {
 	}
 	
 	/**
-	 * Updates the window and syncs it with the specified FPS. 
+	 * Updates the window in sync with the specified FPS. 
 	 * It also updates whether the window has been closed or not.
 	 */
 	public static void update() {

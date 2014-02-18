@@ -35,7 +35,7 @@ public class AirportControlBox implements EventHandler{
 	 * Draws the box to the screen
 	 */
 	public void draw() {
-		drawBoxShell();
+		drawBoxOutline();
 		drawLabels();
 		if (clicked) {
 			graphics.setColour(0, 128, 0);
@@ -47,8 +47,8 @@ public class AirportControlBox implements EventHandler{
 	 * Draws the rectangle and the aircraft slots of the the box 
 	 * (number of divisions is the hangar size of the airport + 1 for the button to signal take off)
 	 */
-	private void drawBoxShell() {
-		// Outer shell
+	private void drawBoxOutline() {
+		// Outline
 		graphics.setColour(0, 128, 0);
 		graphics.rectangle(false, positionX, positionY, width, height);
 		
@@ -99,6 +99,7 @@ public class AirportControlBox implements EventHandler{
 	}
 	
 	/**
+	 * Draws the bar indicating how long a plane has been waiting to leave the airport //#Is this true?
 	 * @param time_entered
 	 * @return a value between 0 and 1 which is used to calculate the ratio of the "progress bar" to draw
 	 */
@@ -113,6 +114,12 @@ public class AirportControlBox implements EventHandler{
 		}
 	}
 	
+	/**
+	 * Returns True if the mouse is over the flight list buttons //#Is this true
+	 * @param x Cursor's x Coordinate
+	 * @param y Cursor's y Coordinate
+	 * @return
+	 */
 	private boolean isMouseOverButton(int x, int y) {
 		if (x < positionX || x > positionX + width) return false; 
 		if (y < ((positionY + height) - (height /number_of_divisions)) ||y > (positionY + height)) return false;

@@ -53,7 +53,7 @@ public class TextBox {
 	}
 	
 	/**
-	 * Changes the speed at which text is 'typed;.
+	 * Changes the speed at which text is 'typed'.
 	 * @param delay the new wait in seconds between each character.
 	 */
 	public void setSpeed(double delay) {

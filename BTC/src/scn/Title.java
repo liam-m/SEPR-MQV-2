@@ -13,7 +13,7 @@ import lib.jog.window;
 import btc.Main;
 
 public class Title extends Scene {
-	
+	//#Needed?
 	/**
 	 * A URL to the Bear Traffic Controller Website
 	 * Webpage contains explanation of game's controls and goal
@@ -46,8 +46,8 @@ public class Title extends Scene {
 	}
 
 	/**
-	 * Initialises anything which needs to be initialised, such as buttons and sound effects
-	 * Runs only at start of scene
+	 * Initialises all objects, such as buttons and sound effects
+	 * Only runs at start of scene
 	 */
 	@Override
 	public void start() {
@@ -106,7 +106,7 @@ public class Title extends Scene {
 	/**
 	 * Updates all objects in the title scene
 	 * Called by Main class
-	 * @param time_difference the delta time since the last update
+	 * @param time_difference the time since the last update
 	 */
 	@Override
 	public void update(double time_difference) {
@@ -120,14 +120,14 @@ public class Title extends Scene {
 			playSound(beep);
 		}
 	}
-	
+	//#Needed?
 	/**
-	 * Handles mouse down input
-	 * Unused
+	 * Handles mouse pressed input
+	 * Currently unused
 	 */
 	@Override
 	public void mousePressed(int key, int x, int y) {}
-
+	//#Needed?
 	/**
 	 * Handles mouse release events
 	 * Causes a button to act if clicked by any mouse key
@@ -141,10 +141,10 @@ public class Title extends Scene {
 		}
 		
 	}
-
+	//#Needed?
 	/**
 	 * Keyboard input methods
-	 * Unused - no keyboard interaction in this scene
+	 * Currently unused
 	 */
 	@Override
 	public void keyPressed(int key) {}
@@ -155,7 +155,7 @@ public class Title extends Scene {
 	/**
 	 * Handles drawing of the scene
 	 * Calls drawRadar() and drawMenu() to draw elements of the scene
-	 * Called regularly by Main
+	 * Called by Main
 	 */
 	@Override
 	public void draw() {
@@ -207,7 +207,7 @@ public class Title extends Scene {
 	}
 	
 	/**
-	 * Draws menu boxes, boxes around buttons, and so on
+	 * Draws menu boxes, boxes around buttons, and strings
 	 */
 	private void drawMenu() {
 		// Draw Extras e.g. Date, Time, Credits
@@ -231,16 +231,18 @@ public class Title extends Scene {
 		graphics.line(window.height(), window.height()/2 + 180, window.width() - 16, window.height()/2 + 180);
 		graphics.line(window.height(), window.height()/2 + 210, window.width() - 16, window.height()/2 + 210);
 	}
-
+	
 	@Override
+	//#Needed?
 	/**
 	 * cleanly exits the title scene
 	 */
 	public void close() {
 
 	}
-
+	
 	@Override
+	//#Needed?
 	/**
 	 * Plays a requested sound
 	 */

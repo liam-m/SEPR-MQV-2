@@ -10,38 +10,27 @@ public class Waypoint {
 	 */
 	public final static int MOUSE_LENIANCY = 32;
 	
-	/**
-	 * Radius of the waypoint icon
-	 */
-	final private int RADIUS = 8;
-	
-	/**
-	 * Location of the waypoint
-	 */
-	private Vector position;
+	final private int WAYPOINT_ICON_RADIUS = 8;
+	private Vector waypoint_location;
 	
 	/**
 	 * Marks whether the waypoint is a point where planes may enter and exit the game airspace
 	 */
-	private boolean entryOrExit;
+	private boolean entryOrExit; //#Please specify what True or False are (just one of them)
 	
 	/**
 	 * Constructor for waypoints
-	 * @param x the x coord of the waypoint
-	 * @param y the y coord of the waypoint
+	 * @param x the x coordinate of the waypoint
+	 * @param y the y coordinate of the waypoint
 	 * @param inputEntryOrExit whether the waypoint is a point where planes may enter and leave the airspace
 	 */
 	public Waypoint(double x, double y, boolean inputEntryOrExit) {
-		position = new Vector(x, y, 0);
+		waypoint_location  = new Vector(x, y, 0);
 		entryOrExit = inputEntryOrExit;
 	}
 	
-	/**
-	 * Gets the waypoint position
-	 * @return the position of the waypoint.
-	 */
-	public Vector position() {
-		return position;
+	public Vector getWaypointLocation() {
+		return waypoint_location ;
 	}
 	
 	/**
@@ -51,26 +40,26 @@ public class Waypoint {
 	 * @return whether the mouse is considered over the waypoint.
 	 */
 	public boolean isMouseOver(int mx, int my) {
-		double dx = position.x() - mx;
-		double dy = position.y() - my;
+		double dx = waypoint_location .getX() - mx;
+		double dy = waypoint_location .getY() - my;
 		return dx*dx + dy*dy < MOUSE_LENIANCY*MOUSE_LENIANCY;
 	}
 	
 	/**
-	 * @return Whether or not the waypoint is an entry or exit point for the airspace.
+	 * Returns if the waypoint is an entry or exit point.
+	 * @return Whether or not the waypoint is an entry or exit point.//#What does True mean?
 	 */
 	public boolean isEntryOrExit() {
 		return this.entryOrExit;
 	}
 	
 	/**
-	 * Gets the cost of travelling between this waypoint and another
-	 * Used for pathfinding
+	 * Gets the cost of travelling between this waypoint and another - Used for pathfinding
 	 * @param fromPoint The point to consider cost from, to this waypoint
-	 * @return the distance (cost) between the two waypoints
+	 * @return the distance(cost) between the two waypoints
 	 */
 	public double getCost(Waypoint fromPoint) {
-		return position.sub(fromPoint.position()).magnitude();
+		return waypoint_location .sub(fromPoint.getWaypointLocation()).magnitude();
 	}
 	
 	/**
@@ -94,12 +83,12 @@ public class Waypoint {
 		else
 			graphics.setColour(128, 0, 0, 128);
 		
-		graphics.circle(false, x-RADIUS/2, y-RADIUS/2, RADIUS);
-		graphics.circle(true, x-RADIUS/2, y-RADIUS/2, RADIUS - 2);
+		graphics.circle(false, x-WAYPOINT_ICON_RADIUS/2, y-WAYPOINT_ICON_RADIUS/2, WAYPOINT_ICON_RADIUS);
+		graphics.circle(true, x-WAYPOINT_ICON_RADIUS/2, y-WAYPOINT_ICON_RADIUS/2, WAYPOINT_ICON_RADIUS - 2);
 	}
 
 	public void draw() {
-		draw(position.x(), position.y());
+		draw(waypoint_location .getX(), waypoint_location .getY());
 	}
 	
 }
