@@ -788,7 +788,7 @@ public class Aircraft {
 	public boolean isCloseToEntry(Vector position) {
 		double x = this.position().getX() - position.getX();
 		double y = this.position().getY() - position.getY();
-		return ((x * x + y * y) <= (200 * 200));
+		return ((x*x + y*y) <= (300 * 300));
 	}
 
 }
