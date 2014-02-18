@@ -6,25 +6,29 @@ import lib.jog.graphics;
 
 public class Score {
 	
-	public final int MAX_DIGITS_IN_SCORE = 7;
+	
 	public final int MAX_SCORE = 9999999;
+	public final int MAX_DIGITS_IN_SCORE = (int)Math.log10(MAX_SCORE) + 1;
 	
 	private int current_digits_in_score;
-
 	
 	/**
 	 * Records the total score the user has achieved at a given time.
 	 */	
-	private int totalScore = 0;
-	private int targetScore = 0;
+	private int total_score = 0;
+	private int target_score = 0;
 	
 	/**
 	 * Getter for total score in case it is needed outside the Demo class.
 	 * @return totalScore
 	 */	
 	public int getTotalScore() {
-		if (totalScore > MAX_SCORE) totalScore = MAX_SCORE;
-		return totalScore;
+		if (total_score > MAX_SCORE) total_score = MAX_SCORE;
+		return total_score;
+	}
+	
+	public int getTargetScore() {
+		return target_score;
 	}
 	
 	/**
@@ -33,7 +37,7 @@ public class Score {
 	 */	
 	public void increaseTotalScore(int amount) {
 		if (amount > 0)
-			targetScore += amount;
+			target_score += amount;
 	}
 	
 	/**
@@ -108,6 +112,9 @@ public class Score {
 	public int getMeterFill() {
 		return meter_fill;
 	}
+	public int getTargetMeterFill() {
+		return target_meter_fill;
+	}
 	
 	
 	// Necessary for testing
@@ -133,7 +140,8 @@ public class Score {
 	}
 		
 	/**
-	 * Updates multiplier based on the multiplierLevel. Is updated whenever multiplierLevel changes
+	 * Updates multiplier based on the multiplierLevel, each multiplierLevel has an associated value to set the multiplier at. 
+	 * Is updated whenever multiplierLevel changes.
 	 */		
 	private void setMultiplier() {
 		switch(multiplierLevel) {
@@ -168,7 +176,7 @@ public class Score {
 			}
 		}
 			
-		if (meter_fill <= 0) {
+		if (meter_fill < 0) {
 			if (multiplierLevel != 1) {
 				decreaseMultiplierLevel();
 				meter_fill += 256;
@@ -256,10 +264,10 @@ public class Score {
 	}
 	
 	public void update() {
-		if (targetScore - totalScore <= 9) 
-			totalScore = targetScore;
+		if (target_score - total_score <= 9) 
+			total_score = target_score;
 		else
-			totalScore += 9;
+			total_score += 9;
 		if (target_meter_fill != meter_fill) {
 			if (target_meter_fill > meter_fill) {
 				meter_draining = false;

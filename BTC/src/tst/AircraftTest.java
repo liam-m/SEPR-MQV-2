@@ -116,7 +116,8 @@ public class AircraftTest {
 		// Simulating Demo class' update from here (calling that function would otherwise interfere with testing):
 
 		testScore.increaseTotalScore(testScore.getMultiplier() * plane.getBaseScore());
-
+		while(testScore.getTargetScore() != testScore.getTotalScore()) testScore.update();
+		
 		assertTrue(testScore.getTotalScore() == 150);
 	}
 
@@ -132,12 +133,63 @@ public class AircraftTest {
 		assertTrue(testScore.getMultiplier() == 1);
 		assertTrue(testScore.getMeterFill() == 0);
 		
-		testScore.increaseMeterFill(256);
+		// tests the meter will not decrease below 0 at multiplier_level 1
+		testScore.increaseMeterFill(-1);
+		while(testScore.getTargetMeterFill() != testScore.getMeterFill()) testScore.update();
 		
+		assertTrue(testScore.getMultiplierLevel() == 1);
+		assertTrue(testScore.getMultiplier() == 1);
+		assertTrue(testScore.getMeterFill() == 0);
+		
+		// tests increasing the multipler_level at max meter_fill
+		testScore.increaseMeterFill(256);
+		while(testScore.getTargetMeterFill() != testScore.getMeterFill()) testScore.update();
+
 		assertTrue(testScore.getMultiplierLevel() == 2);
 		assertTrue(testScore.getMultiplier() == 3);
+		assertTrue(testScore.getMeterFill() == 0);
+		
+		// tests an increase beyond the bound of the meter
+		testScore.increaseMeterFill(257);
+		while(testScore.getTargetMeterFill() != testScore.getMeterFill()) testScore.update();
+		
+		assertTrue(testScore.getMultiplierLevel() == 3);
+		assertTrue(testScore.getMultiplier() == 5);
 		assertTrue(testScore.getMeterFill() == 1);
-
+		
+		// sets the meter and multiplier_level to their max values
+		testScore.increaseMeterFill(-1);
+		testScore.increaseMeterFill(3*256);
+		while(testScore.getTargetMeterFill() != testScore.getMeterFill()) testScore.update();
+		
+		assertTrue(testScore.getMultiplierLevel() == 5);
+		assertTrue(testScore.getMultiplier() == 10);
+		assertTrue(testScore.getMeterFill() == 256);
+		
+		// tests the meter will not increase beyond 256 at multiplier_level 5
+		testScore.increaseMeterFill(1);
+		while(testScore.getTargetMeterFill() != testScore.getMeterFill()) testScore.update();
+		
+		assertTrue(testScore.getMultiplierLevel() == 5);
+		assertTrue(testScore.getMultiplier() == 10);
+		assertTrue(testScore.getMeterFill() == 256);
+		
+		// tests decreasing the meter to it's lower bound
+		testScore.increaseMeterFill(-256);
+		while(testScore.getTargetMeterFill() != testScore.getMeterFill()) testScore.update();
+		
+		assertTrue(testScore.getMultiplierLevel() == 5);
+		assertTrue(testScore.getMultiplier() == 10);
+		assertTrue(testScore.getMeterFill() == 0);
+		
+		// tests decreasing the meter beyond it's lower bound and lowering the multiplier_level
+		testScore.increaseMeterFill(-1);
+		while(testScore.getTargetMeterFill() != testScore.getMeterFill()) testScore.update();
+		
+		assertTrue(testScore.getMultiplierLevel() == 4);
+		assertTrue(testScore.getMultiplier() == 7);
+		assertTrue(testScore.getMeterFill() == 255);
+		
 		
 	}
 
