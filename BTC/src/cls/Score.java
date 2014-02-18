@@ -267,14 +267,11 @@ public class Score {
 		if (target_score - total_score <= 9) 
 			total_score = target_score;
 		else
-			total_score += 9;
+			total_score += multiplier*2 + 1; // Add 1 so it's an odd number and will affect all digits
 		if (target_meter_fill != meter_fill) {
 			if (target_meter_fill > meter_fill) {
 				meter_draining = false;
-				if (target_meter_fill - meter_fill > multiplier)
-					meter_fill += multiplier+1; // Added 1 so it's not a multiple of 10 so will affect the least significant digit
-				else
-					meter_fill = target_meter_fill;
+				meter_fill++;
 			} else {
 				meter_draining = true;
 				if (meter_fill - target_meter_fill > 2)
