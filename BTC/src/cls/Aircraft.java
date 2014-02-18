@@ -366,7 +366,7 @@ public class Aircraft {
 	private boolean is_landing = false;
 	
 	public boolean isAtDestination() {
-		if (destination.equals(Demo.airport.position())) {
+		if (destination.equals(Demo.airport.getLocation())) {
 			return Demo.airport.isWithinArrivals(position, false);
 		} else {
 			return isAt(destination);
@@ -405,14 +405,14 @@ public class Aircraft {
 		if (currentTarget.equals(destination) && isAtDestination()) { // At finishing point
 			if (!is_waiting_to_land) { // Ready to land
 				hasFinished = true;
-				if (destination.equals(Demo.airport.position())) { // Landed at airport
+				if (destination.equals(Demo.airport.getLocation())) { // Landed at airport
 					Demo.airport.is_active = false;
 				}
 			}
 		} else if (isAt(currentTarget)) {
 			currentRouteStage++;
 			// Next target is the destination if you're at the end of the plan, otherwise it's the next waypoint
-			currentTarget = currentRouteStage >= route.length ? destination : route[currentRouteStage].position();
+			currentTarget = currentRouteStage >= route.length ? destination : route[currentRouteStage].getLocation();
 		}
 
 		// Update bearing
