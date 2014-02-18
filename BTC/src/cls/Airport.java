@@ -56,8 +56,6 @@ public class Airport extends Waypoint implements EventHandler {
 	public void draw() { 
 		// Draw the airport image
 		graphics.draw(airport, x_location-airport.width()/2, y_location-airport.height()/2);
-		graphics.setColour(graphics.green);
-		graphics.print(name, x_location - 24, y_location + 24, 1); // Draws airport's name below the airport
 		
 		int green_fine = 128;
 		int green_danger = 0;

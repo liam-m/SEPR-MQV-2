@@ -697,6 +697,7 @@ public class Demo extends Scene {
 		graphics.print(LOCATION_NAMES[1], locationWaypoints[1].getLocation().getX() + airspace_view_offset_x + 9, locationWaypoints[1].getLocation().getY() + airspace_view_offset_y - 6);
 		graphics.print(LOCATION_NAMES[2], locationWaypoints[2].getLocation().getX() + airspace_view_offset_x - 141, locationWaypoints[2].getLocation().getY() + airspace_view_offset_y - 6);
 		graphics.print(LOCATION_NAMES[3], locationWaypoints[3].getLocation().getX() + airspace_view_offset_x - 91, locationWaypoints[3].getLocation().getY() + airspace_view_offset_y - 6);
+		graphics.print(LOCATION_NAMES[4], locationWaypoints[4].getLocation().getX() + airspace_view_offset_x - 20, locationWaypoints[4].getLocation().getY() + airspace_view_offset_y + 25);
 
 	}
 	
