@@ -214,15 +214,15 @@ public class Aircraft {
 	}
 
 	/**
-	 * Used to get a AdditionToMultiplier outside of Aircraft class.
-	 * @return planeBonusToMultiplier
+	 * Used to get a additionToMultiplier outside of Aircraft class.
+	 * @return additionToMultiplier
 	 */
 	public int getAdditionToMultiplier() {
 		return additionToMultiplier;
 	}
 
 	/**
-	 * Used to set AdditionToMultiplier outside of Aircraft class.
+	 * Used to set additionToMultiplier outside of Aircraft class.
 	 * @param number
 	 */
 	public void setAdditionToMultiplier(int multiplierLevel) {
@@ -521,6 +521,7 @@ public class Aircraft {
 		currentlyTurningBy = 0;
 
 		// Update target
+		
 		if (isAt(currentTarget)) {
 			if (currentTarget.equals(destination)) { // At destination
 				if (!is_waiting_to_land) { // Ready to land
