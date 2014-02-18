@@ -50,7 +50,7 @@ public class Aircraft {
 	 */
 	private java.util.ArrayList<Aircraft> planesTooNear = new java.util.ArrayList<Aircraft>();
 	private int altitudeState;// Whether the plane is climbing or falling
-	private int altitudeChangeSpeed = 300;// The speed to climb or fall by. Default 300 for easy mode
+	private int altitudeChangeSpeed; // The speed to climb or fall by. Set in switch statement below.
 	private double timeOfCreation;// Used to calculate how long an aircraft spent in the airspace
 	/**
 	 * Used to get (system) time when an aircraft was created.
@@ -220,7 +220,7 @@ public class Aircraft {
 		case Demo.DIFFICULTY_EASY:
 			separationRule = 64;
 			turnSpeed = Math.PI / 4;
-			altitudeChangeSpeed = 400;
+			altitudeChangeSpeed = 500;
 			baseScore = 60;
 			optimalTime = totalDistanceInFlightPlan() / speed;
 			break;
@@ -229,21 +229,21 @@ public class Aircraft {
 			separationRule = 96;
 			velocity = velocity.scaleBy(2);
 			turnSpeed = Math.PI / 3;
-			altitudeChangeSpeed = 200;
+			altitudeChangeSpeed = 300;
 			baseScore = 150;
 			optimalTime = totalDistanceInFlightPlan() / (speed * 2);
 			break;
 			
-			case Demo.DIFFICULTY_HARD:
-				separationRule = 128;
-				velocity = velocity.scaleBy(3);
-				// At high velocities, the aircraft is allowed to turn faster - this helps keep the aircraft on track.
-				turnSpeed = Math.PI / 2;
-				altitudeChangeSpeed = 100;
-				baseScore = 300;
-				additionToMultiplier = 3;
-				optimalTime = totalDistanceInFlightPlan() / (speed * 3);
-			break;
+		case Demo.DIFFICULTY_HARD:
+			separationRule = 128;
+			velocity = velocity.scaleBy(3);
+			// At high velocities, the aircraft is allowed to turn faster - this helps keep the aircraft on track.
+			turnSpeed = Math.PI / 2;
+			altitudeChangeSpeed = 200;
+			baseScore = 300;
+			additionToMultiplier = 3;
+			optimalTime = totalDistanceInFlightPlan() / (speed * 3);
+		break;
 
 		default:
 			Exception e = new Exception("Invalid Difficulty : " + difficulty + ".");
