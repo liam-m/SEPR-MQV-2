@@ -227,7 +227,7 @@ public class Aircraft {
 			altitudeChangeSpeed = 500;
 			baseScore = 60;
 			optimalTime = totalDistanceInFlightPlan() / speed;
-			break;
+		break;
 
 		case Demo.DIFFICULTY_MEDIUM:
 			separationRule = 96;
@@ -236,7 +236,7 @@ public class Aircraft {
 			altitudeChangeSpeed = 300;
 			baseScore = 150;
 			optimalTime = totalDistanceInFlightPlan() / (speed * 2);
-			break;
+		break;
 			
 		case Demo.DIFFICULTY_HARD:
 			separationRule = 128;
