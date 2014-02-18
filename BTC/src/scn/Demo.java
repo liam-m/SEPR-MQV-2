@@ -232,7 +232,7 @@ public class Demo extends Scene {
 	 * Shorten flight generation timer according to difficulty
 	 */
 	public void start() {
-		background = graphics.newImage("gfx" + File.separator + "map.png");
+		background = graphics.newImage("gfx" + File.separator + "grass_fields002.png");
 		music = audio.newMusic("sfx" + File.separator + "whispers_hello.ogg");
 		//music.play();
 		ordersBox = new cls.OrdersBox(ORDERSBOX_X, ORDERSBOX_Y, ORDERSBOX_W, ORDERSBOX_H, 6);
@@ -632,8 +632,9 @@ public class Demo extends Scene {
 		graphics.rectangle(false, airspace_view_offset_x, airspace_view_offset_y, window.width() - 32, window.height() - 176);
 		
 		graphics.setViewport(airspace_view_offset_x, airspace_view_offset_y, window.width() - 32, window.height() - 176);
-		graphics.setColour(255, 255, 255, 32);
+		graphics.setColour(255, 255, 255, 24);
 		graphics.draw(background, 0, 0);
+		graphics.setColour(255, 255, 255, 48);
 		airport.draw();
 		drawMap();	
 		graphics.setViewport();
