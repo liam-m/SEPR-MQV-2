@@ -504,17 +504,6 @@ public class Demo extends Scene {
 		airport_control_box.mousePressed(key, x, y);
 		altimeter.mousePressed(key, x, y);
 		if (key == input.MOUSE_LEFT) {
-			if (isArrivalsClicked(x, y) && selectedAircraft != null) {
-				if (selectedAircraft.is_waiting_to_land && selectedAircraft.currentTarget.equals(airport.getLocation())) {
-					airport.mousePressed(key, x, y);
-					selectedAircraft.land();
-				}
-			} else if (isDeparturesClicked(x, y)) {
-				if (airport.aircraft_hangar.size() > 0) {
-					airport.mousePressed(key, x, y);
-					airport.signalTakeOff();
-				}
-			}
 			if (aircraftClicked(x, y)) {
 				Aircraft clickedAircraft = findClickedAircraft(x, y);
 				deselectAircraft();
@@ -527,7 +516,19 @@ public class Demo extends Scene {
 					waypointClicked = true; // Flag to mouseReleased
 					selectedPathpoint = selectedAircraft.flightPathContains(clickedWaypoint);					
 				}
-			} 
+			}
+			
+			if (isArrivalsClicked(x, y) && selectedAircraft != null) {
+				if (selectedAircraft.is_waiting_to_land && selectedAircraft.currentTarget.equals(airport.getLocation())) {
+					airport.mousePressed(key, x, y);
+					selectedAircraft.land();
+				}
+			} else if (isDeparturesClicked(x, y)) {
+				if (airport.aircraft_hangar.size() > 0) {
+					airport.mousePressed(key, x, y);
+					airport.signalTakeOff();
+				}
+			}
 		} else if (key == input.MOUSE_RIGHT) {
 			if (aircraftClicked(x, y)) {
 				selectedAircraft = findClickedAircraft(x, y);

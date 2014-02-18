@@ -192,10 +192,14 @@ public class Aircraft {
 		image = img;
 		timeOfCreation = System.currentTimeMillis() / 1000; // System time when aircraft was created in seconds.
 													
-		route = findGreedyRoute(originPoint, destinationPoint, sceneWaypoints);// Find route
-		destination = destinationPoint.getLocation();// Place on spawn waypoint //#What does that mean? poor wording
-		position = originPoint.getLocation(); 
+		route = findGreedyRoute(originPoint, destinationPoint, sceneWaypoints); // Find route
+		destination = destinationPoint.getLocation();
+
+		position = originPoint.getLocation();
 		
+		if (originPoint.getLocation() == Demo.airport.getLocation()) {
+			position = position.add(new Vector(-100, -70, 0)); // Start at departures
+		}
 		int altitudeOffset = RandomNumber.randInclusiveInt(0, 1) == 0 ? 28000 : 30000;
 		position = position.add(new Vector(0, 0, altitudeOffset));
 
