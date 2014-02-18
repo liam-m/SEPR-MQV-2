@@ -495,7 +495,7 @@ public class Aircraft {
 	
 	public boolean isAtDestination() {
 		if (destination.equals(Demo.airport.position())) {
-			return Demo.airport.isWithinArrivals(position);
+			return Demo.airport.isWithinArrivals(position, false);
 		} else {
 			return isAt(destination);
 		}

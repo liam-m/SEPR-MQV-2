@@ -97,6 +97,11 @@ public class Airport extends Waypoint implements EventHandler {
 		return isWithinRect((int)position.x(), (int)position.y(),(int)(arrivals_x_location-airport.width()/2) + Demo.airspace_view_offset_x, (int)(arrivals_y_location-airport.height()/2) + Demo.airspace_view_offset_y, (int)arrivals_width, (int)arrivals_height);
 	}
 	
+	// Used for calculating if an aircraft is within the airspace for landing - offset should not be applied
+	public boolean isWithinArrivals(Vector position, boolean apply_offset) {
+		return (apply_offset ? isWithinArrivals(position) : isWithinRect((int)position.x(), (int)position.y(),(int)(arrivals_x_location-airport.width()/2), (int)(arrivals_y_location-airport.height()/2), (int)arrivals_width, (int)arrivals_height));
+	}
+	
 	/**
 	 * Departures is the portion of the airport image which is used to issue the take off command
 	 * @param position is the point to be tested
