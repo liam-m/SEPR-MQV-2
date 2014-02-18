@@ -529,7 +529,7 @@ public class Demo extends Scene {
 				}
 			} 
 		} else if (key == input.MOUSE_RIGHT) {
-			if (aircraftClicked(x, y) && selectedAircraft == null) {
+			if (aircraftClicked(x, y)) {
 				selectedAircraft = findClickedAircraft(x, y);
 			}
 			if (selectedAircraft != null) {
