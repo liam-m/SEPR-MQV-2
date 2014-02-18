@@ -495,7 +495,7 @@ public class Aircraft {
 	
 	public boolean isAtDestination() {
 		if (destination.equals(Demo.airport.position())) {
-			return Demo.airport.isWithinDepartures(position);
+			return Demo.airport.isWithinArrivals(position);
 		} else {
 			return isAt(destination);
 		}
@@ -531,9 +531,11 @@ public class Aircraft {
 		// Update target
 		
 		if (currentTarget.equals(destination) && isAtDestination()) { // At finishing point
+			System.out.println("Plane landing");
 			if (!is_waiting_to_land) { // Ready to land
 				hasFinished = true;
 				if (destination.equals(Demo.airport.position())) { // Landed at airport
+					System.out.println("Plane landing at airport");
 					Demo.airport.is_active = false;
 				}
 			}
