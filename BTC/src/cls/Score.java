@@ -7,8 +7,8 @@ import lib.jog.graphics;
 public class Score {
 	
 	
-	public final int MAX_SCORE = 9999999;
-	public final int MAX_DIGITS_IN_SCORE = (int)Math.log10(MAX_SCORE) + 1;
+	private final int MAX_SCORE = 9999999;
+	private final int MAX_DIGITS_IN_SCORE = (int)Math.log10(MAX_SCORE) + 1;
 	
 	private int current_digits_in_score;
 	

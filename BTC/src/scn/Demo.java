@@ -356,20 +356,21 @@ public class Demo extends Scene {
 		airport.update(this);
 		if (selectedAircraft != null) {
 			if (selectedAircraft.isManuallyControlled()) {
-				if (input.keyPressed(new int[]{input.KEY_S, input.KEY_DOWN})) {
-					selectedAircraft.setAltitudeState(Aircraft.ALTITUDE_FALL);
-				} else if (input.keyPressed(new int[]{input.KEY_W, input.KEY_UP})) {
-					selectedAircraft.setAltitudeState(Aircraft.ALTITUDE_CLIMB);
-				} else if (input.keyPressed(new int[]{input.KEY_LEFT, input.KEY_A})) {
+				if (input.keyPressed(new int[]{input.KEY_LEFT, input.KEY_A})) {
 					selectedAircraft.turnLeft(time_difference);
 				} else if (input.keyPressed(new int[]{input.KEY_RIGHT, input.KEY_D})) {
 					selectedAircraft.turnRight(time_difference);
 				}
-			} else if (input.keyPressed(new int[]{input.KEY_S, input.KEY_DOWN, input.KEY_W, input.KEY_UP, 
-						input.KEY_LEFT, input.KEY_A, input.KEY_RIGHT, input.KEY_D})) {
+			} else if (input.keyPressed(new int[]{input.KEY_LEFT, input.KEY_A, input.KEY_RIGHT, input.KEY_D})) {
 				toggleManualControl();
 			}
 			
+			if (input.keyPressed(new int[]{input.KEY_S, input.KEY_DOWN})) {
+				selectedAircraft.setAltitudeState(Aircraft.ALTITUDE_FALL);
+			} else if (input.keyPressed(new int[]{input.KEY_W, input.KEY_UP})) {
+				selectedAircraft.setAltitudeState(Aircraft.ALTITUDE_CLIMB);
+			}
+				
 			if (selectedAircraft.isOutOfBounds()) {
 				ordersBox.addOrder(">>> " + selectedAircraft.getName() + " out of bounds, returning to route");
 				deselectAircraft();
