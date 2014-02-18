@@ -83,12 +83,12 @@ public class Waypoint {
 		else
 			graphics.setColour(graphics.red_transp);
 		
-		graphics.circle(false, x-WAYPOINT_ICON_RADIUS/2, y-WAYPOINT_ICON_RADIUS/2, WAYPOINT_ICON_RADIUS);
-		graphics.circle(true, x-WAYPOINT_ICON_RADIUS/2, y-WAYPOINT_ICON_RADIUS/2, WAYPOINT_ICON_RADIUS - 2);
+		graphics.circle(false, x-WAYPOINT_ICON_RADIUS/2 + 2, y-WAYPOINT_ICON_RADIUS/2 + 2, WAYPOINT_ICON_RADIUS);
+		graphics.circle(true, x-WAYPOINT_ICON_RADIUS/2 + 2, y-WAYPOINT_ICON_RADIUS/2 + 2, WAYPOINT_ICON_RADIUS - 2);
 	}
 
 	public void draw() {
-		draw(waypoint_location .getX(), waypoint_location .getY());
+		draw(waypoint_location.getX(), waypoint_location.getY());
 	}
 	
 }
