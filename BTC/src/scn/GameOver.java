@@ -145,7 +145,7 @@ public class GameOver extends Scene {
 	 * Otherwise, draw the planes and explosion
 	 */
 	public void draw() {
-		graphics.setColour(0, 128, 0);
+		graphics.setColour(graphics.green);
 		graphics.printCentred(crashedPlane1.getName() + " crashed into " + crashedPlane2.getName() + ".", 0, 32, 2, window.width());
 		graphics.printCentred("Total score: " + String.valueOf(score), 0, 64, 4, window.width());
 		if (explosionAnim.hasFinished()) {
@@ -155,7 +155,7 @@ public class GameOver extends Scene {
 			crashedPlane2.draw((int) crashedPlane1.position().getZ());
 			Vector midPoint = crash.add(crashedPlane2.position()).scaleBy(0.5);
 			double radius = 20; // Radius of explosion
-			graphics.setColour(128,0,0);
+			graphics.setColour(graphics.red);
 			graphics.circle(false, midPoint.getX(), midPoint.getY(), radius);
 			explosionAnim.draw();
 		}

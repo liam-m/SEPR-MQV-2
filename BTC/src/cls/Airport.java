@@ -56,12 +56,12 @@ public class Airport extends Waypoint implements EventHandler {
 	public void draw() { 
 		// Draw the airport image
 		graphics.draw(airport, x_location-airport.width()/2, y_location-airport.height()/2);
-		graphics.setColour(0, 128, 0, 255);
+		graphics.setColour(graphics.green);
 		graphics.print(name, x_location - 24, y_location + 24, 1); // Draws airport's name below the airport
 		
 		//draw the hangar button if plane is waiting (departing flights)
 		if (aircraft_hangar.size() > 0) {
-			graphics.setColour(0, 128, 0, 128);
+			graphics.setColour(graphics.green);
 			graphics.rectangle(is_departures_clicked, departures_x_location-airport.width()/2, departures_y_location-airport.height()/2, departures_width, departures_height);
 			if (Demo.getTime() - time_entered.get(0) >= 5) {
 				graphics.setColour(128, 0, 0, 64);

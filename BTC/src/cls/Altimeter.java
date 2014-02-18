@@ -127,7 +127,7 @@ public class Altimeter implements EventHandler {
 	 * Draws the box around the altimeter
 	 */
 	private void drawRectangle() {
-		graphics.setColour(0, 128, 0);
+		graphics.setColour(graphics.green);
 		graphics.rectangle(false, positionX, positionY, width, height);
 	}
 	
@@ -152,9 +152,9 @@ public class Altimeter implements EventHandler {
 		graphics.line(x, y, x + tailLength * Math.cos(r), y + tailLength * Math.sin(r));
 		r -= Math.PI / 2;
 		graphics.line(x, y, x + wingLength * Math.cos(r), y + wingLength * Math.sin(r));
-		graphics.setColour(0, 0, 0);
+		graphics.setColour(graphics.black);
 		graphics.circle(true, x, y, 4);
-		graphics.setColour(0, 128, 0);
+		graphics.setColour(graphics.green);
 		graphics.circle(false, x, y, 4);
 		graphics.printCentred(String.format("%.0f", currentAircraft.position().getZ()), positionX, y+32, 1, width);
 	}
@@ -177,16 +177,16 @@ public class Altimeter implements EventHandler {
 			graphics.print(String.valueOf(alt), midX - 72 - 40, y);
 		}
 		graphics.setViewport();
-		graphics.setColour(0, 128, 0);
+		graphics.setColour(graphics.green);
 	}
 	
 	private void drawArrows() {
 		int midX = (int)( positionX + (width / 2) );
-		graphics.setColour(0, 128, 0);
-		if (mouseOverTopButton()) { graphics.setColour(128, 128, 128); }
+		graphics.setColour(graphics.green);
+		if (mouseOverTopButton()) { graphics.setColour(graphics.white); }
 		graphics.triangle(true, midX - 10, positionY + 10, midX, positionY + 4, midX + 10, positionY + 10);
-		graphics.setColour(0, 128, 0);
-		if (mouseOverBottomButton()) { graphics.setColour(128, 128, 128); }
+		graphics.setColour(graphics.green);
+		if (mouseOverBottomButton()) { graphics.setColour(graphics.white); }
 		graphics.triangle(true, midX - 10, positionY + height - 10, midX, positionY + height - 4, midX + 10, positionY + height - 10);
 	}
 	

@@ -144,7 +144,7 @@ public class DifficultySelect extends Scene {
 	 * Draws text box, buttons, and prints strings
 	 */
 	public void draw() {
-		graphics.setColour(0,128,0);
+		graphics.setColour(graphics.green);
 		graphics.printCentred("Select the difficulty:", window.width()/2, window.height()/2 + 50, 1, 100);
 		graphics.rectangle(false, EASY_BUTTON_X, EASY_BUTTON_Y, EASY_BUTTON_W, EASY_BUTTON_H);
 		graphics.rectangle(false, MEDIUM_BUTTON_X, MEDIUM_BUTTON_Y, MEDIUM_BUTTON_W, MEDIUM_BUTTON_H);

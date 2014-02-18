@@ -302,8 +302,7 @@ public class Demo extends Scene {
 	public void update(double time_difference) {
 		timeElapsed += time_difference;
 		score.update();
-		graphics.setColour(0, 128, 0, 128);
-		graphics.print("HI", 264, 203, 20);
+		graphics.setColour(graphics.green_transp);
 		if (airport.getLongestTimeInHangar(timeElapsed) > 5) {
 			score.increaseMeterFill(-1);
 			if (!shownAircraftWaitingMessage) {
@@ -627,7 +626,7 @@ public class Demo extends Scene {
 	 */
 	@Override
 	public void draw() {
-		graphics.setColour(0, 128, 0);
+		graphics.setColour(graphics.green);
 		graphics.rectangle(false, airspace_view_offset_x, airspace_view_offset_y, window.width() - 32, window.height() - 176);
 		
 		graphics.setViewport(airspace_view_offset_x, airspace_view_offset_y, window.width() - 32, window.height() - 176);
@@ -647,7 +646,7 @@ public class Demo extends Scene {
 		airport_control_box.draw();
 		drawPlaneInfo();
 		
-		graphics.setColour(0, 128, 0);
+		graphics.setColour(graphics.green);
 		drawAdditional();
 		drawPlaneScoreLabels();
 	}
@@ -673,16 +672,16 @@ public class Demo extends Scene {
 		if (selectedAircraft != null) {
 			// Flight Path
 			selectedAircraft.drawFlightPath(true);
-			graphics.setColour(0, 128, 0);
+			graphics.setColour(graphics.green);
 			// Override Button
-			graphics.setColour(0, 0, 0);
+			graphics.setColour(graphics.black);
 			graphics.rectangle(true, (window.width() - 128) / 2, 16, 128, 32);
-			graphics.setColour(0, 128, 0);
+			graphics.setColour(graphics.green);
 			graphics.rectangle(false, (window.width() - 128) / 2, 16, 128, 32);
 			manualOverrideButton.draw();
 			
 			selectedAircraft.drawFlightPath(true);
-			graphics.setColour(0, 128, 0);
+			graphics.setColour(graphics.green);
 			
 		}
 		
@@ -691,7 +690,7 @@ public class Demo extends Scene {
 		}
 		
 		graphics.setViewport();
-		graphics.setColour(0, 128, 0);
+		graphics.setColour(graphics.green);
 		graphics.print(LOCATION_NAMES[0], locationWaypoints[0].getLocation().getX() + airspace_view_offset_x + 9, locationWaypoints[0].getLocation().getY() + airspace_view_offset_y - 6);
 		graphics.print(LOCATION_NAMES[1], locationWaypoints[1].getLocation().getX() + airspace_view_offset_x + 9, locationWaypoints[1].getLocation().getY() + airspace_view_offset_y - 6);
 		graphics.print(LOCATION_NAMES[2], locationWaypoints[2].getLocation().getX() + airspace_view_offset_x - 141, locationWaypoints[2].getLocation().getY() + airspace_view_offset_y - 6);
@@ -703,7 +702,7 @@ public class Demo extends Scene {
 	 * draw the info of a selected plane in the scene GUI
 	 */
 	private void drawPlaneInfo() {
-		graphics.setColour(0, 128, 0);
+		graphics.setColour(graphics.green);
 		graphics.rectangle(false, PLANE_INFO_X, PLANE_INFO_Y, PLANE_INFO_W, PLANE_INFO_H);
 		if (selectedAircraft != null) {
 			graphics.setViewport(PLANE_INFO_X, PLANE_INFO_Y, PLANE_INFO_W, PLANE_INFO_H);

@@ -81,7 +81,7 @@ public class Waypoint {
 		if (this.isEntryOrExit()) 
 			graphics.setColour(64, 128, 0, 192);
 		else
-			graphics.setColour(128, 0, 0, 128);
+			graphics.setColour(graphics.red_transp);
 		
 		graphics.circle(false, x-WAYPOINT_ICON_RADIUS/2, y-WAYPOINT_ICON_RADIUS/2, WAYPOINT_ICON_RADIUS);
 		graphics.circle(true, x-WAYPOINT_ICON_RADIUS/2, y-WAYPOINT_ICON_RADIUS/2, WAYPOINT_ICON_RADIUS - 2);

@@ -211,9 +211,9 @@ public class Score {
 		/**
 		 * Prints the unused score digits as 0s, and the current score.
 		 */
-		graphics.setColour(0, 128, 0, 128);
+		graphics.setColour(graphics.green_transp);
 		graphics.print(zeros, 264, 3, 5);
-		graphics.setColour(0, 128, 0);
+		graphics.setColour(graphics.green);
 		if (getTotalScore() != 0) graphics.printRight(String.valueOf(getTotalScore()), 544, 3, 5, 0);
 		
 		
@@ -241,7 +241,7 @@ public class Score {
 			drawMultiplierSegment(meter_fill, i, bar_x_offset, bar_y_offset, segment_width, segment_height);
 			bar_x_offset += bar_segment_dif;
 		}
-		graphics.setColour(0, 128, 0);
+		graphics.setColour(graphics.green);
 		
 		bar_x_offset += 16;
 		String mul_var = String.format("%d", multiplier);

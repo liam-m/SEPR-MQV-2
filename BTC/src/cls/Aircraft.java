@@ -477,7 +477,7 @@ public class Aircraft {
 	 * Draws the compass around this plane - Used for manual control //#Do we still have manual control 
 	 */
 	public void drawCompass() {
-		graphics.setColour(0, 128, 0);
+		graphics.setColour(graphics.green);
 		Double xpos = position.getX()-image.width()/2; // Centre position of aircraft
 		Double ypos = position.getY()-image.height()/2;
 		graphics.circle(false, xpos + Demo.airspace_view_offset_x, ypos + Demo.airspace_view_offset_y, COMPASS_RADIUS, 30);
@@ -492,7 +492,7 @@ public class Aircraft {
 		double x, y;
 		if (isManuallyControlled && input.isMouseDown(input.MOUSE_RIGHT)) {
 			// Draw new bearing
-			graphics.setColour(0, 128, 0, 128);
+			graphics.setColour(graphics.green_transp);
 			double r = Math.atan2(input.mouseY() - position.getY(), input.mouseX() - position.getX());
 			x = Demo.airspace_view_offset_x + xpos + (COMPASS_RADIUS * Math.cos(r));
 			y = Demo.airspace_view_offset_y + ypos + (COMPASS_RADIUS * Math.sin(r));
@@ -521,7 +521,7 @@ public class Aircraft {
 		for (Aircraft plane : planesTooNear) {
 			Vector midPoint = position.add(plane.position).scaleBy(0.5);
 			double radius = position.sub(midPoint).magnitude() * 2;
-			graphics.setColour(128, 0, 0);
+			graphics.setColour(graphics.red);
 			graphics.circle(false, midPoint.getX(), midPoint.getY(), radius);
 		}
 	}
