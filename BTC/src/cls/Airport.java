@@ -90,24 +90,28 @@ public class Airport extends Waypoint implements EventHandler {
 	
 	/**
 	 *  Arrivals is the portion of the airport image which is used to issue the land command
-	 * @param position is the mouse position to be tested
-	 * @return true if mouse is within the rectangle that defines the arrivals portion of the airport
+	 * @param position is the point to be tested
+	 * @return true if point is within the rectangle that defines the arrivals portion of the airport
 	 */
-	public boolean isMouseOverArrivals(Vector position) {
-		return isMouseInRect((int)position.getX(), (int)position.getY(),(int)(arrivals_x_location-airport.width()/2) + Demo.airspace_view_offset_x, (int)(arrivals_y_location-airport.height()/2) + Demo.airspace_view_offset_y, (int)arrivals_width, (int)arrivals_height);
+	public boolean isWithinArrivals(Vector position) {
+		return isWithinRect((int)position.getX(), (int)position.getY(),(int)(arrivals_x_location-airport.width()/2) + Demo.airspace_view_offset_x, (int)(arrivals_y_location-airport.height()/2) + Demo.airspace_view_offset_y, (int)arrivals_width, (int)arrivals_height);
+	}
+	
+	// Used for calculating if an aircraft is within the airspace for landing - offset should not be applied
+	public boolean isWithinArrivals(Vector position, boolean apply_offset) {
+		return (apply_offset ? isWithinArrivals(position) : isWithinRect((int)position.x(), (int)position.y(),(int)(arrivals_x_location-airport.width()/2), (int)(arrivals_y_location-airport.height()/2), (int)arrivals_width, (int)arrivals_height));
 	}
 	
 	/**
 	 * Departures is the portion of the airport image which is used to issue the take off command
-	 * @param position is the mouse position to be tested
-	 * @return true if mouse is within the rectangle that defines the departures portion of the airport
+	 * @param position is the point to be tested
+	 * @return true if point is within the rectangle that defines the departures portion of the airport
 	 */
-	public boolean isMouseOverDepartures(Vector position) {
-		return isMouseInRect((int)position.getX(), (int)position.getY(), (int)(departures_x_location-airport.width()/2) + Demo.airspace_view_offset_x, (int)(departures_y_location-airport.height()/2) + Demo.airspace_view_offset_y, (int)departures_width, (int)departures_height);
-
+	public boolean isWithinDepartures(Vector position) {
+		return isWithinRect((int)position.getX(), (int)position.getY(), (int)(departures_x_location-airport.width()/2) + Demo.airspace_view_offset_x, (int)(departures_y_location-airport.height()/2) + Demo.airspace_view_offset_y, (int)departures_width, (int)departures_height);
 	}
 	
-	public boolean isMouseInRect (int test_x, int test_y, int x, int y, int width, int height) {
+	public boolean isWithinRect(int test_x, int test_y, int x, int y, int width, int height) {
 		return x <= test_x && test_x <= x + width && y <= test_y && test_y <= y + height;
 	}
 	
@@ -151,9 +155,9 @@ public class Airport extends Waypoint implements EventHandler {
 	@Override
 	public void mousePressed(int key, int x, int y) {
 		if (key == input.MOUSE_LEFT) { 
-			if (isMouseOverArrivals(new Vector(x, y, 0))) {
+			if (isWithinArrivals(new Vector(x, y, 0))) {
 				is_arrivals_clicked = true;
-			} else if (isMouseOverDepartures(new Vector(x, y, 0))) {
+			} else if (isWithinDepartures(new Vector(x, y, 0))) {
 				is_departures_clicked = true;
 			}
 		

@@ -489,11 +489,11 @@ public class Demo extends Scene {
 	}
 	
 	private boolean isArrivalsClicked(int x, int y) {
-		return airport.isMouseOverArrivals(new Vector(x,y,0)) && !airport.is_active;
+		return airport.isWithinArrivals(new Vector(x,y,0)) && !airport.is_active;
 	}
 	
 	private boolean isDeparturesClicked(int x, int y) {
-		return airport.isMouseOverDepartures(new Vector(x,y,0)) && !airport.is_active;
+		return airport.isWithinDepartures(new Vector(x,y,0)) && !airport.is_active;
 	}
 
 	/**
