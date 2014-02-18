@@ -59,16 +59,33 @@ public class Airport extends Waypoint implements EventHandler {
 		graphics.setColour(graphics.green);
 		graphics.print(name, x_location - 24, y_location + 24, 1); // Draws airport's name below the airport
 		
+		int green_fine = 128;
+		int green_danger = 0;
+		int red_fine = 0;
+		int red_danger = 128;
+		
 		//draw the hangar button if plane is waiting (departing flights)
 		if (aircraft_hangar.size() > 0) {
-			graphics.setColour(graphics.green);
-			graphics.rectangle(is_departures_clicked, departures_x_location-airport.width()/2, departures_y_location-airport.height()/2, departures_width, departures_height);
-			if (Demo.getTime() - time_entered.get(0) >= 5) {
-				graphics.setColour(128, 0, 0, 64);
-			} else {
-				graphics.setColour(128, 128, 0, 64);
+			// Colour fades from green (fine) to red (danger) over 5 seconds as plane is waiting
+			int time_waiting = (int)(Demo.getTime() - time_entered.get(0));
+			// Assume it hasn't been waiting
+			int green_now = green_fine; 
+			int red_now = red_fine;
+			if (time_waiting > 0) { // Prevent division by 0
+				if (time_waiting >= 5) { // Cap at 5 seconds
+					green_now = green_danger;
+					red_now = red_danger;
+				} else {
+					green_now = green_fine - (int)(Math.abs(green_fine-green_danger) * (time_waiting/5.0)); // Colour between fine and danger, scaled by time_waiting
+					red_now = (int)(Math.abs(red_fine-red_danger) * (time_waiting/5.0));
+				}
 			}
-			graphics.rectangle(true, departures_x_location-airport.width()/2 + 1, departures_y_location-airport.height()/2 + 1, departures_width -2, departures_height -2);
+
+			graphics.setColour(red_now, green_now, 0, 256);
+			graphics.rectangle(is_departures_clicked, departures_x_location-airport.width()/2, departures_y_location-airport.height()/2, departures_width, departures_height);
+
+			graphics.setColour(red_now, green_now, 0, 64);
+			graphics.rectangle(true, departures_x_location-airport.width()/2 + 1, departures_y_location-airport.height()/2 + 1, departures_width - 2, departures_height - 2);
 			graphics.setColour(255, 255, 255, 128);
 			graphics.print(Integer.toString(aircraft_hangar.size()), departures_x_location-airport.width()/2 + 23, departures_y_location-airport.height()/2 + 15);
 		}
