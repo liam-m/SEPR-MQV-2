@@ -779,6 +779,7 @@ public class Demo extends Scene {
 		String timePlayed = String.format("%d:%02d:", hours, minutes) + df.format(seconds); 
 		graphics.print(timePlayed, window.width() - (timePlayed.length() * 8 + 32), 32);
 		int planes = aircraftInAirspace.size();
+		graphics.print(String.valueOf("Highlighted altitude: " + Integer.toString(controlAltitude)) , 32, 15);
 		graphics.print(String.valueOf(aircraftInAirspace.size()) + " plane" + (planes == 1 ? "" : "s") + " in the sky.", 32, 32);
 	}
 	
