@@ -22,7 +22,7 @@ public class TextBox {
 	protected double timer;
 	protected double delayTimer;
 	protected boolean isDelaying;
-	protected boolean isTyping;
+	protected boolean is_typing;
 	protected String buffer;
 
 	/**
@@ -48,7 +48,7 @@ public class TextBox {
 		timer = 0;
 		delayTimer = 0;
 		isDelaying = false;
-		isTyping = false;
+		is_typing = false;
 		buffer = "";
 	}
 	
@@ -76,7 +76,7 @@ public class TextBox {
 		} else {
 			buffer += order + SEPARATOR;
 		}
-		isTyping = true;
+		is_typing = true;
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class TextBox {
 	 * @return whether the TextBox is up to date.
 	 */
 	public boolean isUpToDate() {
-		return !isTyping;
+		return !is_typing;
 	}
 	
 	/**
@@ -136,7 +136,7 @@ public class TextBox {
 			timer -= typeWait;
 			// Finished
 			if (buffer.isEmpty()) {
-				isTyping = false;
+				is_typing = false;
 			// Delay
 			} else if (buffer.charAt(0) == DELAY_START) {
 				buffer = buffer.substring(1);
