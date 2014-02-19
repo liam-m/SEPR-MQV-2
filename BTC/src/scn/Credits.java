@@ -159,7 +159,8 @@ public class Credits extends Scene {
 	}
 
 	@Override
-	public void playSound(Sound sound) {		
+	public void playSound(Sound sound) {	
+		
 	}
 
 }

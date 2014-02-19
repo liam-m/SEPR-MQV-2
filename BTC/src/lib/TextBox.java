@@ -89,8 +89,13 @@ public class TextBox {
 	 * Adds a newline to the textbox.
 	 */
 	public void newline() {
-		addText(" ");
+		newlines(1);
 //		_buffer += SEPARATOR;
+	}
+	
+	public void newlines(int number) {
+		for (int i = 0; i < number; i++)
+			addText(" ");
 	}
 	
 	/**

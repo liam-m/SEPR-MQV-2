@@ -19,23 +19,23 @@ public class Demo extends Scene {
 	// Position of things drawn to window   
 	private final int PLANE_INFO_X = 16;
 	private final int PLANE_INFO_Y = window.height() - 120;
-	private final int PLANE_INFO_W = window.width()/4 - 16;
-	private final int PLANE_INFO_H = 112;
+	private final int PLANE_INFO_WIDTH = window.width()/4 - 16;
+	private final int PLANE_INFO_HEIGHT = 112;
 	
-	private final int ALTIMETER_X = PLANE_INFO_X + PLANE_INFO_W + 8;
+	private final int ALTIMETER_X = PLANE_INFO_X + PLANE_INFO_WIDTH + 8;
 	private final int ALTIMETER_Y = window.height() - 120;
-	private final int ALTIMETER_W = 244;
-	private final int ALTIMETER_H = 112;
+	private final int ALTIMETER_WIDTH = 244;
+	private final int ALTIMETER_HEIGHT = 112;
 	
-	private final int AIRPORT_CONTROL_X = ALTIMETER_X + ALTIMETER_W + 8;
+	private final int AIRPORT_CONTROL_X = ALTIMETER_X + ALTIMETER_WIDTH + 8;
 	private final int AIRPORT_CONTROL_Y = window.height() - 120;
-	private final int AIRPORT_CONTROL_W = 244;
-	private final int AIRPORT_CONTROL_H = 112;
+	private final int AIRPORT_CONTROL_WIDTH = 244;
+	private final int AIRPORT_CONTROL_HEIGHT = 112;
 	
-	private final int ORDERSBOX_X = AIRPORT_CONTROL_X + AIRPORT_CONTROL_W + 8;
+	private final int ORDERSBOX_X = AIRPORT_CONTROL_X + AIRPORT_CONTROL_WIDTH + 8;
 	private final static int ORDERSBOX_Y = window.height() - 120;
-	private final int ORDERSBOX_W = window.width() - (ORDERSBOX_X + 16);
-	private final static int ORDERSBOX_H = 112;
+	private final int ORDERSBOX_WIDTH = window.width() - (ORDERSBOX_X + 16);
+	private final static int ORDERSBOX_HEIGHT = 112;
 	
 	// Static Final Ints for difficulty settings
 	// Difficulty of demo scene determined by difficulty selection scene
@@ -43,29 +43,6 @@ public class Demo extends Scene {
 	public final static int DIFFICULTY_MEDIUM = 1;
 	public final static int DIFFICULTY_HARD = 2;
 	public static int difficulty = DIFFICULTY_EASY;
-	
-	// Necessary for testing
-	
-	/**
-	 * This method should only be used for unit testing (avoiding instantiation of main class). Its purpose is to initialize array where
-	 * aircraft are stored. 
-	 */	
-	@Deprecated
-	public void initializeAircraftArray() {
-		aircraftInAirspace = new java.util.ArrayList<Aircraft>();
-	}
-	
-	// Additional constructor for testing purposes
-	 
-	/**
-	 * This constructor should only be used for unit testing. Its purpose is to allow an instance
-	 * of demo class to be created without an instance of Main class (effectively launching the game)
-	 * @param difficulty
-	 */	
-	@Deprecated
-	public Demo(int difficulty) {
-		Demo.difficulty = difficulty;
-	}
 	
 	private cls.Score score; 
 	
@@ -139,6 +116,27 @@ public class Demo extends Scene {
 	 */
 	private double flightGenerationTimeElapsed = 6;
 	
+	
+	// Necessary for testing	
+	/**
+	 * This method should only be used for unit testing (avoiding instantiation of main class). Its purpose is to initialize array where
+	 * aircraft are stored. 
+	 */	
+	@Deprecated
+	public void initializeAircraftArray() {
+		aircraftInAirspace = new java.util.ArrayList<Aircraft>();
+	}
+		 
+	/**
+	 * This constructor should only be used for unit testing. Its purpose is to allow an instance
+	 * of demo class to be created without an instance of Main class (effectively launching the game)
+	 * @param difficulty
+	 */	
+	@Deprecated
+	public Demo(int difficulty) {
+		Demo.difficulty = difficulty;
+	}
+	
 	/**
 	 * This method provides maximum number of planes using value of multiplier
 	 * @return maximum number of planes
@@ -176,9 +174,9 @@ public class Demo extends Scene {
 	public static Waypoint[] locationWaypoints = new Waypoint[] {
 		/* A set of Waypoints which are origin / destination points */
 		new Waypoint(8, 8, true, "North West Top Leftonia"), //top left
-		new Waypoint(8, window.height() - ORDERSBOX_H - 72, true, "100 Acre Woods"), //bottom left
+		new Waypoint(8, window.height() - ORDERSBOX_HEIGHT - 72, true, "100 Acre Woods"), //bottom left
 		new Waypoint(window.width() - 40, 8, true, "City of Rightson"), // top right
-		new Waypoint(window.width() - 40, window.height() - ORDERSBOX_H - 72, true, "South Sea"), //bottom right
+		new Waypoint(window.width() - 40, window.height() - ORDERSBOX_HEIGHT - 72, true, "South Sea"), //bottom right
 		airport
 	};
 
@@ -226,7 +224,7 @@ public class Demo extends Scene {
 		background = graphics.newImage("gfx" + File.separator + "background_base.png");
 		music = audio.newMusic("sfx" + File.separator + "Gypsy_Shoegazer.ogg");
 		//music.play();
-		ordersBox = new cls.OrdersBox(ORDERSBOX_X, ORDERSBOX_Y, ORDERSBOX_W, ORDERSBOX_H, 6);
+		ordersBox = new cls.OrdersBox(ORDERSBOX_X, ORDERSBOX_Y, ORDERSBOX_WIDTH, ORDERSBOX_HEIGHT, 6);
 		aircraftInAirspace = new java.util.ArrayList<Aircraft>();
 		recentlyDepartedAircraft = new java.util.ArrayList<Aircraft>();
 		aircraftImage = graphics.newImage("gfx" + File.separator + "plane.png");
@@ -248,8 +246,8 @@ public class Demo extends Scene {
 		selectedPathpoint = -1;
 		
 		manualOverrideButton = new lib.ButtonText(" Take Control", manual, (window.width() - 128) / 2, 32, 128, 64, 8, 4);
-		altimeter = new cls.Altimeter(ALTIMETER_X, ALTIMETER_Y, ALTIMETER_W, ALTIMETER_H, ordersBox);
-		airport_control_box = new AirportControlBox(AIRPORT_CONTROL_X, AIRPORT_CONTROL_Y, AIRPORT_CONTROL_W, AIRPORT_CONTROL_H, airport);
+		altimeter = new cls.Altimeter(ALTIMETER_X, ALTIMETER_Y, ALTIMETER_WIDTH, ALTIMETER_HEIGHT, ordersBox);
+		airport_control_box = new AirportControlBox(AIRPORT_CONTROL_X, AIRPORT_CONTROL_Y, AIRPORT_CONTROL_WIDTH, AIRPORT_CONTROL_HEIGHT, airport);
 		deselectAircraft();
 	}
 	
@@ -695,24 +693,24 @@ public class Demo extends Scene {
 	 */
 	private void drawPlaneInfo() {
 		graphics.setColour(graphics.green);
-		graphics.rectangle(false, PLANE_INFO_X, PLANE_INFO_Y, PLANE_INFO_W, PLANE_INFO_H);
+		graphics.rectangle(false, PLANE_INFO_X, PLANE_INFO_Y, PLANE_INFO_WIDTH, PLANE_INFO_HEIGHT);
 		if (selectedAircraft != null) {
-			graphics.setViewport(PLANE_INFO_X, PLANE_INFO_Y, PLANE_INFO_W, PLANE_INFO_H);
-			graphics.printCentred(selectedAircraft.getName(), 0, 5, 2, PLANE_INFO_W);
+			graphics.setViewport(PLANE_INFO_X, PLANE_INFO_Y, PLANE_INFO_WIDTH, PLANE_INFO_HEIGHT);
+			graphics.printCentred(selectedAircraft.getName(), 0, 5, 2, PLANE_INFO_WIDTH);
 			// Altitude
 			String altitude = String.format("%.0f", selectedAircraft.getPosition().getZ()) + "£";
 			graphics.print("Altitude:", 10, 40);
-			graphics.print(altitude, PLANE_INFO_W - 10 - altitude.length()*8, 40);
+			graphics.print(altitude, PLANE_INFO_WIDTH - 10 - altitude.length()*8, 40);
 			// Speed
 			String speed = String.format("%.2f", selectedAircraft.getSpeed() * 1.687810) + "$";
 			graphics.print("Speed:", 10, 55);
-			graphics.print(speed, PLANE_INFO_W - 10 - speed.length()*8, 55);
+			graphics.print(speed, PLANE_INFO_WIDTH - 10 - speed.length()*8, 55);
 			// Origin
 			graphics.print("Origin:", 10, 70);
-			graphics.print(selectedAircraft.getFlightPlan().getOriginName(), PLANE_INFO_W - 10 - selectedAircraft.getFlightPlan().getOriginName().length()*8, 70);
+			graphics.print(selectedAircraft.getFlightPlan().getOriginName(), PLANE_INFO_WIDTH - 10 - selectedAircraft.getFlightPlan().getOriginName().length()*8, 70);
 			// Destination
 			graphics.print("Destination:", 10, 85);
-			graphics.print(selectedAircraft.getFlightPlan().getDestinationName(), PLANE_INFO_W - 10 - selectedAircraft.getFlightPlan().getDestinationName().length()*8, 85);
+			graphics.print(selectedAircraft.getFlightPlan().getDestinationName(), PLANE_INFO_WIDTH - 10 - selectedAircraft.getFlightPlan().getDestinationName().length()*8, 85);
 			graphics.setViewport();
 		}
 	}
