@@ -25,11 +25,11 @@ public abstract class audio {
 	public static class Music {
 		
 		private Audio _source;
-		private boolean _looping;
-		private boolean _isPaused;
+		private boolean _is_looping;
+		private boolean _is_paused;
 		private float _volume;
 		private float _pitch;
-		private float _pausedPosition;
+		private float _paused_position;
 		
 		/**
 		 * Constructor for a music source.
@@ -38,7 +38,7 @@ public abstract class audio {
 		 * @param looping Whether to loop the music.
 		 */
 		private Music(String filepath, boolean stream, boolean looping) {
-			_looping = looping;
+			_is_looping = looping;
 			_volume = 1f;
 			_pitch = 1f;
 			try {
@@ -47,8 +47,8 @@ public abstract class audio {
 				} else {
 					_source = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream(filepath));
 				}
-				_isPaused = false;
-				_pausedPosition = 0;
+				_is_paused = false;
+				_paused_position = 0;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -58,10 +58,10 @@ public abstract class audio {
 		 * Begins playback of the music.
 		 */
 		public void play() {
-			if (_isPaused) {
+			if (_is_paused) {
 				resume();
 			} else {
-				_source.playAsMusic(_pitch, _volume, _looping);
+				_source.playAsMusic(_pitch, _volume, _is_looping);
 			}
 		}
 		
@@ -76,25 +76,25 @@ public abstract class audio {
 		 * Pauses playback of the music.
 		 */
 		public void pause() {
-			_pausedPosition = tell();
+			_paused_position = getPlaybackPosition();
 			_source.stop();
-			_isPaused = true;
+			_is_paused = true;
 		}
 		
 		/**
 		 * Resumes playback of the music.
 		 */
 		public void resume() {
-			_source.playAsMusic(_pitch, _volume, _looping);
-			seek(_pausedPosition);
-			_isPaused = false;
+			_source.playAsMusic(_pitch, _volume, _is_looping);
+			seek(_paused_position);
+			_is_paused = false;
 		}
 
 		/**
 		 * Returns the current playback postion in seconds 
 		 * @return seconds into the music.
 		 */
-		public float tell() {
+		public float getPlaybackPosition() {
 			return _source.getPosition();
 		}
 		
@@ -111,9 +111,9 @@ public abstract class audio {
 		 * @param volume Volume at which to play the music.
 		 */
 		public void setVolume(float volume) {
-			float position = tell();
+			float position = getPlaybackPosition();
 			_source.stop();
-			_source.playAsMusic(_pitch, volume, _looping);
+			_source.playAsMusic(_pitch, volume, _is_looping);
 			seek(position);
 			_volume = volume;
 		}
@@ -178,6 +178,7 @@ public abstract class audio {
 			return _volume;
 		}
 	}
+	
 	/**
 	 * Constructor for a music source.
 	 * @param filepath The path to the audio file.
@@ -185,12 +186,13 @@ public abstract class audio {
 	 * @param loop Whether to loop the music.
 	 * @return Returns the music source created
 	 */
-	 //#Check I assume this what it does 
 	public static Music newMusic(String filepath, boolean stream, boolean loop) {
 		return new Music(filepath, stream, loop);
 	}
-	//Does the same as the above but forces streaming and looping
+
+	// Default to streaming and looping
 	public static Music newMusic(String filepath) { return newMusic(filepath, true, true); }
+	
 	/**
 	 * Creates a sound effect
 	 * @param filepath The path to the audio file.
@@ -199,14 +201,14 @@ public abstract class audio {
 	public static Sound newSoundEffect(String filepath) {
 		return new Sound(filepath);
 	}
+	
 	/**
 	 * Constructor for new audio
 	 * @param filepath The path to the audio file.
 	 * @param stream Whether to load the music as it's playing.
 	 * @return Returns the music source created
-	 * @throws IOException
+	 * @throws IOException if file doesn't exist
 	 */
-	//#Check - Why is IOException thrown
 	public static Audio newAudio(String filepath, boolean stream) throws IOException {
 		if (stream) { 
 			return AudioLoader.getStreamingAudio("OGG", ResourceLoader.getResource(filepath));
@@ -214,19 +216,15 @@ public abstract class audio {
 			return AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream(filepath));
 		}
 	}
-	/**
-	 * 
-	 */
-	//#Check - What does update() do?
+
 	public static void update() {
 		SoundStore.get().poll(0);
 	}
+	
 	/**
 	 * Destroys the OpenAL instance originally created by LWJGL
 	 */
-	//#Check
 	public static void dispose() {
 		AL.destroy();
-	}
-	
+	}	
 }
