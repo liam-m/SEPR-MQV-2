@@ -4,7 +4,6 @@ import lib.jog.audio;
 
 public abstract class Scene implements lib.jog.input.EventHandler {
 
-
 	protected btc.Main main;
 
 	/**
@@ -21,7 +20,6 @@ public abstract class Scene implements lib.jog.input.EventHandler {
 	 * This constructor should only be used for unit testing. Its purpose is to allow an instance 
 	 * of demo class to be created without an instance of Main class (effectively launching the game)
 	 */
-
 	@Deprecated
 	protected Scene() {
 
@@ -59,6 +57,3 @@ public abstract class Scene implements lib.jog.input.EventHandler {
 	abstract public void playSound(audio.Sound sound);
 
 }
-
-
-
