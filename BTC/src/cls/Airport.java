@@ -10,13 +10,11 @@ import lib.jog.input.EventHandler;
 import lib.jog.window;
 
 public class Airport extends Waypoint implements EventHandler {
-
+	// Put the airport in the middle of the airspace
 	private static double x_location = window.width()/2;
 	private static double y_location = window.height()/2;		
-	
-	/**
-	 * All location values are absolute and based on the current version of the airport image.
-	 */
+
+	// All location values are absolute and based on the current version of the airport image.
 	private static double arrivals_x_location = x_location + 90;
 	private static double arrivals_y_location = y_location + 83;
 	private static double arrivals_width = 105;
@@ -30,9 +28,7 @@ public class Airport extends Waypoint implements EventHandler {
 	public boolean is_active = false; // True if there is an aircraft Landing/Taking off
 	private boolean is_arrivals_clicked = false;
 	private boolean is_departures_clicked = false;
-	
-	public String name = "Mosbear Aiport";
-	
+		
 	private graphics.Image airport;
 	
 	public java.util.ArrayList<Aircraft> aircraft_waiting_to_land = new java.util.ArrayList<Aircraft>();
@@ -44,8 +40,8 @@ public class Airport extends Waypoint implements EventHandler {
 	public java.util.ArrayList<Double> time_entered = new java.util.ArrayList<Double>();
 	private int hangar_size = 3;
 	
-	public Airport() { 
-		super(x_location, y_location, true);
+	public Airport(String name) { 
+		super(x_location, y_location, true, name);
 	}
 	
 	public void loadImage() {

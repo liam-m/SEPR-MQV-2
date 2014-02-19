@@ -168,28 +168,17 @@ public class Demo extends Scene {
 	/**
 	 * Demo's instance of the airport class
 	 */
-	public static Airport airport = new Airport();
+	public static Airport airport = new Airport("Mosbear Airport");
 	
-	/**
-	 * A list of location names for waypoint flavour
-	 */
-	private final String[] LOCATION_NAMES = new String[] {
-		"North West Top Leftonia",
-		"100 Acre Woods",
-		"City of Rightson",
-		"South Sea",
-		airport.name
-	};
-	 
 	/**
 	 * The set of waypoints in the airspace which are origins / destinations
 	 */
 	public static Waypoint[] locationWaypoints = new Waypoint[] {
 		/* A set of Waypoints which are origin / destination points */
-		new Waypoint(8, 8, true), //top left
-		new Waypoint(8, window.height() - ORDERSBOX_H - 72, true), //bottom left
-		new Waypoint(window.width() - 40, 8, true), // top right
-		new Waypoint(window.width() - 40, window.height() - ORDERSBOX_H - 72, true), //bottom right
+		new Waypoint(8, 8, true, "North West Top Leftonia"), //top left
+		new Waypoint(8, window.height() - ORDERSBOX_H - 72, true, "100 Acre Woods"), //bottom left
+		new Waypoint(window.width() - 40, 8, true, "City of Rightson"), // top right
+		new Waypoint(window.width() - 40, window.height() - ORDERSBOX_H - 72, true, "South Sea"), //bottom right
 		airport
 	};
 
@@ -694,11 +683,11 @@ public class Demo extends Scene {
 		
 		graphics.setViewport();
 		graphics.setColour(graphics.green);
-		graphics.print(LOCATION_NAMES[0], locationWaypoints[0].getLocation().getX() + airspace_view_offset_x + 9, locationWaypoints[0].getLocation().getY() + airspace_view_offset_y - 6);
-		graphics.print(LOCATION_NAMES[1], locationWaypoints[1].getLocation().getX() + airspace_view_offset_x + 9, locationWaypoints[1].getLocation().getY() + airspace_view_offset_y - 6);
-		graphics.print(LOCATION_NAMES[2], locationWaypoints[2].getLocation().getX() + airspace_view_offset_x - 141, locationWaypoints[2].getLocation().getY() + airspace_view_offset_y - 6);
-		graphics.print(LOCATION_NAMES[3], locationWaypoints[3].getLocation().getX() + airspace_view_offset_x - 91, locationWaypoints[3].getLocation().getY() + airspace_view_offset_y - 6);
-		graphics.print(LOCATION_NAMES[4], locationWaypoints[4].getLocation().getX() + airspace_view_offset_x - 20, locationWaypoints[4].getLocation().getY() + airspace_view_offset_y + 25);
+		graphics.print(locationWaypoints[0].getName(), locationWaypoints[0].getLocation().getX() + airspace_view_offset_x + 9, locationWaypoints[0].getLocation().getY() + airspace_view_offset_y - 6);
+		graphics.print(locationWaypoints[1].getName(), locationWaypoints[1].getLocation().getX() + airspace_view_offset_x + 9, locationWaypoints[1].getLocation().getY() + airspace_view_offset_y - 6);
+		graphics.print(locationWaypoints[2].getName(), locationWaypoints[2].getLocation().getX() + airspace_view_offset_x - 141, locationWaypoints[2].getLocation().getY() + airspace_view_offset_y - 6);
+		graphics.print(locationWaypoints[3].getName(), locationWaypoints[3].getLocation().getX() + airspace_view_offset_x - 91, locationWaypoints[3].getLocation().getY() + airspace_view_offset_y - 6);
+		graphics.print(locationWaypoints[4].getName(), locationWaypoints[4].getLocation().getX() + airspace_view_offset_x - 20, locationWaypoints[4].getLocation().getY() + airspace_view_offset_y + 25);
 
 	}
 	
@@ -870,7 +859,7 @@ public class Demo extends Scene {
 			originPoint = available_origins.get(RandomNumber.randInclusiveInt(0, available_origins.size()-1));
 			for (int i = 0; i < locationWaypoints.length; i++) {
 				if (locationWaypoints[i].equals(originPoint)) {
-					originName = LOCATION_NAMES[i];
+					originName = locationWaypoints[i].getName();
 					break;
 				}
 			}
@@ -878,12 +867,12 @@ public class Demo extends Scene {
 		
 		// Work out destination
 		int destination = RandomNumber.randInclusiveInt(0, locationWaypoints.length - 1);
-		destinationName = LOCATION_NAMES[destination];
+		destinationName = locationWaypoints[destination].getName();
 		destinationPoint = locationWaypoints[destination];
 		
-		while (LOCATION_NAMES[destination] == originName) {
+		while (locationWaypoints[destination].getName() == originName) {
 			destination = RandomNumber.randInclusiveInt(0, locationWaypoints.length - 1);
-			destinationName = LOCATION_NAMES[destination];
+			destinationName = locationWaypoints[destination].getName();
 			destinationPoint = locationWaypoints[destination];
 		}
 			

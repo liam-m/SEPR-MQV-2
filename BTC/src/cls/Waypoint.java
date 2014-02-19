@@ -13,10 +13,12 @@ public class Waypoint {
 	final private int WAYPOINT_ICON_RADIUS = 8;
 	private Vector waypoint_location;
 	
+	public String name;
+	
 	/**
 	 * Marks whether the waypoint is a point where planes may enter and exit the game airspace
 	 */
-	private boolean entryOrExit; //#Please specify what True or False are (just one of them)
+	private boolean entry_or_exit; //#Please specify what True or False are (just one of them)
 	
 	/**
 	 * Constructor for waypoints
@@ -24,13 +26,24 @@ public class Waypoint {
 	 * @param y the y coordinate of the waypoint
 	 * @param inputEntryOrExit whether the waypoint is a point where planes may enter and leave the airspace
 	 */
-	public Waypoint(double x, double y, boolean inputEntryOrExit) {
+	public Waypoint(double x, double y, boolean inputEntryOrExit, String name) {
 		waypoint_location  = new Vector(x, y, 0);
-		entryOrExit = inputEntryOrExit;
+		entry_or_exit = inputEntryOrExit;
+		this.name = name;
+	}
+	
+	public Waypoint(double x, double y, boolean inputEntryOrExit) {
+		waypoint_location = new Vector(x, y, 0);
+		entry_or_exit = inputEntryOrExit;
+		this.name = "";
 	}
 	
 	public Vector getLocation() {
 		return waypoint_location ;
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	/**
@@ -50,7 +63,7 @@ public class Waypoint {
 	 * @return Whether or not the waypoint is an entry or exit point.//#What does True mean?
 	 */
 	public boolean isEntryOrExit() {
-		return this.entryOrExit;
+		return this.entry_or_exit;
 	}
 	
 	/**

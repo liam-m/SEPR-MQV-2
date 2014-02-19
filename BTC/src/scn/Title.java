@@ -14,9 +14,6 @@ import lib.jog.window;
 import btc.Main;
 
 public class Title extends Scene {
-
-
-	
 	private final static String HELP_FILE_PATH = System.getProperty("user.dir") + "/user_manual.pdf";
 	
 	/**
