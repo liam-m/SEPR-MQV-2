@@ -67,7 +67,7 @@ public class Main implements input.EventHandler {
 		setScene(new scn.Title(this));
 		
 		last_frame_time = (double)(Sys.getTime()) / Sys.getTimerResolution();
-		last_fps_time = ((Sys.getTime()* 1000) / Sys.getTimerResolution()); // Set to current Time
+		last_fps_time = Sys.getTime()* 1000 / Sys.getTimerResolution(); // Set to current Time
 	}
 	
 	/**
@@ -77,19 +77,19 @@ public class Main implements input.EventHandler {
 	private void update(double time_difference) {
 		audio.update();
 		input.update(this);
-		updateFPS();
 		window.update();
 		current_scene.update(time_difference);
+		updateFPS();
 	}
 	
 	/**
-	 * Calculates the time taken since the last tick in seconds as a double-precision floating point number.
+	 * Calculates the time since the last frame in seconds as a double-precision floating point number.
 	 * @return the time in seconds since the last frame.
 	 */
 	private double getTimeSinceLastFrame() {
 		double current_time = (double)(Sys.getTime()) / Sys.getTimerResolution();
-	    double delta = (current_time - last_frame_time);
-	    last_frame_time = current_time;
+	    double delta = current_time - last_frame_time;
+	    last_frame_time = current_time; // Update last frame time
 	    return delta;
 	}
 	
@@ -115,15 +115,15 @@ public class Main implements input.EventHandler {
 	 * Closes the current scene, adds new scene to scene stack and starts it
 	 * @param new_scene The scene to set as current scene
 	 */
-	public void setScene(scn.Scene newScene) {
-		if (current_scene != null) current_scene.close();
-		scene_stack.push(newScene);
-		current_scene = scene_stack.peek();
+	public void setScene(scn.Scene new_scene) {
+		if (current_scene != null) 
+			current_scene.close();
+		current_scene = scene_stack.push(new_scene); // Add new scene to scene stack and set to current scene
 		current_scene.start();
 	}
 	
 	/**
-	 * Closes the current scene, pops it from the stack and sets current scene to top of stack.
+	 * Closes the current scene, pops it from the stack and sets current scene to top of stack
 	 */
 	public void closeScene() {
 		current_scene.close();
@@ -138,7 +138,7 @@ public class Main implements input.EventHandler {
 	public void updateFPS() {
 		long current_time = ((Sys.getTime()* 1000) / Sys.getTimerResolution());
 		if (current_time - last_fps_time > 1000) { // Update once per second
-			window.setTitle("Bear Traffic Controller - FPS: " + fps_counter);
+			window.setTitle(TITLE + " - FPS: " + fps_counter);
 			fps_counter = 0; // Reset the FPS counter
 			last_fps_time += current_time - last_fps_time; // Add on the time difference
 		}
@@ -165,5 +165,4 @@ public class Main implements input.EventHandler {
 	public void keyReleased(int key) {
 		current_scene.keyReleased(key);
 	}
-
 }
