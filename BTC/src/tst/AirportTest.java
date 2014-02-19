@@ -18,8 +18,8 @@ public class AirportTest {
 	@Before
 	public void setUp() {
 		test_airport = new Airport("");
-		Waypoint[] waypointList = new Waypoint[]{new Waypoint(0, 0, true), new Waypoint(100, 100, true), new Waypoint(25, 75, false), new Waypoint(75, 25, false), new Waypoint(50,50, false)};
-		test_aircraft = new Aircraft("testAircraft", "Berlin", "Dublin", new Waypoint(100,100, true), new Waypoint(0,0, true), null, 10.0, waypointList, 1);			
+		Waypoint[] waypoint_list = new Waypoint[]{new Waypoint(0, 0, true), new Waypoint(100, 100, true), new Waypoint(25, 75, false), new Waypoint(75, 25, false), new Waypoint(50,50, false)};
+		test_aircraft = new Aircraft("testAircraft", "Berlin", "Dublin", new Waypoint(100,100, true), new Waypoint(0,0, true), null, 10.0, waypoint_list, 1);			
 	}
 	
 	/**
@@ -55,7 +55,7 @@ public class AirportTest {
 	
 	@Test
 	public void testAddToHangar() {
-		// Dependant on hangar_size = 3
+		// Dependent on hangar_size 3
 		test_airport.addToHangar(test_aircraft);
 		assertTrue("The size of the hanger = 1", test_airport.aircraft_hangar.size() == 1);
 		
@@ -65,7 +65,7 @@ public class AirportTest {
 		test_airport.addToHangar(test_aircraft);
 		assertTrue("The size of the hanger = 3", test_airport.aircraft_hangar.size() == 3);
 		
-		//this should also be 3 because of the maximum size
+		// This should also be 3 because of the maximum size
 		test_airport.addToHangar(test_aircraft);
 		assertTrue("The size of the hanger = 3", test_airport.aircraft_hangar.size() == 3);
 	}
