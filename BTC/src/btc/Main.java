@@ -8,7 +8,7 @@ import lib.jog.*;
 
 /**
  * <h1>Main</h1>
- * <p>Main class that is run when file is run. 
+ * <p>Main class that is run when game is run. 
  * Handles the scenes (gamestates).</p>
  * @author Huw Taylor
  */
@@ -22,13 +22,13 @@ public class Main implements input.EventHandler {
 		new Main();
 	}
 	
-	final private String TITLE = "Bear Traffic Controller";
+	final private String TITLE = "Bear Traffic Controller: MQV Edition";
 	final private int WIDTH = 1280;
 	final private int HEIGHT = 960;
 	final private String[] ICON_FILENAMES = {
-		"gfx" + File.separator + "icon16.png", // 16
-		"gfx" + File.separator + "icon32.png", // 32
-		"gfx" + File.separator + "icon64.png", // 64
+		"gfx" + File.separator + "icon16.png",
+		"gfx" + File.separator + "icon32.png",
+		"gfx" + File.separator + "icon64.png",
 	};
 
 	private double last_frame_time;
@@ -57,14 +57,16 @@ public class Main implements input.EventHandler {
 	 * Creates window, initialises jog classes and sets starting values to variables.
 	 */
 	private void start() {
-		last_frame_time = (double)(Sys.getTime()) / Sys.getTimerResolution();
 		window.initialise(TITLE, WIDTH, HEIGHT);
 		window.setIcon(ICON_FILENAMES);
 		graphics.initialise();
 		graphics.Font font = graphics.newBitmapFont("gfx" + File.separator + "font.png", "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz1234567890.,_-!?()[]><#~:;/\\^'\"{}£$@@@@@@@@");
 		graphics.setFont(font);
+		
 		scene_stack = new java.util.Stack<scn.Scene>();
 		setScene(new scn.Title(this));
+		
+		last_frame_time = (double)(Sys.getTime()) / Sys.getTimerResolution();
 		last_fps_time = ((Sys.getTime()* 1000) / Sys.getTimerResolution()); // Set to current Time
 	}
 	
