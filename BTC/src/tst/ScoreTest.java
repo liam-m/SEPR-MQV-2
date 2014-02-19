@@ -119,6 +119,7 @@ public class ScoreTest {
 		testScore.increaseMeterFill(5*256);
 		while(testScore.getTargetMeterFill() != testScore.getMeterFill()) testScore.update();
 			
+		System.out.println(testScore.getMultiplierLevel());
 		assertTrue(testScore.getMultiplierLevel() == 5);
 		assertTrue(testScore.getMultiplier() == 10);
 		assertTrue(testScore.getMeterFill() == 256);

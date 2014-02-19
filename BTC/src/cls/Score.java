@@ -158,7 +158,7 @@ public class Score {
 	
 	private void updateMultiplierLevel() {
 		if (meter_fill >= 256) { // Meter full
-			if (multiplierLevel <= 5) { // Not at max multiplier
+			if (multiplierLevel < 5) { // Not at max multiplier
 				increaseMultiplierLevel();
 				meter_fill -= 256;
 				target_meter_fill -= 256;
@@ -169,7 +169,7 @@ public class Score {
 		}
 			
 		if (meter_fill < 0) { // Meter drained past empty
-			if (multiplierLevel >= 1) { // Not at minimum multiplier
+			if (multiplierLevel > 1) { // Not at minimum multiplier
 				decreaseMultiplierLevel();
 				meter_fill += 256;
 				target_meter_fill += 256;
