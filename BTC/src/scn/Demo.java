@@ -326,9 +326,6 @@ public class Demo extends Scene {
 				aircraft.setTimeOfDeparture(System.currentTimeMillis());
 				recentlyDepartedAircraft.add(aircraft);
 		
-				
-				System.out.println("Optimal time :" + aircraft.getOptimalTime() + "; Actual time spent: " + (System.currentTimeMillis()/1000 - aircraft.getTimeOfCreation())); // For debugging
-				System.out.println("Total score: " + score.getTotalScore() + "; Multiplier: " + score.getMultiplier() + "; multiplierLevel: " + score.getMultiplierLevel() + "\n "); // For debugging
 				if (aircraft.getAdditionToMultiplier() < 0)
 					ordersBox.addOrder("<<< The plane has breached separation rules on its path, your multiplier may be reduced ");
 				
