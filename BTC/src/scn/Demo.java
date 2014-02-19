@@ -723,10 +723,10 @@ public class Demo extends Scene {
 			graphics.print(speed, PLANE_INFO_W - 10 - speed.length()*8, 55);
 			// Origin
 			graphics.print("Origin:", 10, 70);
-			graphics.print(selectedAircraft.getOriginName(), PLANE_INFO_W - 10 - selectedAircraft.getOriginName().length()*8, 70);
+			graphics.print(selectedAircraft.getFlightPlan().getOriginName(), PLANE_INFO_W - 10 - selectedAircraft.getFlightPlan().getOriginName().length()*8, 70);
 			// Destination
 			graphics.print("Destination:", 10, 85);
-			graphics.print(selectedAircraft.getDestinationName(), PLANE_INFO_W - 10 - selectedAircraft.getDestinationName().length()*8, 85);
+			graphics.print(selectedAircraft.getFlightPlan().getDestinationName(), PLANE_INFO_W - 10 - selectedAircraft.getFlightPlan().getDestinationName().length()*8, 85);
 			graphics.setViewport();
 		}
 	}
@@ -751,8 +751,8 @@ public class Demo extends Scene {
 						int scoreTextAlpha =  (int)((displayedFor - leftAirspaceFor)/displayedFor * 255); // Transparency of the label, 255 is opaque
 						String planeScoreValue = String.valueOf(plane.getScore() * score.getMultiplier());
 						// Drawing the score
-						int scoreTextX = (int) plane.getRoute()[plane.getRoute().length -1].getLocation().getX();
-						int scoreTextY = (int) plane.getRoute()[plane.getRoute().length -1].getLocation().getY();
+						int scoreTextX = (int) plane.getFlightPlan().getRoute()[plane.getFlightPlan().getRoute().length -1].getLocation().getX();
+						int scoreTextY = (int) plane.getFlightPlan().getRoute()[plane.getFlightPlan().getRoute().length -1].getLocation().getY();
 						graphics.setColour(255, 255, 255, scoreTextAlpha);
 						if (scoreTextX < 40) scoreTextX += 50;
 						if (scoreTextY < 40) scoreTextY += 50;
@@ -791,11 +791,11 @@ public class Demo extends Scene {
 	private void generateFlight() {
 		Aircraft a = createAircraft();
 		if (a != null) {
-			if (a.getOriginName().equals(airport.name)) {
-				ordersBox.addOrder("<<< " + a.getName() + " is awaiting take off from " + a.getOriginName() + " heading towards " + a.getDestinationName() + ".");
+			if (a.getFlightPlan().getOriginName().equals(airport.name)) {
+				ordersBox.addOrder("<<< " + a.getName() + " is awaiting take off from " + a.getFlightPlan().getOriginName() + " heading towards " + a.getFlightPlan().getDestinationName() + ".");
 				airport.addToHangar(a);
 			} else {
-				ordersBox.addOrder("<<< " + a.getName() + " incoming from " + a.getOriginName() + " heading towards " + a.getDestinationName() + ".");
+				ordersBox.addOrder("<<< " + a.getName() + " incoming from " + a.getFlightPlan().getOriginName() + " heading towards " + a.getFlightPlan().getDestinationName() + ".");
 				aircraftInAirspace.add(a);
 			}
 		}

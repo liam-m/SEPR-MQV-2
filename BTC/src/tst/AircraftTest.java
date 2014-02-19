@@ -41,14 +41,14 @@ public class AircraftTest {
 	// Test getOriginName function
 	@Test
 	public void testGetOriginName(){
-		String name = testAircraft.getOriginName();
+		String name = testAircraft.getFlightPlan().getOriginName();
 		assertTrue("Origin name = Dublin", "Dublin" == name);
 	}
 	
 	// Test getDestinationName function
 	@Test
 	public void testGetDestinationName(){
-		String name = testAircraft.getDestinationName();
+		String name = testAircraft.getFlightPlan().getDestinationName();
 		assertTrue("Destination name = Berlin", "Berlin" == name);
 	}
 	
@@ -202,8 +202,8 @@ public class AircraftTest {
 		testDemo.aircraftList().add(testAircraft);
 		Aircraft plane = testDemo.aircraftList().get(0);
 		int distance = 0;
-		distance += Waypoint.getCostBetween(plane.getRoute()[0], plane.getRoute()[1]);
-		assertTrue(distance == plane.totalDistanceInFlightPlan());
+		distance += Waypoint.getCostBetween(plane.getFlightPlan().getRoute()[0], plane.getFlightPlan().getRoute()[1]);
+		assertTrue(distance == plane.getFlightPlan().getTotalDistance());
 	}
 	
 	//Testing isCloseToEntry

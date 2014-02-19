@@ -27,20 +27,8 @@ public class Aircraft {
 	private String flightName; // Unique and generated randomly
 	public Vector currentTarget; // The position the plane is currently flying towards (if not manually controlled).
 	private double manualBearingTarget;
-	private String originName; // The name of the location the plane is flying from. //#Needed?
-	private String destinationName;// The name of the location the plane is flying to. //#Needed?
-	private Waypoint[] route;
-	
-	/**
-	 * Returns the array of waypoints specific for a given plane.
-	 * @return route Array containing waypoints
-	 */
-	public Waypoint[] getRoute() {
-		return route;
-	}
 
 	private int currentRouteStage;
-	public Vector destination;
 	private graphics.Image image; // The plane image
 	private boolean hasFinished; // If destination is airport, must be given a land command bnefore it returns True //#Should this be non-inline?
 	public boolean is_waiting_to_land;// If the destination is the airport, True until land() is called. //#Should this be non-inline?
@@ -172,6 +160,8 @@ public class Aircraft {
 			break;
 		}
 	}
+	
+	private FlightPlan flight_plan;
 
 	/**
 	 * Constructor for an aircraft.
@@ -185,15 +175,13 @@ public class Aircraft {
 	 * @param sceneWaypoints the waypoints on the map.
 	 * @param difficulty the difficulty the game is set to
 	 */
-	public Aircraft(String name, String nameDestination, String nameOrigin, Waypoint destinationPoint, Waypoint originPoint, graphics.Image img, double speed, Waypoint[] sceneWaypoints,int difficulty) {
+	public Aircraft(String name, String nameDestination, String nameOrigin, Waypoint destinationPoint, Waypoint originPoint, graphics.Image img, double speed, Waypoint[] sceneWaypoints, int difficulty) {
 		flightName = name;
-		destinationName = nameDestination;
-		originName = nameOrigin;
+		
+		flight_plan = new FlightPlan(findGreedyRoute(originPoint, destinationPoint, sceneWaypoints), nameOrigin, nameDestination, originPoint, destinationPoint);
+		
 		image = img;
 		timeOfCreation = System.currentTimeMillis() / 1000; // System time when aircraft was created in seconds.
-													
-		route = findGreedyRoute(originPoint, destinationPoint, sceneWaypoints); // Find route
-		destination = destinationPoint.getLocation();
 
 		position = originPoint.getLocation();
 		
@@ -204,14 +192,14 @@ public class Aircraft {
 		position = position.add(new Vector(0, 0, altitudeOffset));
 
 		// Calculate initial velocity (direction)
-		currentTarget = route[0].getLocation();
+		currentTarget = flight_plan.getRoute()[0].getLocation();
 		double x = currentTarget.getX() - position.getX();
 		double y = currentTarget.getY() - position.getY();
 		velocity = new Vector(x, y, 0).normalise().scaleBy(speed);
 
 		isManuallyControlled = false;
 		hasFinished = false;
-		is_waiting_to_land = destination.equals(Demo.airport.getLocation());
+		is_waiting_to_land = flight_plan.getDestination().equals(Demo.airport.getLocation());
 		currentRouteStage = 0;
 		currentlyTurningBy = 0;
 		manualBearingTarget = Double.NaN;
@@ -226,7 +214,7 @@ public class Aircraft {
 			turnSpeed = Math.PI / 4;
 			altitudeChangeSpeed = 500;
 			baseScore = 60;
-			optimalTime = totalDistanceInFlightPlan() / speed;
+			optimalTime = flight_plan.getTotalDistance() / speed;
 		break;
 
 		case Demo.DIFFICULTY_MEDIUM:
@@ -235,7 +223,7 @@ public class Aircraft {
 			turnSpeed = Math.PI / 3;
 			altitudeChangeSpeed = 300;
 			baseScore = 150;
-			optimalTime = totalDistanceInFlightPlan() / (speed * 2);
+			optimalTime = flight_plan.getTotalDistance() / (speed * 2);
 		break;
 			
 		case Demo.DIFFICULTY_HARD:
@@ -246,7 +234,7 @@ public class Aircraft {
 			altitudeChangeSpeed = 200;
 			baseScore = 300;
 			additionToMultiplier = 3;
-			optimalTime = totalDistanceInFlightPlan() / (speed * 3);
+			optimalTime = flight_plan.getTotalDistance() / (speed * 3);
 		break;
 
 		default:
@@ -261,14 +249,6 @@ public class Aircraft {
 
 	public String getName() {
 		return flightName;
-	}
-
-	public String getOriginName() {
-		return originName;
-	}
-
-	public String getDestinationName() {
-		return destinationName;
 	}
 
 	public boolean isFinished() { // Returns whether the plane has reached its destination
@@ -330,12 +310,12 @@ public class Aircraft {
 
 	public int flightPathContains(Waypoint waypoint) {
 		int index = -1;
-		for (int i = 0; i < route.length; i++) {
-			if (route[i] == waypoint) index = i;
+		for (int i = 0; i < flight_plan.getRoute().length; i++) {
+			if (flight_plan.getRoute()[i] == waypoint) index = i;
 		}
 		return index;
 	}
-
+	
 	/**
 	 * Edits the plane's path by changing the waypoint it will go to at a certain stage in its route.
 	 * @param routeStage the stage at which the new waypoint will replace the old.
@@ -343,7 +323,7 @@ public class Aircraft {
 	 */
 	public void alterPath(int routeStage, Waypoint newWaypoint) {
 		if (routeStage > -1) {
-			route[routeStage] = newWaypoint;
+			flight_plan.alterPath(routeStage, newWaypoint);
 			if (!isManuallyControlled)
 				resetBearing();
 			if (routeStage == currentRouteStage) {
@@ -370,10 +350,10 @@ public class Aircraft {
 	private boolean is_landing = false;
 	
 	public boolean isAtDestination() {
-		if (destination.equals(Demo.airport.getLocation())) {
+		if (flight_plan.getDestination().equals(Demo.airport.getLocation())) {
 			return Demo.airport.isWithinArrivals(position, false);
 		} else {
-			return isAt(destination);
+			return isAt(flight_plan.getDestination());
 		}
 	}
 
@@ -406,17 +386,17 @@ public class Aircraft {
 
 		// Update target
 		
-		if (currentTarget.equals(destination) && isAtDestination()) { // At finishing point
+		if (currentTarget.equals(flight_plan.getDestination()) && isAtDestination()) { // At finishing point
 			if (!is_waiting_to_land) { // Ready to land
 				hasFinished = true;
-				if (destination.equals(Demo.airport.getLocation())) { // Landed at airport
+				if (flight_plan.getDestination().equals(Demo.airport.getLocation())) { // Landed at airport
 					Demo.airport.is_active = false;
 				}
 			}
 		} else if (isAt(currentTarget)) {
 			currentRouteStage++;
 			// Next target is the destination if you're at the end of the plan, otherwise it's the next waypoint
-			currentTarget = currentRouteStage >= route.length ? destination : route[currentRouteStage].getLocation();
+			currentTarget = currentRouteStage >= flight_plan.getRoute().length ? flight_plan.getDestination() : flight_plan.getRoute()[currentRouteStage].getLocation();
 		}
 
 		// Update bearing
@@ -547,6 +527,8 @@ public class Aircraft {
 			graphics.setColour(0, 128, 128, 128);
 		}
 
+		Waypoint[] route = flight_plan.getRoute();
+		Vector destination = flight_plan.getDestination();
 		if (currentTarget != destination) {
 			graphics.line(position.getX()-image.width()/2, position.getY()-image.height()/2, route[currentRouteStage].getLocation().getX(), route[currentRouteStage].getLocation().getY());
 		}
@@ -567,6 +549,8 @@ public class Aircraft {
 	 */
 	public void drawModifiedPath(int modified, double mouseX, double mouseY) {
 		graphics.setColour(0, 128, 128, 128);
+		Waypoint[] route = flight_plan.getRoute();
+		Vector destination = flight_plan.getDestination();
 		if (currentRouteStage > modified - 1) {
 			graphics.line(position().getX(), position().getY(), mouseX, mouseY);
 		} else {
@@ -725,8 +709,8 @@ public class Aircraft {
 	}
 
 	private void resetBearing() {
-		if (currentRouteStage < route.length & route[currentRouteStage] != null) {
-			currentTarget = route[currentRouteStage].getLocation();
+		if (currentRouteStage < flight_plan.getRoute().length & flight_plan.getRoute()[currentRouteStage] != null) {
+			currentTarget = flight_plan.getRoute()[currentRouteStage].getLocation();
 		}
 		turnTowardsTarget(0);
 	}
@@ -774,20 +758,6 @@ public class Aircraft {
 	}
 
 	/**
-	 * 	This function calculates optimal distance for a plane - Used for scoring
-	 * @return total distance a plane needs to pass based on its flight plan to get to its exit point
-	 */
-	public int totalDistanceInFlightPlan() {
-		int dist = 0;
-
-		for (int i = 0; i < route.length - 1; i++) {
-			dist += Waypoint.getCostBetween(route[i], route[i + 1]);
-		}
-
-		return dist;
-	}
-
-	/**
 	 * Checks if an aircraft is close to an its parameter (entry point).
 	 * @param position of a waypoint
 	 * @return True it if it close
@@ -796,6 +766,10 @@ public class Aircraft {
 		double x = this.position().getX() - position.getX();
 		double y = this.position().getY() - position.getY();
 		return ((x*x + y*y) <= (300 * 300));
+	}
+	
+	public FlightPlan getFlightPlan() {
+		return flight_plan;
 	}
 
 }
