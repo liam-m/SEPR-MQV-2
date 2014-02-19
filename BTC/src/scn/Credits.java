@@ -12,7 +12,7 @@ import btc.Main;
 public class Credits extends Scene {
 	
 	/**
-	 * default speed to scroll the credits
+	 * Default speed to scroll the credits
 	 */
 	private final static int SCROLL_SPEED = 64;
 	
@@ -20,7 +20,7 @@ public class Credits extends Scene {
 	/**
 	 * The position to print the credits text at. Initially offscreen
 	 */
-	private double scrollPosition;
+	private double scroll_position;
 	/**
 	 * Music to play during the credits
 	 */
@@ -38,18 +38,18 @@ public class Credits extends Scene {
 	 * Input handlers
 	 */
 	@Override
-	public void mousePressed(int key, int x, int y) {}
+	public void mousePressed(int key, int x, int y) { }
 
 	@Override
-	public void mouseReleased(int key, int x, int y) {}
+	public void mouseReleased(int key, int x, int y) { }
 
 	@Override
-	public void keyPressed(int key) {}
+	public void keyPressed(int key) { }
 
-	@Override
 	/**
 	 * Exit to the title screen if escape is pressed
 	 */
+	@Override
 	public void keyReleased(int key) {
 		if (key == input.KEY_ESCAPE) {
 			main.closeScene();
@@ -62,7 +62,7 @@ public class Credits extends Scene {
 	@Override
 	public void start() {
 		speed = 1f;
-		scrollPosition = -window.height();
+		scroll_position = -window.height();
 		music = audio.newMusic("sfx" + File.separator + "piano.ogg");
 		music.play();
 	}
@@ -75,20 +75,21 @@ public class Credits extends Scene {
 	public void update(double time_difference) {
 		boolean hurried = input.isKeyDown(input.KEY_SPACE) || input.isMouseDown(input.MOUSE_LEFT);
 		speed = hurried ? 4f : 1f;
-		scrollPosition += SCROLL_SPEED * time_difference * speed;
-		if (scrollPosition > 1100) scrollPosition = -window.height();
+		scroll_position += SCROLL_SPEED * time_difference * speed;
+		if (scroll_position > 1100) 
+			scroll_position = -window.height();
 	}
 
-	@Override
 	/**
 	 * Print the credits based on the current scroll position
 	 */
+	@Override
 	public void draw() {
 		int gap = 64;
 		int currentHeight = 0;
 		graphics.setColour(graphics.green);
 		graphics.push();
-		graphics.translate(0, scrollPosition);
+		graphics.translate(0, scroll_position);
 		currentHeight += gap;
 		graphics.printCentred("Bear Traffic Controller", 0, currentHeight, 3, window.width());
 		currentHeight += gap * 2;
@@ -108,9 +109,7 @@ public class Credits extends Scene {
 		graphics.printCentred("Huw Taylor", window.width()/3, currentHeight, 2, window.width()/3);
 		graphics.printCentred("Stephen Webb)", 2 * window.width()/3, currentHeight, 2, window.width()/3);
 		
-		currentHeight += gap * 2;
-		
-	
+		currentHeight += gap * 2;	
 		
 		graphics.printCentred("Improved by", 0, currentHeight, 2, window.width());
 		graphics.printCentred("___________", 0, currentHeight + 8, 2, window.width());
@@ -150,7 +149,7 @@ public class Credits extends Scene {
 		graphics.printCentred("JOG", 2*window.width()/3, currentHeight, 2, window.width()/3);
 		currentHeight += gap * 2;
 		
-		graphics.printCentred("Thank you for playing!", 0, currentHeight, 2, window.width());
+		graphics.printCentred("Thanks for playing!", 0, currentHeight, 2, window.width());
 		graphics.pop();
 	}
 
