@@ -467,8 +467,15 @@ public class Aircraft {
 	/**
 	 * Draws the plane and any warning circles if necessary.
 	 */
-	public void draw(int controlAltitude) {
-		double alpha = 255/((Math.abs(position.getZ() - controlAltitude) + 1000)/1000);
+	public void draw(int highlightedAltitude) {
+		double alpha;
+		if (position.getZ() >= 28000 && position.getZ() <= 28500) {
+			alpha = highlightedAltitude == 28000 ? 255 : 128;
+		} else if (position.getZ() <= 30000 && position.getZ() >= 28500) {
+			alpha = highlightedAltitude == 30000 ? 255 : 128;
+		} else {
+			alpha = 128;
+		}
 		double scale = 2*(position.getZ()/30000);
 		graphics.setColour(128, 128, 128, alpha);
 		graphics.draw(image, scale, position.getX()-image.width()/2, position.getY()-image.height()/2, getBearing(), 8, 8);
