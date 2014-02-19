@@ -204,6 +204,17 @@ public class Title extends Scene {
 			graphics.setColour(0, 128, 0, opacity);
 			graphics.print(title.substring(i, i+1), 74*4.5 + i * 14, 344, 1.8);
 		}
+		String subtitle = "MQV Edition";
+		a = radarAngle + (Math.PI * 4 / 5);
+		for (int i = 0; i < subtitle.length(); i++) {
+			a -= Math.PI / 32;
+			double opacity = a %= (2 * Math.PI);
+			opacity *= 256 / (2 * Math.PI);
+			opacity = 256 - opacity;
+			opacity %= 256;
+			graphics.setColour(0, 128, 0, opacity);
+			graphics.print(subtitle.substring(i, i+1), 94*4.5 + i * 14, 364, 1.8);
+		}
 	}
 	
 	/**
