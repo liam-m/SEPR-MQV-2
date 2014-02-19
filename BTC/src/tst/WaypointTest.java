@@ -22,13 +22,13 @@ public class WaypointTest {
 	@Test
 	public void testIsEntryOrExit() {
 		Waypoint testWaypoint = new Waypoint(10,10, false);
-		assertTrue("Entry/Exit = false", false == testWaypoint.isEntryOrExit());
+		assertTrue("Entry/Exit = false", false == testWaypoint.isEntryAndExit());
 	}
 	
 	@Test
 	public void testIsEntryOrExit2() {
 		Waypoint testWaypoint = new Waypoint(0, 0, true);
-		assertTrue("Entry/Exit = true", true == testWaypoint.isEntryOrExit());
+		assertTrue("Entry/Exit = true", true == testWaypoint.isEntryAndExit());
 	}
 	
 	// Test mouseOver checking
@@ -49,7 +49,7 @@ public class WaypointTest {
 	public void testGetCost(){
 		Waypoint testWaypoint = new Waypoint(2, 4, false);
 		Waypoint testWaypoint2 = new Waypoint(2, 2, true);
-		double result = testWaypoint.getCost(testWaypoint2);
+		double result = testWaypoint.getDistanceFrom(testWaypoint2);
 		assertTrue("Cost = 2", 2 == result);
 	}
 	
@@ -57,7 +57,7 @@ public class WaypointTest {
 	public void testGetCost2(){
 		Waypoint testWaypoint = new Waypoint(6, 15, false);
 		Waypoint testWaypoint2 = new Waypoint(15, 15, true);
-		double result = testWaypoint.getCost(testWaypoint2);
+		double result = testWaypoint.getDistanceFrom(testWaypoint2);
 		assertTrue("Cost = 9", 9 == result);
 	}
 	

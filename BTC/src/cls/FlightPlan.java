@@ -95,7 +95,7 @@ public class FlightPlan {
 				// Do not consider offscreen waypoints which are not the destination
 				// Also skip if flagged as a previously selected waypoint
 				if (skip | point.getLocation().equals(currentPos.getLocation()) | point.getLocation().equals(origin.getLocation())
-						| (point.isEntryOrExit() && !(point.getLocation().equals(destination.getLocation())))) {
+						| (point.isEntryAndExit() && !(point.getLocation().equals(destination.getLocation())))) {
 					skip = false; // Reset flag
 					continue;
 				} else {
@@ -104,10 +104,10 @@ public class FlightPlan {
 					 * Compare cost vs current cheapest 
 					 * If smaller, replace
 					 */
-					if (point.getCost(currentPos) + 0.5 * Waypoint.getCostBetween(point, destination) < cost) {
+					if (point.getDistanceFrom(currentPos) + 0.5 * Waypoint.getCostBetween(point, destination) < cost) {
 						// Cheaper route found, update
 						cheapest = point;
-						cost = point.getCost(currentPos) + 0.5 * Waypoint.getCostBetween(point, destination);
+						cost = point.getDistanceFrom(currentPos) + 0.5 * Waypoint.getCostBetween(point, destination);
 					}
 				}
 

@@ -15,26 +15,24 @@ public class Waypoint {
 	
 	public String name;
 	
-	/**
-	 * Marks whether the waypoint is a point where planes may enter and exit the game airspace
-	 */
-	private boolean entry_or_exit; //#Please specify what True or False are (just one of them)
+	// Whether the waypoint is a point where planes may enter and exit the game airspace or is just a 'regular' waypoint
+	private boolean is_entry_and_exit; 
 	
 	/**
 	 * Constructor for waypoints
 	 * @param x the x coordinate of the waypoint
 	 * @param y the y coordinate of the waypoint
-	 * @param inputEntryOrExit whether the waypoint is a point where planes may enter and leave the airspace
+	 * @param is_entry_or_exit whether the waypoint is a point where planes may enter and leave the airspace
 	 */
-	public Waypoint(double x, double y, boolean inputEntryOrExit, String name) {
+	public Waypoint(double x, double y, boolean is_entry_or_exit, String name) {
 		waypoint_location  = new Vector(x, y, 0);
-		entry_or_exit = inputEntryOrExit;
+		this.is_entry_and_exit = is_entry_or_exit;
 		this.name = name;
 	}
 	
-	public Waypoint(double x, double y, boolean inputEntryOrExit) {
+	public Waypoint(double x, double y, boolean is_entry_and_exit) {
 		waypoint_location = new Vector(x, y, 0);
-		entry_or_exit = inputEntryOrExit;
+		this.is_entry_and_exit = is_entry_and_exit;
 		this.name = "";
 	}
 	
@@ -59,20 +57,20 @@ public class Waypoint {
 	}
 	
 	/**
-	 * Returns if the waypoint is an entry or exit point.
-	 * @return Whether or not the waypoint is an entry or exit point.//#What does True mean?
+	 * Returns if the waypoint is an entry and exit point.
+	 * @return Whether or not the waypoint is an entry and exit point
 	 */
-	public boolean isEntryOrExit() {
-		return this.entry_or_exit;
+	public boolean isEntryAndExit() {
+		return this.is_entry_and_exit;
 	}
 	
 	/**
 	 * Gets the cost of travelling between this waypoint and another - Used for pathfinding
 	 * @param fromPoint The point to consider cost from, to this waypoint
-	 * @return the distance(cost) between the two waypoints
+	 * @return the distance (cost) between the two waypoints
 	 */
-	public double getCost(Waypoint fromPoint) {
-		return waypoint_location .sub(fromPoint.getLocation()).magnitude();
+	public double getDistanceFrom(Waypoint fromPoint) {
+		return waypoint_location.sub(fromPoint.getLocation()).magnitude();
 	}
 	
 	/**
@@ -82,7 +80,7 @@ public class Waypoint {
 	 * @return the cost between source and target
 	 */
 	public static double getCostBetween(Waypoint source, Waypoint target) {
-		return target.getCost(source);
+		return target.getDistanceFrom(source);
 	}
 	
 	/**
@@ -91,7 +89,7 @@ public class Waypoint {
 	 * @param y the y location to draw at
 	 */
 	public void draw(double x, double y) {
-		if (this.isEntryOrExit()) 
+		if (this.isEntryAndExit()) 
 			graphics.setColour(64, 128, 0, 192);
 		else
 			graphics.setColour(graphics.red_transp);
