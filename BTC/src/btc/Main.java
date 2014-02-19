@@ -21,7 +21,7 @@ public class Main implements input.EventHandler {
 		new Main();
 	}
 	
-	final private String TITLE = "Bear Traffic Controller";
+	final private String TITLE = "Bear Traffic Controller: MQV Edition";
 	final private int WIDTH = 1280;
 	final private int HEIGHT = 960;
 	final private String[] ICONS = {
@@ -135,7 +135,7 @@ public class Main implements input.EventHandler {
 	public void updateFPS() {
 		long time = ((Sys.getTime()* 1000) / Sys.getTimerResolution()); // set lastFPS to current Time
 		if (time - lastfps > 1000) {
-			window.setTitle("Bear Traffic Controller - FPS: " + fps);
+			window.setTitle(TITLE + " - FPS: " + fps);
 			fps = 0; // reset the FPS counter
 			lastfps += time - lastfps; // add on the time difference
 		}
