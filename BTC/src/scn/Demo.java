@@ -340,7 +340,6 @@ public class Demo extends Scene {
 				aircraftInAirspace.remove(i);
 			}
 		}
-		altimeter.update(time_difference);
 		airport.update(this);
 		if (selectedAircraft != null) {
 			if (selectedAircraft.isManuallyControlled()) {

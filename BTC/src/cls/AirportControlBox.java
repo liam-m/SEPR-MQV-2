@@ -149,7 +149,6 @@ public class AirportControlBox implements EventHandler{
 
 	@Override
 	public void keyReleased(int key) {
-
 		
 	}
 }
