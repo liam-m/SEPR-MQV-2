@@ -126,9 +126,9 @@ public class Demo extends Scene {
 	 */
 	private int getFlightGenerationInterval() {
 		if (difficulty == 1)
-			return (30 / (getMaxAircraft() * 2)); // 
+			return (30 / (getMaxAircraft() * 2)); // Planes move 2x faster on medium so this makes them spawn 2 times as often to keep the ratio
 		if (difficulty == 2)
-			return (30 / (getMaxAircraft() * 3) ); // 
+			return (30 / (getMaxAircraft() * 3) ); // Planes move 3x faster on medium so this makes them spawn 3 times as often to keep the ratio 
 		return (30 / getMaxAircraft());
 	}
 	
