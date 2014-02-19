@@ -150,7 +150,7 @@ public class Demo extends Scene {
 	/**
 	 * The current control altitude of the ACTO - initially 30,000
 	 */
-	private int controlAltitude = 30000;
+	private int highlightedAltitude = 30000;
 	
 	/**
 	 * Music to play during the game scene
@@ -578,9 +578,9 @@ public class Demo extends Scene {
 				selectedAircraft.setBearing(newBearing);
 			}
 		} else if (key == input.MOUSE_WHEEL_UP) {
-			controlAltitude = 30000;
+			highlightedAltitude = 30000;
 		} else if (key == input.MOUSE_WHEEL_DOWN){
-			controlAltitude = 28000;
+			highlightedAltitude = 28000;
 		}
 	}
 
@@ -664,7 +664,7 @@ public class Demo extends Scene {
 		}
 		graphics.setColour(255, 255, 255);
 		for (Aircraft aircraft : aircraftInAirspace) {
-			aircraft.draw(controlAltitude);
+			aircraft.draw(highlightedAltitude);
 			if (aircraft.isMouseOver()) {
 				aircraft.drawFlightPath(false);
 			}
