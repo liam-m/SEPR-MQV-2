@@ -323,7 +323,7 @@ public class Demo extends Scene {
 				score.increaseMeterFill(aircraft.getAdditionToMultiplier());
 				aircraft.setScore(score.calculateAircraftScore(aircraft));
 				score.increaseTotalScore(score.getMultiplier() * aircraft.getScore());
-				aircraft.setTimeOfDeparture(System.currentTimeMillis());
+				aircraft.setDepartureTime(System.currentTimeMillis());
 				recentlyDepartedAircraft.add(aircraft);
 		
 				
@@ -373,7 +373,7 @@ public class Demo extends Scene {
 				selectedAircraft.setAltitudeState(Aircraft.ALTITUDE_CLIMB);
 			}
 				
-			if (selectedAircraft.isOutOfBounds()) {
+			if (selectedAircraft.isOutOfAirspaceBounds()) {
 				ordersBox.addOrder(">>> " + selectedAircraft.getName() + " out of bounds, returning to route");
 				deselectAircraft();
 			}	
@@ -521,7 +521,7 @@ public class Demo extends Scene {
 			}
 			
 			if (isArrivalsClicked(x, y) && selectedAircraft != null) {
-				if (selectedAircraft.is_waiting_to_land && selectedAircraft.currentTarget.equals(airport.getLocation())) {
+				if (selectedAircraft.is_waiting_to_land && selectedAircraft.current_target.equals(airport.getLocation())) {
 					airport.mousePressed(key, x, y);
 					selectedAircraft.land();
 					deselectAircraft();
@@ -816,8 +816,7 @@ public class Demo extends Scene {
 	 * Returns array of entry points that are fair to be entry points for a plane (no plane is currently going to exit the airspace there,
 	 * also it is not too close to any plane). 
 	 * @param aircraft
-	 */
-	
+	 */	
 	private java.util.ArrayList<Waypoint> getAvailableEntryPoints() {
 		java.util.ArrayList<Waypoint> available_entry_points = new java.util.ArrayList<Waypoint>();
 		
@@ -833,7 +832,7 @@ public class Demo extends Scene {
 			for (Aircraft aircraft : aircraftInAirspace) {
 				// Check if any plane is currently going towards the exit point/chosen originPoint
 				// Check if any plane is less than what is defined as too close from the chosen originPoint
-				if (aircraft.currentTarget.equals(entry_point.getLocation()) || aircraft.isCloseToEntry(entry_point.getLocation())) {
+				if (aircraft.current_target.equals(entry_point.getLocation()) || aircraft.isCloseToEntry(entry_point.getLocation())) {
 					is_available = false;
 				}	
 			}

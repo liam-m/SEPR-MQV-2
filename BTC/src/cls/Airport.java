@@ -157,7 +157,7 @@ public class Airport extends Waypoint implements EventHandler {
 	public void update(Demo demo) {
 		aircraft_waiting_to_land.clear();
 		for (Aircraft a : demo.aircraftList()) {
-			if (a.currentTarget.equals(this.getLocation())) {
+			if (a.current_target.equals(this.getLocation())) {
 				aircraft_waiting_to_land.add(a);
 			}
 		}

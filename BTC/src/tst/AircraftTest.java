@@ -87,7 +87,7 @@ public class AircraftTest {
 	public void testOutOfBounds(){
 		Waypoint[] waypointList = new Waypoint[]{new Waypoint(0, 0, true), new Waypoint(100, 100, true), new Waypoint(25, 75, false), new Waypoint(75, 25, false), new Waypoint(50,50, false)};
 		testAircraft = new Aircraft("testAircraft", "Berlin", "Dublin", new Waypoint(100,100, true), new Waypoint(0,0, true), null, 10.0, waypointList, 1);
-		assertTrue("Out of bounds = false", testAircraft.isOutOfBounds());
+		assertTrue("Out of bounds = false", testAircraft.isOutOfAirspaceBounds());
 	}
 	
 	// Test set methods
