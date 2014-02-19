@@ -255,7 +255,7 @@ public class Demo extends Scene {
 	 * Getter for aircraft list
 	 * @return the arrayList of aircraft in the airspace
 	 */
-	public java.util.ArrayList<Aircraft> aircraftList() {
+	public java.util.ArrayList<Aircraft> getAircraftList() {
 		return aircraftInAirspace;
 	}
 	
@@ -380,9 +380,9 @@ public class Demo extends Scene {
 	 */
 	private void checkCollisions(double time_difference) {
 		for (Aircraft plane : aircraftInAirspace) {
-			int collisionState = plane.updateCollisions(time_difference, aircraftList(), score);
+			int collisionState = plane.updateCollisions(time_difference, getAircraftList(), score);
 			if (collisionState >= 0) {
-				gameOver(plane, aircraftList().get(collisionState));
+				gameOver(plane, getAircraftList().get(collisionState));
 				return;
 			}
 		}

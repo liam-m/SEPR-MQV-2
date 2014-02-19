@@ -28,8 +28,8 @@ public class ScoreTest {
 	public void testScore() {
 		Demo testDemo = new Demo(1);
 		testDemo.initializeAircraftArray();
-		testDemo.aircraftList().add(testAircraft);
-		Aircraft plane = testDemo.aircraftList().get(0);
+		testDemo.getAircraftList().add(testAircraft);
+		Aircraft plane = testDemo.getAircraftList().get(0);
 
 		assertTrue(testScore.getTotalScore() == 0);
 		assertTrue(testScore.getMultiplier() == 1);
@@ -50,7 +50,7 @@ public class ScoreTest {
 	public void testMeterLowerBound() {
 		Demo testDemo = new Demo(1);
 		testDemo.initializeAircraftArray();
-		testDemo.aircraftList().add(testAircraft);
+		testDemo.getAircraftList().add(testAircraft);
 			
 		assertTrue(testScore.getMultiplierLevel() == 1);
 		assertTrue(testScore.getMultiplier() == 1);
