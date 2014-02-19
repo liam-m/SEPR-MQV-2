@@ -15,42 +15,61 @@ import lib.jog.window;
  * <p>Represents an aircraft. Calculates velocity, route-following, etc.</p>
  */
 public class Aircraft {
-
-	public final static int RADIUS = 16; // The physical size of the plane in pixels. This determines crashes.
-	public final static int MOUSE_LENIANCY = 32;  // How far away (in pixels) the mouse can be from the plane but still select it.
+	private final static int RADIUS = 16; // The physical size of the plane in pixels. This determines crashes.
+	private final static int MOUSE_LENIANCY = 32;  // How far away (in pixels) the mouse can be from the plane but still select it.
 	public final static int COMPASS_RADIUS = 64; // How large to draw the bearing circle.
-	public static int separationRule = 64;
+	private final static audio.Sound WARNING_SOUND = audio.newSoundEffect("sfx" + File.separator + "beep.ogg"); // Used during separation violation
+	
+	private static int separationRule; // Minimum distance that must be maintained before aircraft, depends on difficulty
+
+	private graphics.Image image; // The plane image
 	private double turnSpeed; // How much the plane can turn per second - in radians.
+	private String flightName; // Unique and generated randomly - format is Flight followed by a random number between 100 and 900 e.g Flight 404
+	private double timeOfCreation; // Used to calculate how long an aircraft spent in the airspace
+	private double optimalTime; // Optimal time a plane needs to reach its exit point
+	
 	private Vector position;
 	private Vector velocity;
-	private boolean isManuallyControlled;
-	private String flightName; // Unique and generated randomly - format Flight followed by a random number between 100 and 900 e.g Flight 404
-	public Vector currentTarget; // The position the plane is currently flying towards (if not manually controlled).
-	private double manualBearingTarget;
-
-	private int currentRouteStage;
-	private graphics.Image image; // The plane image
+	private boolean is_manually_controlled;
 	private boolean hasFinished; // If destination is airport, must be given a land command bnefore it returns True //#Should this be non-inline?
 	public boolean is_waiting_to_land; // If the destination is the airport, True until land() is called. //#Should this be non-inline?
 	private double currentlyTurningBy; // In radians
+	private int altitudeChangeSpeed; // The speed to climb or fall by. Set in switch statement below.
+	private FlightPlan flight_plan;
+	
+	public Vector currentTarget; // The position the plane is currently flying towards (if not manually controlled).
+	private double manualBearingTarget;
+	private int currentRouteStage;
+	private int altitudeState; // Whether the plane is climbing or falling
+
+	private double timeOfDeparture; // Used when calculating when a label representing the score a particular plane scored should disappear
+
+	private boolean collisionWarningSoundFlag = false;
+	
+	private int baseScore; // Each plane has its own base score that increases total score when a plane successfully leaves the airspace
+	private int individualScore;
+	private int additionToMultiplier = 1; // This variable increases the multiplierVariable when a plane successfully leaves the airspace.
+	
 	/**
 	 * Holds a list of planes currently in violation of separation rules with this plane
 	 */
 	private java.util.ArrayList<Aircraft> planesTooNear = new java.util.ArrayList<Aircraft>();
-	private int altitudeState; // Whether the plane is climbing or falling
-	private int altitudeChangeSpeed; // The speed to climb or fall by. Set in switch statement below.
-	private double timeOfCreation; // Used to calculate how long an aircraft spent in the airspace
+	
+	/**
+	 * Static ints for use where altitude state is to be changed.
+	 */
+	public static final int ALTITUDE_CLIMB = 1;
+	public static final int ALTITUDE_FALL = -1;
+	public static final int ALTITUDE_LEVEL = 0;
+	
+	// Getters
 	/**
 	 * Used to get (system) time when an aircraft was created.
 	 * @return Time when aircraft was created.
 	 */
 	public double getTimeOfCreation() {
 		return timeOfCreation;
-	}
-	/**
-	 * Used when calculating when a label representing the score a particular plane scored should disappear
-	 */
-	private double timeOfDeparture;
+	}	
 
 	/**
 	 * Used to get (system) time when an aircraft successfully departed.
@@ -59,18 +78,7 @@ public class Aircraft {
 	public double getTimeOfDeparture() {
 		return timeOfDeparture;
 	}
-	/**
-	 * Used outside of Aircraft class to assign a (system) time to a plane that successfully left airspace
-	 * @param departureTime (system time when a plane departed)
-	 */
-	public void setTimeOfDeparture(double departureTime) {
-		timeOfDeparture = departureTime;
-	}
-
-	/**
-	 * Optimal time a plane needs to reach its exit point
-	 */
-	private double optimalTime;
+	
 	/**
 	 * Getter for optimal time.
 	 * @return Optimal Optimal time for an aircraft to complete its path.
@@ -78,35 +86,7 @@ public class Aircraft {
 	public double getOptimalTime() {
 		return optimalTime;
 	}
-	/**
-	 * Static ints for use where altitude state is to be changed.
-	 */
-	public static final int ALTITUDE_CLIMB = 1;
-	public static final int ALTITUDE_FALL = -1;
-	public static final int ALTITUDE_LEVEL = 0;
-
-	/**
-	 * This method returns multiplier bonus to reward players for fast and efficient management of planes
-	 * @param optimalTime - Ideal time - Ambitious goal   
-	 * @param timeTaken - Total time aircraft has spent in the airspace. 
-	 * @return 2 for very efficient, alternatively 1.5 
-	 */
-	private boolean collisionWarningSoundFlag = false;
-
-	private final static audio.Sound WARNING_SOUND = audio.newSoundEffect("sfx" + File.separator + "beep.ogg");// Used during separation violation 
 	
-	/**
-	 * Each plane has its own base score that user improves their score by when
-	 * a plane successfully leaves the airspace.
-	 */
-	private int baseScore;
-	private int individualScore;
-
-	/**
-	 * This variable increases the multiplierVariable when a plane successfully leaves the airspace.
-	 */
-	private int additionToMultiplier = 1;
-
 	/**
 	 * Used to get a base score per plane outside of Aircraft class.
 	 * @return baseScore
@@ -121,20 +101,29 @@ public class Aircraft {
 	public int getScore() {
 		return individualScore;
 	}
-
-	/**
-	 * Sets the score for a specific aircraft.
-	 */
-	public void setScore(int score) {
-		individualScore = score;
-	}
-
+	
 	/**
 	 * Used to get a additionToMultiplier outside of Aircraft class.
 	 * @return additionToMultiplier
 	 */
 	public int getAdditionToMultiplier() {
 		return additionToMultiplier;
+	}
+	
+	// Setters
+	/**
+	 * Used outside of Aircraft class to assign a (system) time to a plane that successfully left airspace
+	 * @param departureTime (system time when a plane departed)
+	 */
+	public void setTimeOfDeparture(double departureTime) {
+		timeOfDeparture = departureTime;
+	} 
+
+	/**
+	 * Sets the score for a specific aircraft.
+	 */
+	public void setScore(int score) {
+		individualScore = score;
 	}
 
 	/**
@@ -160,8 +149,6 @@ public class Aircraft {
 			break;
 		}
 	}
-	
-	private FlightPlan flight_plan;
 
 	/**
 	 * Constructor for an aircraft.
@@ -197,7 +184,7 @@ public class Aircraft {
 		double y = currentTarget.getY() - position.getY();
 		velocity = new Vector(x, y, 0).normalise().scaleBy(speed);
 
-		isManuallyControlled = false;
+		is_manually_controlled = false;
 		hasFinished = false;
 		is_waiting_to_land = flight_plan.getDestination().equals(Demo.airport.getLocation());
 		currentRouteStage = 0;
@@ -256,7 +243,7 @@ public class Aircraft {
 	}
 
 	public boolean isManuallyControlled() {
-		return isManuallyControlled;
+		return is_manually_controlled;
 	}
 
 	public int getAltitudeState() {
@@ -268,7 +255,7 @@ public class Aircraft {
 	 * @return an angle in radians to the plane's current target.
 	 */
 	private double angleToTarget() {
-		if (isManuallyControlled) {
+		if (is_manually_controlled) {
 			return (manualBearingTarget == Double.NaN) ? getBearing(): manualBearingTarget;
 		} else {
 			return Math.atan2(currentTarget.getY() - position.getY(), currentTarget.getX() - position.getX());
@@ -316,7 +303,7 @@ public class Aircraft {
 	public void alterPath(int routeStage, Waypoint newWaypoint) {
 		if (routeStage > -1) {
 			flight_plan.alterPath(routeStage, newWaypoint);
-			if (!isManuallyControlled)
+			if (!is_manually_controlled)
 				resetBearing();
 			if (routeStage == currentRouteStage) {
 				currentTarget = newWaypoint.getLocation();
@@ -446,9 +433,9 @@ public class Aircraft {
 	 */
 	public void draw(int highlightedAltitude) {
 		double alpha;
-		if (position.getZ() >= 28000 && position.getZ() <= 28500) {
+		if (position.getZ() >= 28000 && position.getZ() <= 29000) {
 			alpha = highlightedAltitude == 28000 ? 255 : 128;
-		} else if (position.getZ() <= 30000 && position.getZ() >= 28500) {
+		} else if (position.getZ() <= 30000 && position.getZ() >= 29000) {
 			alpha = highlightedAltitude == 30000 ? 255 : 128;
 		} else {
 			alpha = 128;
@@ -478,7 +465,7 @@ public class Aircraft {
 			graphics.print(String.valueOf(i), x, y);
 		}
 		double x, y;
-		if (isManuallyControlled && input.isMouseDown(input.MOUSE_RIGHT)) {
+		if (is_manually_controlled && input.isMouseDown(input.MOUSE_RIGHT)) {
 			// Draw new bearing
 			graphics.setColour(graphics.green_transp);
 			double r = Math.atan2(input.mouseY() - position.getY(), input.mouseX() - position.getX());
@@ -608,12 +595,16 @@ public class Aircraft {
 	}
 
 	public void toggleManualControl() {
-		isManuallyControlled = !isManuallyControlled;
-		if (isManuallyControlled) {
-			setBearing(getBearing());
-		} 
-		else {
-			resetBearing();
+		if (is_landing) {
+			is_manually_controlled = false;
+		} else {
+			is_manually_controlled = !is_manually_controlled;
+			if (is_manually_controlled) {
+				setBearing(getBearing());
+			} 
+			else {
+				resetBearing();
+			}
 		}
 	}
 
@@ -652,6 +643,7 @@ public class Aircraft {
 	public void land() {
 		is_waiting_to_land = false;
 		is_landing = true;
+		is_manually_controlled = false;
 		Demo.airport.is_active = true;
 	}
 

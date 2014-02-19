@@ -524,6 +524,7 @@ public class Demo extends Scene {
 				if (selectedAircraft.is_waiting_to_land && selectedAircraft.currentTarget.equals(airport.getLocation())) {
 					airport.mousePressed(key, x, y);
 					selectedAircraft.land();
+					deselectAircraft();
 				}
 			} else if (isDeparturesClicked(x, y)) {
 				if (airport.aircraft_hangar.size() > 0) {

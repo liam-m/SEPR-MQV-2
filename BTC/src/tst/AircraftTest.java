@@ -5,12 +5,13 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.Before;
 
-import btc.Main;
 import scn.Demo;
 import cls.Aircraft;
 import cls.Waypoint;
 import cls.Vector;
 import cls.Score;
+
+@SuppressWarnings("deprecation")
 
 public class AircraftTest {	
 	Aircraft testAircraft;
@@ -127,7 +128,6 @@ public class AircraftTest {
 		Demo testDemo = new Demo(1);
 		testDemo.initializeAircraftArray();
 		testDemo.aircraftList().add(testAircraft);
-		Aircraft plane = testDemo.aircraftList().get(0);
 		
 		assertTrue(testScore.getMultiplierLevel() == 1);
 		assertTrue(testScore.getMultiplier() == 1);

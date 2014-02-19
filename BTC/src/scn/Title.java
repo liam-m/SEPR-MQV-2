@@ -63,13 +63,6 @@ public class Title extends Scene {
 			}
 		};
 		buttons[0] = new lib.ButtonText("Play Full Game", demo, window.height(), window.height()/2 + 96, window.width() - window.height(), 24, 8, 6);
-		// Game Button
-		lib.ButtonText.Action play = new lib.ButtonText.Action() {
-			@Override
-			public void action() {
-//				_main.setScene(new Game(main));
-			}
-		};
 	
 		// Credits Button
 		lib.ButtonText.Action credits = new lib.ButtonText.Action() {
