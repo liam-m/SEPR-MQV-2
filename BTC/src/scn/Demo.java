@@ -233,7 +233,7 @@ public class Demo extends Scene {
 	 */
 	public void start() {
 		background = graphics.newImage("gfx" + File.separator + "grass_fields002.png");
-		music = audio.newMusic("sfx" + File.separator + "whispers_hello.ogg");
+		music = audio.newMusic("sfx" + File.separator + "Gypsy_Shoegazer.ogg");
 		//music.play();
 		ordersBox = new cls.OrdersBox(ORDERSBOX_X, ORDERSBOX_Y, ORDERSBOX_W, ORDERSBOX_H, 6);
 		aircraftInAirspace = new java.util.ArrayList<Aircraft>();
