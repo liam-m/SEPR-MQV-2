@@ -125,6 +125,10 @@ public class Demo extends Scene {
 	 * The interval in seconds to generate flights after
 	 */
 	private int getFlightGenerationInterval() {
+		if (difficulty == 1)
+			return (30 / (getMaxAircraft() * 2)); // 
+		if (difficulty == 2)
+			return (30 / (getMaxAircraft() * 3) ); // 
 		return (30 / getMaxAircraft());
 	}
 	
