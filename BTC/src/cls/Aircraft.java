@@ -383,8 +383,13 @@ public class Aircraft {
 	 */
 	public void update(double time_difference) {
 		if (hasFinished) return;
-		if (is_landing && position.getZ() > 100) {
-			position.setZ(position.getZ() - 2529 * time_difference);
+		if (is_landing) {
+			if (position.getZ() > 100) {
+				position.setZ(position.getZ() - 2529 * time_difference);
+			} else {
+				Demo.airport.is_active = false;
+				hasFinished = true;
+			}
 		} else {
 			switch (altitudeState) {
 			case -1:
