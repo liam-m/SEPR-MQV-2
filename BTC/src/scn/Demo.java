@@ -148,9 +148,7 @@ public class Demo extends Scene {
 			return score.getMultiplier();
 	}
 	/**
-	 * The current control altitude of the ACTO
-	 * initially 30,000
-	 * only aircraft on or close to this altitude can be controlled
+	 * The current control altitude of the ACTO - initially 30,000
 	 */
 	private int controlAltitude = 30000;
 	
