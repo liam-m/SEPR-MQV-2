@@ -23,6 +23,14 @@ public class FlightPlan {
 		return destination;
 	}
 	
+	public String getDestinationName() {
+		return destinationName;
+	}
+	
+	public String getOriginName() {
+		return originName;
+	}
+	
 	/**
 	 * Edits the plane's path by changing the waypoint it will go to at a certain stage in its route.
 	 * @param routeStage the stage at which the new waypoint will replace the old.
@@ -30,14 +38,6 @@ public class FlightPlan {
 	 */
 	public void alterPath(int routeStage, Waypoint newWaypoint) {
 		route[routeStage] = newWaypoint;
-	}
-	
-	public String getDestinationName() {
-		return destinationName;
-	}
-	
-	public String getOriginName() {
-		return originName;
 	}
 	
 	/**
