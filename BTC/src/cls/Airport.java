@@ -10,13 +10,11 @@ import lib.jog.input.EventHandler;
 import lib.jog.window;
 
 public class Airport extends Waypoint implements EventHandler {
-
+	// Put the airport in the middle of the airspace
 	private static double x_location = window.width()/2;
 	private static double y_location = window.height()/2;		
-	
-	/**
-	 * All location values are absolute and based on the current version of the airport image.
-	 */
+
+	// All location values are absolute and based on the current version of the airport image.
 	private static double arrivals_x_location = x_location + 90;
 	private static double arrivals_y_location = y_location + 83;
 	private static double arrivals_width = 105;
@@ -30,9 +28,7 @@ public class Airport extends Waypoint implements EventHandler {
 	public boolean is_active = false; // True if there is an aircraft Landing/Taking off
 	private boolean is_arrivals_clicked = false;
 	private boolean is_departures_clicked = false;
-	
-	public String name = "Mosbear Aiport";
-	
+		
 	private graphics.Image airport;
 	
 	public java.util.ArrayList<Aircraft> aircraft_waiting_to_land = new java.util.ArrayList<Aircraft>();
@@ -44,8 +40,8 @@ public class Airport extends Waypoint implements EventHandler {
 	public java.util.ArrayList<Double> time_entered = new java.util.ArrayList<Double>();
 	private int hangar_size = 3;
 	
-	public Airport() { 
-		super(x_location, y_location, true);
+	public Airport(String name) {
+		super(x_location, y_location, true, name);
 	}
 	
 	public void loadImage() {
@@ -62,7 +58,7 @@ public class Airport extends Waypoint implements EventHandler {
 		int red_fine = 0;
 		int red_danger = 128;
 		
-		//draw the hangar button if plane is waiting (departing flights)
+		// Draw the hangar button if plane is waiting (departing flights)
 		if (aircraft_hangar.size() > 0) {
 			// Colour fades from green (fine) to red (danger) over 5 seconds as plane is waiting
 			int time_waiting = (int)(Demo.getTime() - time_entered.get(0));
@@ -74,29 +70,37 @@ public class Airport extends Waypoint implements EventHandler {
 					green_now = green_danger;
 					red_now = red_danger;
 				} else {
-					green_now = green_fine - (int)(Math.abs(green_fine-green_danger) * (time_waiting/5.0)); // Colour between fine and danger, scaled by time_waiting
+					// Colour between fine and danger, scaled by time_waiting
+					green_now = green_fine - (int)(Math.abs(green_fine-green_danger) * (time_waiting/5.0)); 
 					red_now = (int)(Math.abs(red_fine-red_danger) * (time_waiting/5.0));
 				}
 			}
 
+			// Draw border, draw as filled if clicked
 			graphics.setColour(red_now, green_now, 0, 256);
 			graphics.rectangle(is_departures_clicked, departures_x_location-airport.width()/2, departures_y_location-airport.height()/2, departures_width, departures_height);
 
+			// Draw box
 			graphics.setColour(red_now, green_now, 0, 64);
 			graphics.rectangle(true, departures_x_location-airport.width()/2 + 1, departures_y_location-airport.height()/2 + 1, departures_width - 2, departures_height - 2);
+			
+			// Print number of aircraft waiting
 			graphics.setColour(255, 255, 255, 128);
 			graphics.print(Integer.toString(aircraft_hangar.size()), departures_x_location-airport.width()/2 + 23, departures_y_location-airport.height()/2 + 15);
 		}
 		graphics.setColour(0, 128, 0, 128);
-		// draw the arrivals button if at least one plane is waiting (arriving flights)
+		// Draw the arrivals button if at least one plane is waiting (arriving flights)
 		if (aircraft_waiting_to_land.size() > 0) {
+			// Draw border, draw as filled if clicked
 			graphics.rectangle(is_arrivals_clicked, arrivals_x_location-airport.width()/2, arrivals_y_location-airport.height()/2, arrivals_width, arrivals_height);
-			graphics.setColour(128, 128, 0, 64);
+			graphics.setColour(128, 128, 0, 64);			
+			// Draw box
 			graphics.rectangle(true, arrivals_x_location-airport.width()/2 + 1, arrivals_y_location-airport.height()/2 + 1, arrivals_width -2, arrivals_height -2);
+			
+			// Print number of aircraft waiting
 			graphics.setColour(255, 255, 255, 128);
 			graphics.print(Integer.toString(aircraft_waiting_to_land.size()), arrivals_x_location-airport.width()/2 + 50, arrivals_y_location-airport.height()/2 + 26);
-		}
-		
+		}		
 	}
 	
 	public double getLongestTimeInHangar(double currentTime) {
@@ -151,13 +155,13 @@ public class Airport extends Waypoint implements EventHandler {
 	}
 	  
 	/** 
-	 * decides whether to draw the radius around the airport by checking if any aircraft which are landing are close
-	 * @param demo
+	 * Decides whether to draw the radius around the airport by checking if any aircraft which are landing are close
+	 * @param demo For getting aircraft list
 	 */
 	public void update(Demo demo) {
 		aircraft_waiting_to_land.clear();
 		for (Aircraft a : demo.aircraftList()) {
-			if (a.currentTarget.equals(this.getLocation())) {
+			if (a.current_target.equals(this.getLocation())) {
 				aircraft_waiting_to_land.add(a);
 			}
 		}
@@ -175,7 +179,6 @@ public class Airport extends Waypoint implements EventHandler {
 			} else if (isWithinDepartures(new Vector(x, y, 0))) {
 				is_departures_clicked = true;
 			}
-		
 		}
 	}
 

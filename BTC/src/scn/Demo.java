@@ -168,28 +168,17 @@ public class Demo extends Scene {
 	/**
 	 * Demo's instance of the airport class
 	 */
-	public static Airport airport = new Airport();
+	public static Airport airport = new Airport("Mosbear Airport");
 	
-	/**
-	 * A list of location names for waypoint flavour
-	 */
-	private final String[] LOCATION_NAMES = new String[] {
-		"North West Top Leftonia",
-		"100 Acre Woods",
-		"City of Rightson",
-		"South Sea",
-		airport.name
-	};
-	 
 	/**
 	 * The set of waypoints in the airspace which are origins / destinations
 	 */
 	public static Waypoint[] locationWaypoints = new Waypoint[] {
 		/* A set of Waypoints which are origin / destination points */
-		new Waypoint(8, 8, true), //top left
-		new Waypoint(8, window.height() - ORDERSBOX_H - 72, true), //bottom left
-		new Waypoint(window.width() - 40, 8, true), // top right
-		new Waypoint(window.width() - 40, window.height() - ORDERSBOX_H - 72, true), //bottom right
+		new Waypoint(8, 8, true, "North West Top Leftonia"), //top left
+		new Waypoint(8, window.height() - ORDERSBOX_H - 72, true, "100 Acre Woods"), //bottom left
+		new Waypoint(window.width() - 40, 8, true, "City of Rightson"), // top right
+		new Waypoint(window.width() - 40, window.height() - ORDERSBOX_H - 72, true, "South Sea"), //bottom right
 		airport
 	};
 
@@ -203,7 +192,7 @@ public class Demo extends Scene {
 		new Waypoint(125, 70, false),   // 0
 		new Waypoint(700, 100, false),  // 1
 		new Waypoint(1040, 80, false),  // 2
-		new Waypoint(670, 400, false),  // 3
+		new Waypoint(500, 200, false),  // 3
 		new Waypoint(1050, 400, false), // 4
 		new Waypoint(250, 400, false),  // 5
 		new Waypoint(200, 635, false),  // 6
@@ -323,12 +312,9 @@ public class Demo extends Scene {
 				score.increaseMeterFill(aircraft.getAdditionToMultiplier());
 				aircraft.setScore(score.calculateAircraftScore(aircraft));
 				score.increaseTotalScore(score.getMultiplier() * aircraft.getScore());
-				aircraft.setTimeOfDeparture(System.currentTimeMillis());
+				aircraft.setDepartureTime(System.currentTimeMillis());
 				recentlyDepartedAircraft.add(aircraft);
 		
-				
-				System.out.println("Optimal time :" + aircraft.getOptimalTime() + "; Actual time spent: " + (System.currentTimeMillis()/1000 - aircraft.getTimeOfCreation())); // For debugging
-				System.out.println("Total score: " + score.getTotalScore() + "; Multiplier: " + score.getMultiplier() + "; multiplierLevel: " + score.getMultiplierLevel() + "\n "); // For debugging
 				if (aircraft.getAdditionToMultiplier() < 0)
 					ordersBox.addOrder("<<< The plane has breached separation rules on its path, your multiplier may be reduced ");
 				
@@ -354,7 +340,6 @@ public class Demo extends Scene {
 				aircraftInAirspace.remove(i);
 			}
 		}
-		altimeter.update(time_difference);
 		airport.update(this);
 		if (selectedAircraft != null) {
 			if (selectedAircraft.isManuallyControlled()) {
@@ -373,7 +358,7 @@ public class Demo extends Scene {
 				selectedAircraft.setAltitudeState(Aircraft.ALTITUDE_CLIMB);
 			}
 				
-			if (selectedAircraft.isOutOfBounds()) {
+			if (selectedAircraft.isOutOfAirspaceBounds()) {
 				ordersBox.addOrder(">>> " + selectedAircraft.getName() + " out of bounds, returning to route");
 				deselectAircraft();
 			}	
@@ -521,9 +506,10 @@ public class Demo extends Scene {
 			}
 			
 			if (isArrivalsClicked(x, y) && selectedAircraft != null) {
-				if (selectedAircraft.is_waiting_to_land && selectedAircraft.currentTarget.equals(airport.getLocation())) {
+				if (selectedAircraft.is_waiting_to_land && selectedAircraft.current_target.equals(airport.getLocation())) {
 					airport.mousePressed(key, x, y);
 					selectedAircraft.land();
+					deselectAircraft();
 				}
 			} else if (isDeparturesClicked(x, y)) {
 				if (airport.aircraft_hangar.size() > 0) {
@@ -696,11 +682,11 @@ public class Demo extends Scene {
 		
 		graphics.setViewport();
 		graphics.setColour(graphics.green);
-		graphics.print(LOCATION_NAMES[0], locationWaypoints[0].getLocation().getX() + airspace_view_offset_x + 9, locationWaypoints[0].getLocation().getY() + airspace_view_offset_y - 6);
-		graphics.print(LOCATION_NAMES[1], locationWaypoints[1].getLocation().getX() + airspace_view_offset_x + 9, locationWaypoints[1].getLocation().getY() + airspace_view_offset_y - 6);
-		graphics.print(LOCATION_NAMES[2], locationWaypoints[2].getLocation().getX() + airspace_view_offset_x - 141, locationWaypoints[2].getLocation().getY() + airspace_view_offset_y - 6);
-		graphics.print(LOCATION_NAMES[3], locationWaypoints[3].getLocation().getX() + airspace_view_offset_x - 91, locationWaypoints[3].getLocation().getY() + airspace_view_offset_y - 6);
-		graphics.print(LOCATION_NAMES[4], locationWaypoints[4].getLocation().getX() + airspace_view_offset_x - 20, locationWaypoints[4].getLocation().getY() + airspace_view_offset_y + 25);
+		graphics.print(locationWaypoints[0].getName(), locationWaypoints[0].getLocation().getX() + airspace_view_offset_x + 9, locationWaypoints[0].getLocation().getY() + airspace_view_offset_y - 6);
+		graphics.print(locationWaypoints[1].getName(), locationWaypoints[1].getLocation().getX() + airspace_view_offset_x + 9, locationWaypoints[1].getLocation().getY() + airspace_view_offset_y - 6);
+		graphics.print(locationWaypoints[2].getName(), locationWaypoints[2].getLocation().getX() + airspace_view_offset_x - 141, locationWaypoints[2].getLocation().getY() + airspace_view_offset_y - 6);
+		graphics.print(locationWaypoints[3].getName(), locationWaypoints[3].getLocation().getX() + airspace_view_offset_x - 91, locationWaypoints[3].getLocation().getY() + airspace_view_offset_y - 6);
+		graphics.print(locationWaypoints[4].getName(), locationWaypoints[4].getLocation().getX() + airspace_view_offset_x - 20, locationWaypoints[4].getLocation().getY() + airspace_view_offset_y + 25);
 
 	}
 	
@@ -815,8 +801,7 @@ public class Demo extends Scene {
 	 * Returns array of entry points that are fair to be entry points for a plane (no plane is currently going to exit the airspace there,
 	 * also it is not too close to any plane). 
 	 * @param aircraft
-	 */
-	
+	 */	
 	private java.util.ArrayList<Waypoint> getAvailableEntryPoints() {
 		java.util.ArrayList<Waypoint> available_entry_points = new java.util.ArrayList<Waypoint>();
 		
@@ -832,7 +817,7 @@ public class Demo extends Scene {
 			for (Aircraft aircraft : aircraftInAirspace) {
 				// Check if any plane is currently going towards the exit point/chosen originPoint
 				// Check if any plane is less than what is defined as too close from the chosen originPoint
-				if (aircraft.currentTarget.equals(entry_point.getLocation()) || aircraft.isCloseToEntry(entry_point.getLocation())) {
+				if (aircraft.current_target.equals(entry_point.getLocation()) || aircraft.isCloseToEntry(entry_point.getLocation())) {
 					is_available = false;
 				}	
 			}
@@ -873,7 +858,7 @@ public class Demo extends Scene {
 			originPoint = available_origins.get(RandomNumber.randInclusiveInt(0, available_origins.size()-1));
 			for (int i = 0; i < locationWaypoints.length; i++) {
 				if (locationWaypoints[i].equals(originPoint)) {
-					originName = LOCATION_NAMES[i];
+					originName = locationWaypoints[i].getName();
 					break;
 				}
 			}
@@ -881,12 +866,12 @@ public class Demo extends Scene {
 		
 		// Work out destination
 		int destination = RandomNumber.randInclusiveInt(0, locationWaypoints.length - 1);
-		destinationName = LOCATION_NAMES[destination];
+		destinationName = locationWaypoints[destination].getName();
 		destinationPoint = locationWaypoints[destination];
 		
-		while (LOCATION_NAMES[destination] == originName) {
+		while (locationWaypoints[destination].getName() == originName) {
 			destination = RandomNumber.randInclusiveInt(0, locationWaypoints.length - 1);
-			destinationName = LOCATION_NAMES[destination];
+			destinationName = locationWaypoints[destination].getName();
 			destinationPoint = locationWaypoints[destination];
 		}
 			

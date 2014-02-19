@@ -7,8 +7,8 @@ package cls;
  */
 public class OrdersBox extends lib.TextBox {
 	
-	private final double REMOVAL_WAIT = 6;
-	private double removalTimer;
+	private final double REMOVAL_WAIT = 6; // Number of seconds to keep message in box
+	private double removal_timer; // Amount of time since last removal
 
 	/**
 	 * Constructor of a OrdersBox.
@@ -20,7 +20,7 @@ public class OrdersBox extends lib.TextBox {
 	 */
 	public OrdersBox(int x, int y, int width, int height, int lines) {
 		super(x, y, width, height, lines);
-		removalTimer = 0;
+		removal_timer = 0;
 	}
 	
 	/**
@@ -36,15 +36,14 @@ public class OrdersBox extends lib.TextBox {
 	 * @param time_difference time since the last update call.
 	 */
 	public void update(double time_difference) {
-		if (!isTyping) {
-			removalTimer += time_difference;
-			if (removalTimer >= REMOVAL_WAIT) {
-				removalTimer -= REMOVAL_WAIT;
+		if (!is_typing) {
+			removal_timer += time_difference;
+			if (removal_timer >= REMOVAL_WAIT) {
+				removal_timer -= REMOVAL_WAIT;
 				ripple();
 			}
-			return;
-		}
-		super.update(time_difference);
+		} else
+			super.update(time_difference);
 	}
 	
 }

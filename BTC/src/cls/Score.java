@@ -82,17 +82,21 @@ public class Score {
 	private int target_meter_fill = 0;
 	
 	/**
-	 * This variable is used to increase main multiplier for score. Score multiplier varies based on 
-	 * the immediate range this variable is in. I.e. When it is < 10 -> multiplier = 1, when 
-	 *  10 <= multiplierVariable < 40 -> multiplier = 2, etc. 
+	 * This variable determines the current level of the multiplier. Each level has an associated multiplier value
+	 * e.g. multiplier_level = 1 -> multiplier = 1, multiplier_level = 2 -> multiplier = 3, multiplier_level = 3 -> multiplier = 5.
+	 * Increased when meter_fill >= 256, decreased when meter_fill < 0.
+	 * Also used in Demo to vary max_aircraft and aircraft_spawn rates.
 	 */
 	private int multiplierLevel = 1;
 	
 	/**
-	 * Allows to reset multiplier to 1.
+	 * Resets the multiplier_level to 1 and empties the meter.
 	 */	
 	public void resetMultiplier() {
 		multiplierLevel = 1;
+		multiplier = 1;
+		target_meter_fill = 0;
+		meter_fill = 0;
 	} 
 	
 	private boolean meter_draining = false;

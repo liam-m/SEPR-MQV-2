@@ -9,19 +9,9 @@ import lib.jog.input.EventHandler;
  * @author Huw Taylor
  */
 public class Altimeter implements EventHandler {
-	
-	/**
-	 * Whether or not the Altimeter should be drawn
-	 */
-	private boolean isVisible;
-	
-	/**
-	 * The current aircraft associated with the altimeter
-	 */
-	private cls.Aircraft currentAircraft;
-	
-	private double positionX, positionY, width, height;
-	
+	private boolean isVisible; // Whether or not the Altimeter should be drawn
+	private cls.Aircraft currentAircraft; // The current aircraft associated with the altimeter	
+	private double positionX, positionY, width, height;	
 	private cls.OrdersBox ordersBox;
 	
 	/**
@@ -46,9 +36,10 @@ public class Altimeter implements EventHandler {
 	 * @param aircraft The aircraft to associate with the altimeter
 	 */
 	public void show(cls.Aircraft aircraft) {
-		if (aircraft == null) return;
-		currentAircraft = aircraft;
-		isVisible = true;
+		if (aircraft != null) {
+			currentAircraft = aircraft;
+			isVisible = true;			
+		}
 	}
 	
 	/**
@@ -88,45 +79,40 @@ public class Altimeter implements EventHandler {
 	public void mouseReleased(int key, int mx, int my) {
 		if (!isVisible) return;
 		if (key == input.MOUSE_LEFT) {
-			boolean changed = false;
-			if (mouseOverTopButton(mx, my) && currentAircraft.getAltitudeState() != Aircraft.ALTITUDE_CLIMB) {
+			if (mouseOverTopArrow(mx, my) && currentAircraft.getAltitudeState() != Aircraft.ALTITUDE_CLIMB) {
 				currentAircraft.setAltitudeState(Aircraft.ALTITUDE_CLIMB);
-				changed = true;
-			} else if (mouseOverBottomButton(mx, my) && currentAircraft.getAltitudeState() != Aircraft.ALTITUDE_FALL) {
+			} else if (mouseOverBottomArrow(mx, my) && currentAircraft.getAltitudeState() != Aircraft.ALTITUDE_FALL) {
 				currentAircraft.setAltitudeState(Aircraft.ALTITUDE_FALL);
-				changed = true;
+			} else {
+				return; // Don't print messages
 			}
-			if (changed) {
-				ordersBox.addOrder(">>> " + currentAircraft.getName() + ", please adjust your altitude.");
-				ordersBox.addOrder("<<< Roger that. Altering altitude now.");
-			}
+			ordersBox.addOrder(">>> " + currentAircraft.getName() + ", please adjust your altitude.");
+			ordersBox.addOrder("<<< Roger that. Altering altitude now.");
 		}
 	}
 
 	@Override
-	public void keyPressed(int key) {}
+	public void keyPressed(int key) { }
 
 	@Override
-	public void keyReleased(int key) {}
-	
-	public void update(double time_difference) {}
-	
+	public void keyReleased(int key) { }
+		
 	/**
 	 * Draws the altimeter to the screen
 	 */
 	public void draw() {
-		drawRectangle();
+		drawOutline();
 		if (isVisible) {
 			drawPlaneIcon();
 			drawAltitudes();
-			drawArrows();
+			drawAltitudeArrows();
 		}
 	}
 	
 	/**
 	 * Draws the box around the altimeter
 	 */
-	private void drawRectangle() {
+	private void drawOutline() {
 		graphics.setColour(graphics.green);
 		graphics.rectangle(false, positionX, positionY, width, height);
 	}
@@ -136,7 +122,7 @@ public class Altimeter implements EventHandler {
 	 * Icon depicts plane orientation
 	 */
 	private void drawPlaneIcon() {
-		// angle to draw plane
+		// Angle to draw plane
 		double r = 0;
 		if (currentAircraft.isTurningLeft()) {
 			r = -Math.PI / 12;
@@ -180,36 +166,39 @@ public class Altimeter implements EventHandler {
 		graphics.setColour(graphics.green);
 	}
 	
-	private void drawArrows() {
+	/**
+	 * Draws the altitude arrow buttons, used for changing altitude
+	 */
+	private void drawAltitudeArrows() {
 		int midX = (int)( positionX + (width / 2) );
 		graphics.setColour(graphics.green);
-		if (mouseOverTopButton()) { graphics.setColour(graphics.white); }
+		if (mouseOverTopArrow()) { graphics.setColour(graphics.white); }
 		graphics.triangle(true, midX - 10, positionY + 10, midX, positionY + 4, midX + 10, positionY + 10);
 		graphics.setColour(graphics.green);
-		if (mouseOverBottomButton()) { graphics.setColour(graphics.white); }
+		if (mouseOverBottomArrow()) { graphics.setColour(graphics.white); }
 		graphics.triangle(true, midX - 10, positionY + height - 10, midX, positionY + height - 4, midX + 10, positionY + height - 10);
 	}
 	
-	private boolean mouseOverTopButton(int mx, int my) {
+	private boolean mouseOverTopArrow(int mx, int my) {
 		if (!isVisible) return false;
 		if (mx < positionX || mx > positionX + width) return false;
 		if (my < positionY || my > positionY + height) return false;
 		return (my <= positionY + 16);
 	}
 	
-	private boolean mouseOverTopButton() { 
-		return mouseOverTopButton(input.mouseX(), input.mouseY()); 
+	private boolean mouseOverTopArrow() { 
+		return mouseOverTopArrow(input.mouseX(), input.mouseY()); 
 	}
 
-	private boolean mouseOverBottomButton(int mx, int my) {
+	private boolean mouseOverBottomArrow(int mx, int my) {
 		if (!isVisible) return false;
 		if (mx < positionX || mx > positionX + width) return false;
 		if (my < positionY || my > positionY + height) return false;
 		return (my >= positionY + height - 16);
 	}
 	
-	private boolean mouseOverBottomButton() { 
-		return mouseOverBottomButton(input.mouseX(), input.mouseY()); 
+	private boolean mouseOverBottomArrow() { 
+		return mouseOverBottomArrow(input.mouseX(), input.mouseY()); 
 	}
 	
 }
