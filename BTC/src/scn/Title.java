@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import org.newdawn.slick.util.FileSystemLocation;
 
 import lib.jog.audio;
 import lib.jog.audio.Sound;
@@ -13,12 +14,10 @@ import lib.jog.window;
 import btc.Main;
 
 public class Title extends Scene {
-	//#Needed?
-	/**
-	 * A URL to the Bear Traffic Controller Website
-	 * Webpage contains explanation of game's controls and goal
-	 */
-	private final static String HELP_URL = "http://imp1.github.io/bear_traffic_controller/ingamehelp";
+
+
+	
+	private final static String HELP_FILE_PATH = System.getProperty("user.dir") + "/user_manual.pdf";
 	
 	/**
 	 * The 'beep' played as the radar makes a sweep
@@ -77,13 +76,13 @@ public class Title extends Scene {
 			@Override
 			public void action() {
 				try {
-					Desktop.getDesktop().browse(new URI(HELP_URL));
-				} catch (IOException | URISyntaxException e) {
+					Desktop.getDesktop().open(new File(HELP_FILE_PATH));
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
 		};
-		buttons[2] = new lib.ButtonText("Help               (Opens in Browser)", help, window.height(), window.height()/2 + 156, window.width() - window.height(), 24, 8, 6);
+		buttons[2] = new lib.ButtonText("Help        (Opens user manual PDF)", help, window.height(), window.height()/2 + 156, window.width() - window.height(), 24, 8, 6);
 		// Exit Button
 				lib.ButtonText.Action exit = new lib.ButtonText.Action() {
 					@Override
