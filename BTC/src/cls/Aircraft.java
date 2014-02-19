@@ -28,8 +28,7 @@ public class Aircraft {
 	private double creation_time; // Used to calculate how long an aircraft spent in the airspace
 	private double optimal_time; // Optimal time a plane needs to reach its exit point
 	
-	private Vector position;
-	private Vector velocity;
+	private Vector position, velocity;
 	private boolean is_manually_controlled = false;
 	private boolean has_finished = false; // If destination is airport, must be given a land command bnefore it returns True 
 	public boolean is_waiting_to_land; // If the destination is the airport, True until land() is called. 
