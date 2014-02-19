@@ -663,6 +663,7 @@ public class Aircraft {
 	public void takeOff() {
 		Demo.airport.is_active = true;
 		Demo.takeOffSequence(this);
+		creation_time = System.currentTimeMillis() / 1000; // Reset creation time
 	}
 
 	/**
