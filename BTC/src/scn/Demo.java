@@ -444,8 +444,8 @@ public class Demo extends Scene {
 	
 	private boolean compassClicked() {
 		if (selectedAircraft != null) {
-			double dx = selectedAircraft.position().getX() - input.mouseX() + airspace_view_offset_x;
-			double dy = selectedAircraft.position().getY() - input.mouseY() + airspace_view_offset_y;
+			double dx = selectedAircraft.getPosition().getX() - input.mouseX() + airspace_view_offset_x;
+			double dy = selectedAircraft.getPosition().getY() - input.mouseY() + airspace_view_offset_y;
 			int r = Aircraft.COMPASS_RADIUS;
 			return  dx*dx + dy*dy < r*r;
 		}
@@ -473,7 +473,7 @@ public class Demo extends Scene {
 	private boolean waypointInFlightplanClicked(int x, int y, Aircraft a) {
 		if (a != null) {
 			for (Waypoint w : airspaceWaypoints) {
-				if (w.isMouseOver(x-airspace_view_offset_x, y-airspace_view_offset_y) && a.flightPathContains(w) > -1) {
+				if (w.isMouseOver(x-airspace_view_offset_x, y-airspace_view_offset_y) && a.getFlightPlan().indexOfWaypoint(w) > -1) {
 					return true;
 				}
 			}
@@ -516,7 +516,7 @@ public class Demo extends Scene {
 				clickedWaypoint = findClickedWaypoint(x, y);
 				if (clickedWaypoint != null) {
 					waypointClicked = true; // Flag to mouseReleased
-					selectedPathpoint = selectedAircraft.flightPathContains(clickedWaypoint);					
+					selectedPathpoint = selectedAircraft.getFlightPlan().indexOfWaypoint(clickedWaypoint);					
 				}
 			}
 			
@@ -576,8 +576,8 @@ public class Demo extends Scene {
 			clickedWaypoint = null; // Fine to set to null now as will have been dealt with
 		} else if (key == input.MOUSE_RIGHT) {
 			if (compassClicked && selectedAircraft != null) {
-				double dx = input.mouseX() - selectedAircraft.position().getX() + airspace_view_offset_x;
-				double dy = input.mouseY() - selectedAircraft.position().getY() + airspace_view_offset_y;
+				double dx = input.mouseX() - selectedAircraft.getPosition().getX() + airspace_view_offset_x;
+				double dy = input.mouseY() - selectedAircraft.getPosition().getY() + airspace_view_offset_y;
 				double newBearing = Math.atan2(dy, dx);
 				selectedAircraft.setBearing(newBearing);
 			}
@@ -714,7 +714,7 @@ public class Demo extends Scene {
 			graphics.setViewport(PLANE_INFO_X, PLANE_INFO_Y, PLANE_INFO_W, PLANE_INFO_H);
 			graphics.printCentred(selectedAircraft.getName(), 0, 5, 2, PLANE_INFO_W);
 			// Altitude
-			String altitude = String.format("%.0f", selectedAircraft.position().getZ()) + "£";
+			String altitude = String.format("%.0f", selectedAircraft.getPosition().getZ()) + "£";
 			graphics.print("Altitude:", 10, 40);
 			graphics.print(altitude, PLANE_INFO_W - 10 - altitude.length()*8, 40);
 			// Speed
@@ -863,7 +863,7 @@ public class Demo extends Scene {
 		java.util.ArrayList<Waypoint> available_origins = getAvailableEntryPoints();
 		
 		if (available_origins.isEmpty()) {
-			if ((airport.aircraft_hangar.size() == airport.getHangarSize())) {
+			if (airport.aircraft_hangar.size() == airport.getHangarSize()) {
 				return null;
 			} else {
 				originPoint = airport;

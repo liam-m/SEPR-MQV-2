@@ -156,7 +156,7 @@ public class Altimeter implements EventHandler {
 		graphics.circle(true, x, y, 4);
 		graphics.setColour(graphics.green);
 		graphics.circle(false, x, y, 4);
-		graphics.printCentred(String.format("%.0f", currentAircraft.position().getZ()), positionX, y+32, 1, width);
+		graphics.printCentred(String.format("%.0f", currentAircraft.getPosition().getZ()), positionX, y+32, 1, width);
 	}
 	
 	/**
@@ -168,7 +168,7 @@ public class Altimeter implements EventHandler {
 		int midX = (int)(width / 2);
 		int midY = (int)(height / 2);
 		for (int i = -5; i <= 4; i ++) {
-			int alt = (int)(currentAircraft.position().getZ() + (1000 * i));
+			int alt = (int)(currentAircraft.getPosition().getZ() + (1000 * i));
 			int offset = (int)( 16.0 * (alt % 1000) / 1000 );
 			int y = midY - (i * 16) + offset;
 			graphics.line(midX - 64, y, midX + 64, y);

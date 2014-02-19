@@ -27,7 +27,7 @@ public class AircraftTest {
 	// Test getPosition function
 	@Test
 	public void testGetPosition() {
-		Vector resultPosition = testAircraft.position();
+		Vector resultPosition = testAircraft.getPosition();
 		assertTrue("x >= -128 and xy <= 27, y = 0, z = 28,000 or z = 30,000", ((0 == resultPosition.getY()) && (128 >= resultPosition.getX()) && (-128 <= resultPosition.getX()) && ((28000 == resultPosition.getZ()) || (30000 == resultPosition.getZ()))));
 	}
 	

@@ -60,12 +60,12 @@ public class GameOver extends Scene {
 		super(main);
 		crashedPlane1 = plane1;
 		crashedPlane2 = plane2;
-		crash = new Vector(plane1.position().getX(), plane1.position().getY(), 0);
+		crash = new Vector(plane1.getPosition().getX(), plane1.getPosition().getY(), 0);
 		int framesAcross = 8;
 		int framesDown = 4;
 		this.score = score;
 		explosion = graphics.newImage("gfx" + File.separator + "explosionFrames.png");
-		Vector midPoint = crashedPlane1.position().add(crashedPlane2.position()).scaleBy(0.5);
+		Vector midPoint = crashedPlane1.getPosition().add(crashedPlane2.getPosition()).scaleBy(0.5);
 		Vector explosionPos = midPoint.sub( new Vector(explosion.width()/(framesAcross*2), explosion.height()/(framesDown*2), 0) );
 		explosionAnim = new SpriteAnimation(explosion, (int)explosionPos.getX(), (int)explosionPos.getY(), 6, 16, framesAcross, framesDown, false);
 	}
@@ -151,9 +151,9 @@ public class GameOver extends Scene {
 		if (explosionAnim.hasFinished()) {
 			textBox.draw();
 		} else {
-			crashedPlane1.draw((int) crashedPlane1.position().getZ());
-			crashedPlane2.draw((int) crashedPlane1.position().getZ());
-			Vector midPoint = crash.add(crashedPlane2.position()).scaleBy(0.5);
+			crashedPlane1.draw((int) crashedPlane1.getPosition().getZ());
+			crashedPlane2.draw((int) crashedPlane1.getPosition().getZ());
+			Vector midPoint = crash.add(crashedPlane2.getPosition()).scaleBy(0.5);
 			double radius = 20; // Radius of explosion
 			graphics.setColour(graphics.red);
 			graphics.circle(false, midPoint.getX(), midPoint.getY(), radius);
