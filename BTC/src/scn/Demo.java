@@ -203,7 +203,7 @@ public class Demo extends Scene {
 		new Waypoint(125, 70, false),   // 0
 		new Waypoint(700, 100, false),  // 1
 		new Waypoint(1040, 80, false),  // 2
-		new Waypoint(670, 400, false),  // 3
+		new Waypoint(500, 200, false),  // 3
 		new Waypoint(1050, 400, false), // 4
 		new Waypoint(250, 400, false),  // 5
 		new Waypoint(200, 635, false),  // 6
