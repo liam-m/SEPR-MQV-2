@@ -1,8 +1,6 @@
 bear_traffic_controller
 =======================
 
-[![Build Status](https://travis-ci.org/liam-m/SEPR-MQV-2.png?branch=master)](https://travis-ci.org/liam-m/SEPR-MQV-2)
-
 ![Bear Traffic Controller](http://i.imgur.com/KHlkiaj.jpg)
 
 Team MQV's Contribution to the University of York 2nd Year Software Engineering Project.
