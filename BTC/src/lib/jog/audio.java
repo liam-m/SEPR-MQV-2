@@ -39,7 +39,7 @@ public abstract class audio {
 		 */
 		private Music(String filepath, boolean stream, boolean looping) {
 			_is_looping = looping;
-			_volume = 0.75f;
+			_volume = 0.4f;
 			_pitch = 1f;
 			try {
 				if (stream) {
