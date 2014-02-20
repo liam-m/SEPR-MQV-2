@@ -50,7 +50,7 @@ public class Aircraft {
 	private int individual_score;
 	private int addition_to_multiplier = 1; // This variable increases the multiplierVariable when a plane successfully leaves the airspace.
 	
-	private java.util.ArrayList<Aircraft> planesTooNear = new java.util.ArrayList<Aircraft>(); // Holds a list of planes currently in violation of separation rules with this plane
+	private java.util.ArrayList<Aircraft> planes_too_near = new java.util.ArrayList<Aircraft>(); // Holds a list of planes currently in violation of separation rules with this plane
 	
 	/**
 	 * Static ints for use where altitude state is to be changed.
@@ -204,18 +204,18 @@ public class Aircraft {
 	 * @param sceneWaypoints the waypoints on the map.
 	 * @param difficulty the difficulty the game is set to
 	 */
-	public Aircraft(String name, String nameDestination, String nameOrigin, Waypoint destinationPoint, Waypoint originPoint, graphics.Image img, double speed, Waypoint[] sceneWaypoints, int difficulty) {
+	public Aircraft(String name, String name_destination, String name_origin, Waypoint destination_point, Waypoint origin_point, graphics.Image img, double speed, Waypoint[] scene_waypoints, int difficulty) {
 		flight_name = name;		
-		flight_plan = new FlightPlan(sceneWaypoints, nameOrigin, nameDestination, originPoint, destinationPoint);		
+		flight_plan = new FlightPlan(scene_waypoints, name_origin, name_destination, origin_point, destination_point);		
 		image = img;
 		creation_time = System.currentTimeMillis() / 1000; // System time when aircraft was created in seconds.
-		position = originPoint.getLocation();
+		position = origin_point.getLocation();
 		
-		if (originPoint.getLocation() == Demo.airport.getLocation()) {
+		if (origin_point.getLocation() == Demo.airport.getLocation()) {
 			position = position.add(new Vector(-100, -70, 0)); // Start at departures
 		}
-		int altitudeOffset = RandomNumber.randInclusiveInt(0, 1) == 0 ? 28000 : 30000;
-		position = position.add(new Vector(0, 0, altitudeOffset));
+		int altitude_offset = RandomNumber.randInclusiveInt(0, 1) == 0 ? 28000 : 30000;
+		position = position.add(new Vector(0, 0, altitude_offset));
 
 		// Calculate initial velocity (direction)
 		current_target = flight_plan.getRoute()[0].getLocation();
@@ -414,30 +414,30 @@ public class Aircraft {
 
 	private void turnTowardsTarget(double time_difference) {
 		// Get difference in angle
-		double angleDifference = (angleToTarget() % (2 * Math.PI)) - (getBearing() % (2 * Math.PI));
-		boolean crossesPositiveNegativeDivide = angleDifference < -Math.PI * 7 / 8;
+		double angle_difference = (angleToTarget() % (2 * Math.PI)) - (getBearing() % (2 * Math.PI));
+		boolean crossesPositiveNegativeDivide = angle_difference < -Math.PI * 7 / 8;
 		// Correct difference
-		angleDifference += Math.PI;
-		angleDifference %= (2 * Math.PI);
-		angleDifference -= Math.PI;
+		angle_difference += Math.PI;
+		angle_difference %= (2 * Math.PI);
+		angle_difference -= Math.PI;
 		// Get which way to turn.
-		int angleDirection = (int) (angleDifference /= Math.abs(angleDifference));
+		int angle_direction = (int) (angle_difference /= Math.abs(angle_difference));
 		if (crossesPositiveNegativeDivide)
-			angleDirection *= -1;
-		double angleMagnitude = Math.min(Math.abs((time_difference * turn_speed)), Math.abs(angleDifference));
-		turnBy(angleMagnitude * angleDirection);
+			angle_direction *= -1;
+		double angle_magnitude = Math.min(Math.abs((time_difference * turn_speed)), Math.abs(angle_difference));
+		turnBy(angle_magnitude * angle_direction);
 	}
 
 	/**
 	 * Draws the plane and any warning circles if necessary.
 	 * @param The altitude to highlight aircraft at
 	 */
-	public void draw(int highlightedAltitude) {
+	public void draw(int highlighted_altitude) {
 		double alpha;
 		if (position.getZ() >= 28000 && position.getZ() <= 29000) { // 28000-29000
-			alpha = highlightedAltitude == 28000 ? 255 : 128; // 255 if highlighted, else 128
+			alpha = highlighted_altitude == 28000 ? 255 : 128; // 255 if highlighted, else 128
 		} else if (position.getZ() <= 30000 && position.getZ() >= 29000) { // 29000-30000
-			alpha = highlightedAltitude == 30000 ? 255 : 128; // 255 if highlighted, else 128
+			alpha = highlighted_altitude == 30000 ? 255 : 128; // 255 if highlighted, else 128
 		} else { // If it's not 28000-30000, then it's currently landing
 			alpha = 128; 
 		}
@@ -507,11 +507,11 @@ public class Aircraft {
 	 * Draws warning circles around this plane and any others that are too near.
 	 */
 	private void drawWarningCircles() {
-		for (Aircraft plane : planesTooNear) {
-			Vector midPoint = position.add(plane.position).scaleBy(0.5);
-			double radius = position.sub(midPoint).magnitude() * 2;
+		for (Aircraft plane : planes_too_near) {
+			Vector mid_point = position.add(plane.position).scaleBy(0.5);
+			double radius = position.sub(mid_point).magnitude() * 2;
 			graphics.setColour(graphics.red);
-			graphics.circle(false, midPoint.getX(), midPoint.getY(), radius);
+			graphics.circle(false, mid_point.getX(), mid_point.getY(), radius);
 		}
 	}
 
@@ -577,14 +577,14 @@ public class Aircraft {
 	 * @return index of plane breaching separation distance with this plane, or -1 if no planes are in violation.
 	 */
 	public int updateCollisions(double time_difference,	ArrayList<Aircraft> aircraftList, Score score) {
-		planesTooNear.clear();
+		planes_too_near.clear();
 		for (int i = 0; i < aircraftList.size(); i++) {
 			Aircraft plane = aircraftList.get(i);
 			if (plane != this && isWithin(plane, RADIUS)) { // Planes crash
 				has_finished = true;
 				return i;
 			} else if (plane != this && isWithin(plane, minimum_separation_distance)) { // Breaching separation distance
-				planesTooNear.add(plane);
+				planes_too_near.add(plane);
 				score.increaseMeterFill(-1); // Punishment for breaching separation rules (applies to all aircraft involved - usually 2)
 				if (!collision_warning_sound_flag) {
 					collision_warning_sound_flag = true;
@@ -592,7 +592,7 @@ public class Aircraft {
 				}
 			}
 		}
-		if (planesTooNear.isEmpty()) {
+		if (planes_too_near.isEmpty()) {
 			collision_warning_sound_flag = false;
 		}
 		return -1;

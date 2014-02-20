@@ -43,10 +43,7 @@ public abstract class graphics {
 	 */
 	private static class BitmapFont extends Font {
 		
-		/**
-		 * A string containing the characters in the same order that the image has them.
-		 */
-		private String glyphs;
+		private String glyphs; // String containing the characters in the same order that the image has them.
 		private Image image;
 		
 		/**
@@ -169,9 +166,7 @@ public abstract class graphics {
 			glDisable(GL_TEXTURE_2D);
 		}
 
-}
-
-
+	}
 	
 	/**
 	 * <h1>jog.graphics.SystemFont</h1>
@@ -306,7 +301,7 @@ public abstract class graphics {
 	 */
 	public static class Quad {
 		
-		public final double x, y, width, height, quadWidth, quadHeight;
+		public final double x, y, width, height, quad_width, quad_height;
 		
 		/**
 		 * Constructor for Quad.
@@ -314,23 +309,22 @@ public abstract class graphics {
 		 * @param y the beginning vertical coordinate of the quad in pixels.
 		 * @param w the width in pixels of the quad.
 		 * @param h the height in pixels of the quad.
-		 * @param imgWidth the width of the image the quad will be a part of.
-		 * @param imgHeight the height of the image the quad will be a part of.
+		 * @param image_width the width of the image the quad will be a part of.
+		 * @param image_height the height of the image the quad will be a part of.
 		 */
-		private Quad(double x, double y, double w, double h, double imgWidth, double imgHeight) {
-			this.x = x / imgWidth; //Quad coordinates are from 0 to 1, hence division by image size attributes
-			this.y = y / imgHeight;
-			this.width = w / imgWidth;
-			this.height = h / imgHeight;
-			this.quadWidth = w;
-			this.quadHeight = h;
+		private Quad(double x, double y, double w, double h, double image_width, double image_height) {
+			this.x = x / image_width; //Quad coordinates are from 0 to 1, hence division by image size attributes
+			this.y = y / image_height;
+			this.width = w / image_width;
+			this.height = h / image_height;
+			this.quad_width = w;
+			this.quad_height = h;
 		}		
-		
 	}
 	
-	private static Font currentFont;
-	private static Color currentColour;
-	private static boolean viewPortEnabled;
+	private static Font current_font;
+	private static Color current_colour;
+	private static boolean viewport_enabled;
 	
 	/**
 	 * Intialises OpenGL with the appropriate matrix modes and orthographic dimensions. 
@@ -342,7 +336,7 @@ public abstract class graphics {
 		glMatrixMode(GL_MODELVIEW);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		viewPortEnabled = false;
+		viewport_enabled = false;
 	}
 
 	/**
@@ -351,8 +345,8 @@ public abstract class graphics {
 	 * @param colour the colour to draw things.
 	 */
 	static public void setColour(Color colour) {
-		currentColour = colour;
-		glColor4f(currentColour.r, currentColour.g, currentColour.b, currentColour.a);
+		current_colour = colour;
+		glColor4f(current_colour.r, current_colour.g, current_colour.b, current_colour.a);
 	}
 
 	/**
@@ -364,7 +358,7 @@ public abstract class graphics {
 	 * @param a the alpha component of the colour to draw things.
 	 */
 	static public void setColour(double r, double g, double b, double a) {
-		currentColour = new Color((int)r, (int)g, (int)b, (int)a);
+		current_colour = new Color((int)r, (int)g, (int)b, (int)a);
 		double red = (Math.max(0, Math.min(255, r)) / 255);
 		double green = Math.max(0, Math.min(255, g)) / 255;
 		double blue = Math.max(0, Math.min(255, b)) / 255;
@@ -378,7 +372,7 @@ public abstract class graphics {
 	 * @return the current colour.
 	 */
 	static public Color getColour() {
-		return currentColour;
+		return current_colour;
 	}
 	
 	/**
@@ -386,7 +380,7 @@ public abstract class graphics {
 	 * @param font the new font to be active.
 	 */
 	static public void setFont(Font font) {
-		currentFont = font;
+		current_font = font;
 	}
 	
 	/**
@@ -405,7 +399,7 @@ public abstract class graphics {
 		y = window.height() - y;
 		glEnable(GL_SCISSOR_TEST);		
 		glScissor(x, y - height, width, height);
-		viewPortEnabled = true;
+		viewport_enabled = true;
 	}
 	
 	/**
@@ -414,7 +408,7 @@ public abstract class graphics {
 	static public void setViewport() {
 		glDisable(GL_SCISSOR_TEST);
 		glPopMatrix();
-		viewPortEnabled = false;
+		viewport_enabled = false;
 	}
 
 	/**
@@ -453,14 +447,14 @@ public abstract class graphics {
 	 * Creates and returns a new Quad.
 	 * @param x the beginning horizontal coordinate of the quad in pixels.
 	 * @param y the beginning vertical coordinate of the quad in pixels.
-	 * @param quadWidth the width in pixels of the quad.
-	 * @param quadHeight the height in pixels of the quad.
-	 * @param imageWidth the width of the image the quad will be a part of.
-	 * @param imageHeight the height of the image the quad will be a part of.
+	 * @param quad_width the width in pixels of the quad.
+	 * @param quad_height the height in pixels of the quad.
+	 * @param image_width the width of the image the quad will be a part of.
+	 * @param image_height the height of the image the quad will be a part of.
 	 * @return the created quad.
 	 */
-	static public Quad newQuad(double x, double y, double quadWidth, double quadHeight, double imageWidth, double imageHeight) {
-		return new Quad(x, y, quadWidth, quadHeight, imageWidth, imageHeight);
+	static public Quad newQuad(double x, double y, double quad_width, double quad_height, double image_width, double image_height) {
+		return new Quad(x, y, quad_width, quad_height, image_width, image_height);
 	}
 	
 	/**
@@ -469,10 +463,10 @@ public abstract class graphics {
 	 * @param x the horizontal pixel to draw at.
 	 * @param y the vertical pixel to draw at.
 	 * @param r the angle in radians to draw the image at.
-	 * @param ox the x coordinate of the origin of the image around which it is rotated.
-	 * @param oy the y coordinate of the origin of the image around which it is rotated.
+	 * @param origin_x the x coordinate of the origin of the image around which it is rotated.
+	 * @param origin_y the y coordinate of the origin of the image around which it is rotated.
 	 */
-	static public void draw(Image drawable, double x, double y, double r, double ox, double oy) {
+	static public void draw(Image drawable, double x, double y, double r, double origin_x, double origin_y) {
 		y = window.height() - y;
 		r = -Math.toDegrees(r);
 		
@@ -484,19 +478,19 @@ public abstract class graphics {
 	    glScaled(2, 2, 1);
 		glBegin(GL_QUADS);
 			glTexCoord2d(0, 0);
-			glVertex2d(-ox/2, -oy/2);
+			glVertex2d(-origin_x/2, -origin_y/2);
 			glTexCoord2d(1, 0);
-			glVertex2d(ox/2, -oy/2);
+			glVertex2d(origin_x/2, -origin_y/2);
 			glTexCoord2d(1, 1);
-			glVertex2d(ox/2, oy/2);
+			glVertex2d(origin_x/2, origin_y/2);
 			glTexCoord2d(0, 1);
-			glVertex2d(-ox/2, oy/2);
+			glVertex2d(-origin_x/2, origin_y/2);
 		glEnd();
 		glPopMatrix();
 		glDisable(GL_TEXTURE_2D);
 	}
 	
-	static public void draw(Image drawable, double scale, double x, double y, double r, double ox, double oy) {
+	static public void draw(Image drawable, double scale, double x, double y, double r, double origin_x, double origin_y) {
 		y = window.height() - y;
 		r = -Math.toDegrees(r);
 		
@@ -508,13 +502,13 @@ public abstract class graphics {
 	    glScaled(scale, scale, 1);
 		glBegin(GL_QUADS);
 			glTexCoord2d(0, 0);
-			glVertex2d(-ox/2, -oy/2);
+			glVertex2d(-origin_x/2, -origin_y/2);
 			glTexCoord2d(1, 0);
-			glVertex2d(ox/2, -oy/2);
+			glVertex2d(origin_x/2, -origin_y/2);
 			glTexCoord2d(1, 1);
-			glVertex2d(ox/2, oy/2);
+			glVertex2d(origin_x/2, origin_y/2);
 			glTexCoord2d(0, 1);
-			glVertex2d(-ox/2, oy/2);
+			glVertex2d(-origin_x/2, origin_y/2);
 		glEnd();
 		glPopMatrix();
 		glDisable(GL_TEXTURE_2D);
@@ -558,8 +552,8 @@ public abstract class graphics {
 	 */
 	static public void drawq(Image drawable, Quad quad, double x, double y) {
 		y = window.height() - y;
-		double w = quad.quadWidth;
-		double h = -quad.quadHeight;
+		double w = quad.quad_width;
+		double h = -quad.quad_height;
 		
     	glEnable(GL_TEXTURE_2D);
 		drawable.texture.bind();
@@ -729,8 +723,9 @@ public abstract class graphics {
 	 * @param size the size to draw the text at.
 	 */
 	static public void print(String text, double x, double y, double size) {
-		if (currentFont == null) currentFont = newSystemFont("Times New Roman");
-		currentFont.print(x, y, text, size);
+		if (current_font == null) 
+			current_font = newSystemFont("Times New Roman");
+		current_font.print(x, y, text, size);
 	}
 	static public void print(String text, double x, double y){
 		print(text, x, y, 1);
@@ -745,8 +740,9 @@ public abstract class graphics {
 	 * @param width the width the text is centred around.
 	 */
 	static public void printCentred(String text, double x, double y, double size, double width) {
-		if (currentFont == null) currentFont = newSystemFont("Times New Roman");
-		currentFont.printCentred(x, y, width, text, size);
+		if (current_font == null) 
+			current_font = newSystemFont("Times New Roman");
+		current_font.printCentred(x, y, width, text, size);
 	}
 	
 	/**
@@ -758,8 +754,9 @@ public abstract class graphics {
 	 * @param width is redundant.
 	 */
 	static public void printRight(String text, double x, double y, double size, double width) {
-		if (currentFont == null) currentFont = newSystemFont("Times New Roman");
-		currentFont.printRight(x, y, width, text, size);
+		if (current_font == null) 
+			current_font = newSystemFont("Times New Roman");
+		current_font.printRight(x, y, width, text, size);
 	}
 	
 	/**
@@ -773,14 +770,15 @@ public abstract class graphics {
 			e.printStackTrace();
 		}
 		*/
-		if (viewPortEnabled) setViewport();
+		if (viewport_enabled) setViewport();
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		GL11.glColor3d(1, 1, 1);
 	}
 
 	public static Font getFont() {
-		if (currentFont == null) currentFont = newSystemFont("Times New Roman");
-		return currentFont;
+		if (current_font == null) 
+			current_font = newSystemFont("Times New Roman");
+		return current_font;
 	}
 	
 	public static void push() {

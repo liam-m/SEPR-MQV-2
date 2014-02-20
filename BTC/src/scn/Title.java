@@ -3,9 +3,6 @@ package scn;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import org.newdawn.slick.util.FileSystemLocation;
 
 import lib.jog.audio;
 import lib.jog.audio.Sound;
@@ -49,6 +46,7 @@ public class Title extends Scene {
 	public void start() {
 		beep = audio.newSoundEffect("sfx" + File.separator + "beep.ogg");
 		beep.setVolume(0.2f);
+		angle = 0;
 		
 		buttons = new lib.ButtonText[4];
 		// Demo Button
@@ -88,8 +86,6 @@ public class Title extends Scene {
 					}
 				};
 		buttons[3] = new lib.ButtonText("Exit", exit, window.height(), window.height()/2 + 186, window.width() - window.height(), 24, 8, 6);
-		
-		angle = 0;
 	}
 
 	/**
@@ -99,47 +95,35 @@ public class Title extends Scene {
 	 */
 	@Override
 	public void update(double time_difference) {
-		angle += time_difference; //increase the angle of the radar sweep
+		angle += time_difference; // Increase the angle of the radar sweep
 		
-		//Check the angle of the radar sweep;
-		//If approaching the BTC title string, play the beep
+		// Check the angle of the radar sweep;
+		// If approaching the BTC title string, play the beep
 		double beepTimer = (angle * 4) + (Math.PI * 4 / 5); 
 		beepTimer %= (2 * Math.PI);
-		if ( beepTimer <= 0.1 ) {
+		if (beepTimer <= 0.1) {
 			playSound(beep);
 		}
 	}
-	//#Needed?
-	/**
-	 * Handles mouse pressed input
-	 * Currently unused
-	 */
+	
 	@Override
-	public void mousePressed(int key, int x, int y) {}
-	//#Needed?
-	/**
-	 * Handles mouse release events
-	 * Causes a button to act if clicked by any mouse key
-	 */
+	public void mousePressed(int key, int x, int y) { }
+
 	@Override
 	public void mouseReleased(int key, int mx, int my) {
-		for (lib.ButtonText b : buttons) {
-			if (b.isMouseOver(mx, my)) {
-				b.act();
+		for (lib.ButtonText button : buttons) {
+			if (button.isMouseOver(mx, my)) {
+				button.act();
 			}
 		}
 		
 	}
-	//#Needed?
-	/**
-	 * Keyboard input methods
-	 * Currently unused
-	 */
-	@Override
-	public void keyPressed(int key) {}
 
 	@Override
-	public void keyReleased(int key) {}
+	public void keyPressed(int key) { }
+
+	@Override
+	public void keyReleased(int key) { }
 
 	/**
 	 * Handles drawing of the scene
@@ -151,12 +135,13 @@ public class Title extends Scene {
 		drawRadar();
 		drawMenu();
 	}
+	
 	/**
 	 * Draws the radar arc and title string
 	 */
 	private void drawRadar() {
 		// Radar
-		// set of circles for radar 'screen'
+		// Set of circles for radar 'screen'
 		graphics.setColour(graphics.green);
 		graphics.circle(false, window.height()/2, window.height()/2, window.height()/2 - 32, 100);
 		graphics.setColour(0, 128, 0, 32);
@@ -165,7 +150,7 @@ public class Title extends Scene {
 		graphics.circle(false, window.height()/2, window.height()/2, window.height()/9, 100);
 		graphics.circle(false, window.height()/2, window.height()/2, 2, 100);
 		graphics.setColour(graphics.green);
-		// sweep of radar
+		// Sweep of radar
 		double radarAngle = (angle * 4) % (2 * Math.PI);
 		int w = (int)( Math.cos(radarAngle) * (window.height()/2 - 32) );
 		int h = (int)( Math.sin(radarAngle) * (window.height()/2 - 32) );
@@ -181,8 +166,8 @@ public class Title extends Scene {
 		graphics.arc(true, window.height()/2, window.height()/2, window.height()/2 - 32, radarAngle, -1 * Math.PI / 8);
 		// Title
 		String title = "Bear Traffic Controller";
-		// fades title string's characters over time
-		// characters brighten when the sweep passes over them
+		// Fades title string's characters over time
+		// Characters brighten when the sweep passes over them
 		double a = radarAngle + (Math.PI * 4 / 5);
 		for (int i = 0; i < title.length(); i++) {
 			a -= Math.PI / 32;
@@ -193,6 +178,7 @@ public class Title extends Scene {
 			graphics.setColour(0, 128, 0, opacity);
 			graphics.print(title.substring(i, i+1), 74*4.5 + i * 14, 344, 1.8);
 		}
+		// Subtitle
 		String subtitle = "MQV Edition";
 		a = radarAngle + (Math.PI * 4 / 5);
 		for (int i = 0; i < subtitle.length(); i++) {
@@ -223,7 +209,8 @@ public class Title extends Scene {
 		graphics.print("Improved by: Team MQV", window.height() + 8, 68);
 		
 		// Draw Buttons
-		for (lib.ButtonText b : buttons) b.draw();
+		for (lib.ButtonText button : buttons) 
+			button.draw();
 		graphics.setColour(graphics.green);
 		graphics.line(window.height(), window.height()/2 + 90, window.width() - 16, window.height()/2 + 90);
 		graphics.line(window.height(), window.height()/2 + 120, window.width() - 16, window.height()/2 + 120);
@@ -233,22 +220,13 @@ public class Title extends Scene {
 	}
 	
 	@Override
-	//#Needed?
-	/**
-	 * cleanly exits the title scene
-	 */
 	public void close() {
 
 	}
 	
 	@Override
-	//#Needed?
-	/**
-	 * Plays a requested sound
-	 */
 	public void playSound(Sound sound) {
 		sound.stop();
 		sound.play();
 	}
-
 }

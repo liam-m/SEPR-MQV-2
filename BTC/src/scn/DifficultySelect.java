@@ -11,28 +11,28 @@ public class DifficultySelect extends Scene {
 	
 	private final int EASY_BUTTON_X = window.width()/4;
 	private final int EASY_BUTTON_Y = 2*window.height()/3;
-	private final int EASY_BUTTON_W = 128;
-	private final int EASY_BUTTON_H = 16;
+	private final int EASY_BUTTON_WIDTH = 128;
+	private final int EASY_BUTTON_HEIGHT = 16;
 	
 	private final int MEDIUM_BUTTON_X = window.width()/2;
 	private final int MEDIUM_BUTTON_Y = EASY_BUTTON_Y;
-	private final int MEDIUM_BUTTON_W = EASY_BUTTON_W;
-	private final int MEDIUM_BUTTON_H = EASY_BUTTON_H;
+	private final int MEDIUM_BUTTON_WIDTH = EASY_BUTTON_WIDTH;
+	private final int MEDIUM_BUTTON_HEIGHT = EASY_BUTTON_HEIGHT;
 	
 	private final int HARD_BUTTON_X = 3*window.width()/4;
 	private final int HARD_BUTTON_Y = EASY_BUTTON_Y;
-	private final int HARD_BUTTON_W = EASY_BUTTON_W;
-	private final int HARD_BUTTON_H = EASY_BUTTON_H;
+	private final int HARD_BUTTON_WIDTH = EASY_BUTTON_WIDTH;
+	private final int HARD_BUTTON_HEIGHT = EASY_BUTTON_HEIGHT;
 	
 	
 	private lib.ButtonText[] buttons;
-	//text box for flavour text
-	private lib.TextBox textBox;
-	private static final String placeName = "Moscow";
+	// Text box for flavour text
+	private lib.TextBox text_box;
+	private static final String place_name = "Moscow";
 	
-	//To allow the difficulty selection to work with multiple potential game scenes, e.g. separate Demo and a Full Game
+	// To allow the difficulty selection to work with multiple potential game scenes, e.g. separate Demo and a Full Game
 	private int scene;
-	//static ints for clarity of reading. Implement more to allow more game scenes.
+	// static ints for clarity of reading. Implement more to allow more game scenes.
 	public final static int CREATE_DEMO = 0;
 
 	/**
@@ -46,7 +46,7 @@ public class DifficultySelect extends Scene {
 	}
 
 	@Override
-	public void mousePressed(int key, int x, int y) {}
+	public void mousePressed(int key, int x, int y) { }
 
 	@Override
 	/**
@@ -61,7 +61,7 @@ public class DifficultySelect extends Scene {
 	}
 
 	@Override
-	public void keyPressed(int key) {}
+	public void keyPressed(int key) { }
 
 	@Override
 	/**
@@ -89,7 +89,7 @@ public class DifficultySelect extends Scene {
 				}
 			}
 		};
-		buttons[0] = new lib.ButtonText("Easy", easy, EASY_BUTTON_X, EASY_BUTTON_Y, EASY_BUTTON_W, EASY_BUTTON_H);
+		buttons[0] = new lib.ButtonText("Easy", easy, EASY_BUTTON_X, EASY_BUTTON_Y, EASY_BUTTON_WIDTH, EASY_BUTTON_HEIGHT);
 		
 		lib.ButtonText.Action medium = new lib.ButtonText.Action() {
 			@Override
@@ -101,7 +101,7 @@ public class DifficultySelect extends Scene {
 				}
 			}
 		};
-		buttons[1] = new lib.ButtonText("Medium", medium, MEDIUM_BUTTON_X, MEDIUM_BUTTON_Y, MEDIUM_BUTTON_W, MEDIUM_BUTTON_H);
+		buttons[1] = new lib.ButtonText("Medium", medium, MEDIUM_BUTTON_X, MEDIUM_BUTTON_Y, MEDIUM_BUTTON_WIDTH, MEDIUM_BUTTON_HEIGHT);
 		
 		lib.ButtonText.Action hard = new lib.ButtonText.Action() {
 			@Override
@@ -113,53 +113,52 @@ public class DifficultySelect extends Scene {
 				}
 			}
 		};
-		buttons[2] = new lib.ButtonText("Hard", hard, HARD_BUTTON_X, HARD_BUTTON_Y, HARD_BUTTON_W, HARD_BUTTON_H);
+		buttons[2] = new lib.ButtonText("Hard", hard, HARD_BUTTON_X, HARD_BUTTON_Y, HARD_BUTTON_WIDTH, HARD_BUTTON_HEIGHT);
 		
-		textBox = new lib.TextBox(128, 96, window.width() - 256, window.height() - 96, 32);
-		textBox.addText("You are a 500 kilogram ferocious Grizzly Bear." + TextBox.DELAY_START + "0.5" + TextBox.DELAY_END + " The Humans are not aware of your hidden identity.");
-		textBox.delay(0.5);
-		textBox.addText("You have become an air traffic controller at " + DifficultySelect.placeName + " international in order to provide for your family during the harsh winters ahead.");
-		textBox.delay(0.5);
-		textBox.newline();
-		textBox.addText("Somehow, miraculously, your true nature has not yet been discovered.");
-		textBox.newline();
-		textBox.newline();
-		textBox.newline();
-		textBox.delay(1);
-		textBox.addText("Guide planes to their destination successfully and you will be rewarded." + TextBox.DELAY_START + "0.5" + TextBox.DELAY_END + 
+		text_box = new lib.TextBox(128, 96, window.width() - 256, window.height() - 96, 32);
+		text_box.addText("You are a 500 kilogram ferocious Grizzly Bear." + TextBox.DELAY_START + "0.5" + TextBox.DELAY_END + " The Humans are not aware of your hidden identity.");
+		text_box.delay(0.5);
+		text_box.addText("You have become an air traffic controller at " + DifficultySelect.place_name + " international in order to provide for your family during the harsh winters ahead.");
+		text_box.delay(0.5);
+		text_box.newline();
+		text_box.addText("Somehow, miraculously, your true nature has not yet been discovered.");
+		text_box.newlines(3);
+		text_box.delay(1);
+		text_box.addText("Guide planes to their destination successfully and you will be rewarded." + TextBox.DELAY_START + "0.5" + TextBox.DELAY_END + 
 						" Fail," + TextBox.DELAY_START + "0.5" + TextBox.DELAY_END + " and the humans may discover your secret identity and put you in a zoo." + 
 						TextBox.DELAY_START + "1" + TextBox.DELAY_END + " Or worse.");
 	}
 
-	@Override
 	/**
 	 * Updates text box
 	 */
+	@Override
 	public void update(double time_difference) {
-		textBox.update(time_difference);
+		text_box.update(time_difference);
 	}
 
-	@Override
 	/**
 	 * Draws text box, buttons, and prints strings
 	 */
+	@Override
 	public void draw() {
 		graphics.setColour(graphics.green);
 		graphics.printCentred("Select the difficulty:", window.width()/2, window.height()/2 + 50, 1, 100);
-		graphics.rectangle(false, EASY_BUTTON_X, EASY_BUTTON_Y, EASY_BUTTON_W, EASY_BUTTON_H);
-		graphics.rectangle(false, MEDIUM_BUTTON_X, MEDIUM_BUTTON_Y, MEDIUM_BUTTON_W, MEDIUM_BUTTON_H);
-		graphics.rectangle(false, HARD_BUTTON_X, HARD_BUTTON_Y, HARD_BUTTON_W, HARD_BUTTON_H);
-		for (lib.ButtonText b : buttons) {
-			b.draw();
+		graphics.rectangle(false, EASY_BUTTON_X, EASY_BUTTON_Y, EASY_BUTTON_WIDTH, EASY_BUTTON_HEIGHT);
+		graphics.rectangle(false, MEDIUM_BUTTON_X, MEDIUM_BUTTON_Y, MEDIUM_BUTTON_WIDTH, MEDIUM_BUTTON_HEIGHT);
+		graphics.rectangle(false, HARD_BUTTON_X, HARD_BUTTON_Y, HARD_BUTTON_WIDTH, HARD_BUTTON_HEIGHT);
+		for (lib.ButtonText button : buttons) {
+			button.draw();
 		}
-		textBox.draw();
+		text_box.draw();
 	}
 
 	@Override
-	public void close() {}
+	public void close() { }
 
 	@Override
-	public void playSound(Sound sound) {		
+	public void playSound(Sound sound) {	
+		
 	}
 
 }

@@ -149,9 +149,10 @@ public abstract class window {
 	 */
 	public static void update() {
 		_closed = _closed || Display.isCloseRequested();
-		if (_closed) return;
-		Display.update();
-		Display.sync(FPS);
+		if (!_closed) {
+			Display.update();
+			Display.sync(FPS);			
+		}
 	}
 	
 	/**

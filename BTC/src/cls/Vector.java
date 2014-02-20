@@ -32,6 +32,9 @@ public class Vector {
 		return z;
 	}
 	
+	public void setZ(double z) {
+		this.z = z;
+	}	
 
 	/**
 	 * Checks a vector for equality with this vector.
@@ -92,7 +95,7 @@ public class Vector {
 	 * @return the result of the subtractions
 	 */
 	public Vector sub(Vector v) {
-		return new Vector(x - v.getX(), y - v.getY(), z - v.getZ());
+		return add(v.scaleBy(-1)); // Invert numbers and add
 	}
 	
 	/**
@@ -102,16 +105,8 @@ public class Vector {
 	 */
 	public double angleBetween(Vector v) {
 		double a = Math.acos( (x*v.x + y*v.y + z*v.z) / (magnitude() * v.magnitude()));
-		if (v.y < y) a *= -1;
+		if (v.y < y)
+			a *= -1;
 		return a;
 	}
-	
-	/**
-	 * Sets the z value of the vector
-	 * @param z the z value to be set
-	 */
-	public void setZ(double z) {
-		this.z = z;
-	}
-
 }
