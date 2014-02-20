@@ -17,8 +17,8 @@ import btc.Main;
 public class Demo extends Scene {
 	// Due to the way the airspace elements are drawn (graphics.setviewport) these variables are needed to manually adjust mouse listeners and elements
 	// drawn outside the airspace so that they align with the airspace elements. These variables can be used to adjust the size of the airspace view.
-	public static int airspace_view_offset_x = 16;
-	public static int airspace_view_offset_y = 48;
+	public final static int airspace_view_offset_x = 16;
+	public final static int airspace_view_offset_y = 48;
 	
 	// Position of things drawn to window   
 	private final int PLANE_INFO_X = 16;
@@ -110,11 +110,11 @@ public class Demo extends Scene {
 	 * The set of waypoints in the airspace which are origins / destinations
 	 */
 	public static Waypoint[] location_waypoints = new Waypoint[] {
-		/* A set of Waypoints which are origin / destination points */
-		new Waypoint(8, 8, true, "North West Top Leftonia"), //top left
-		new Waypoint(8, window.height() - ORDERSBOX_HEIGHT - 72, true, "100 Acre Woods"), //bottom left
+		// A set of Waypoints which are origin / destination points 
+		new Waypoint(8, 8, true, "North West Top Leftonia"), // top left
+		new Waypoint(8, window.height() - ORDERSBOX_HEIGHT - 72, true, "100 Acre Woods"), // bottom left
 		new Waypoint(window.width() - 40, 8, true, "City of Rightson"), // top right
-		new Waypoint(window.width() - 40, window.height() - ORDERSBOX_HEIGHT - 72, true, "South Sea"), //bottom right
+		new Waypoint(window.width() - 40, window.height() - ORDERSBOX_HEIGHT - 72, true, "South Sea"), // bottom right
 		airport
 	};
 
