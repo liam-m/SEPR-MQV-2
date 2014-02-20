@@ -5,13 +5,10 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.Before;
 
-import scn.Demo;
 import cls.Aircraft;
 import cls.Waypoint;
 import cls.Vector;
 import cls.Score;
-
-@SuppressWarnings("deprecation")
 
 public class AircraftTest {	
 	Aircraft test_aircraft;
@@ -38,44 +35,32 @@ public class AircraftTest {
 	}
 	
 	@Test
-	public void testGetOriginName(){
-		String name = test_aircraft.getFlightPlan().getOriginName();
-		assertTrue("Origin name = Dublin", "Dublin" == name);
-	}
-	
-	@Test
-	public void testGetDestinationName(){
-		String name = test_aircraft.getFlightPlan().getDestinationName();
-		assertTrue("Destination name = Berlin", "Berlin" == name);
-	}
-	
-	@Test
-	public void testGetIsFinished(){
+	public void testGetIsFinished() {
 		boolean status = test_aircraft.isFinished();
 		assertFalse("Finished = false", status);
 	}
 	
 	@Test
-	public void testIsManuallyControlled(){
+	public void testIsManuallyControlled() {
 		boolean status = test_aircraft.isManuallyControlled();
 		assertFalse("Manually controlled = false", status);
 	}
 	
 	@Test
-	public void testGetSpeed(){
+	public void testGetSpeed() {
 		double speed = (int) (test_aircraft.getSpeed() + 0.5);
 		assertTrue("Speed = 20", speed == 20.0);
 	}
 	
 	@Test
-	public void testGetAltitudeState(){
+	public void testGetAltitudeState() {
 		test_aircraft.setAltitudeState(1);
 		int altitude_state = test_aircraft.getAltitudeState();
 		assertTrue("Altitude State = 1", altitude_state == 1);
 	}
 	
 	@Test
-	public void testOutOfAirspaceBounds(){
+	public void testOutOfAirspaceBounds() {
 		Waypoint[] waypoints = new Waypoint[]{new Waypoint(0, 0, true), new Waypoint(100, 100, true), new Waypoint(25, 75, false), new Waypoint(75, 25, false), new Waypoint(50,50, false)};
 		test_aircraft = new Aircraft("testAircraft", "Berlin", "Dublin", new Waypoint(100,100, true), new Waypoint(0,0, true), null, 10.0, waypoints, 1);
 		assertTrue("Out of bounds = false", test_aircraft.isOutOfAirspaceBounds());
@@ -83,25 +68,14 @@ public class AircraftTest {
 	
 	// Test set methods
 	@Test
-	public void testSetAltitudeState(){
+	public void testSetAltitudeState() {
 		test_aircraft.setAltitudeState(1);
 		int altState = test_aircraft.getAltitudeState();
 		assertTrue("Altitude State = 1", altState == 1);
 	}
-
-	@Test
-	public void testTotalDistanceInFlightPlan() {
-		Demo test_demo = new Demo(1);
-		test_demo.initializeAircraftArray();
-		test_demo.getAircraftList().add(test_aircraft);
-		Aircraft plane = test_demo.getAircraftList().get(0);
-		int distance = 0;
-		distance += Waypoint.getCostBetween(plane.getFlightPlan().getRoute()[0], plane.getFlightPlan().getRoute()[1]);
-		assertTrue(distance == plane.getFlightPlan().getTotalDistance());
-	}
 	
 	@Test		
-	public void isCloseToEntry() {
+	public void testIsCloseToEntry() {
 		Waypoint[] waypointList = new Waypoint[]{new Waypoint(0, 0, true), new Waypoint(100, 100, true), new Waypoint(25, 75, false), new Waypoint(675, 125, false), new Waypoint(530,520, false)};
 		test_aircraft = new Aircraft("testAircraft", "Berlin", "Dublin", new Waypoint(100,100, true), new Waypoint(0,0, true), null, 10.0, waypointList, 1);
 		assertTrue(test_aircraft.isCloseToEntry(waypointList[0].getLocation()));			
