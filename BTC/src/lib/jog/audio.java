@@ -19,7 +19,7 @@ public abstract class audio {
 	
 	/**
 	 * <h1>jog.audio.Music</h1>
-	 * <p>Essentially an object-orientated wrapper for the slick Music object.</p>
+	 * <p>Essentially an object-oriented wrapper for the slick Music object.</p>
 	 * @author IMP1
 	 */
 	public static class Music {
@@ -39,7 +39,7 @@ public abstract class audio {
 		 */
 		private Music(String filepath, boolean stream, boolean looping) {
 			_is_looping = looping;
-			_volume = 1f;
+			_volume = 0.75f;
 			_pitch = 1f;
 			try {
 				if (stream) {

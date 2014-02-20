@@ -1,4 +1,4 @@
 /**
- * Contains all custom input libaries
+ * Contains all custom input libraries
  */
 package lib.jog;
