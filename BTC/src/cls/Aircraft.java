@@ -285,7 +285,7 @@ public class Aircraft {
 	public boolean isAt(Vector point) {
 		double dy = point.getY() - position.getY();
 		double dx = point.getX() - position.getX();
-		return dy*dy + dx*dx < 4*4;
+		return dy*dy + dx*dx < 6*6;
 	}
 
 	public boolean isTurningLeft() {
